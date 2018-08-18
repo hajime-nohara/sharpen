@@ -1,26 +1,14 @@
-# hyperapp-boilerplate
-hyperapp-boilerplate is a boilerplate for quickstarting a web application with Hyperapp, JSX, Stylus, Pug, Eslint.
+# sharpen
+It's a simple gantt chart javascript framework.
+
+Quickstarting a web application with Hyperapp, JSX, Stylus, Pug, Eslint.
+
 ## Installing
 ```
-git clone git@github.com:sosukesuzuki/hyperapp-boilerplate.git
-cd hyperapp-boilerplate
+git clone git@github.com:hajime-nohara/sharpen.git
+cd sharpen
 rm -r .git
-yarn
-yarn run start
+npm install
+npm run start
 ```
 run webpack-dev-server on localhost:8080.
-
-
-/*
-  show table start - end
-  show calced days * member
-  show calced total cost
-
-  registring cost of one person to master data function
-  registring hours of a day master data function
-
-  editing status function
-
-  data share function
-
-*/
