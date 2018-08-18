@@ -1,0 +1,15 @@
+{
+  "extends": ["standard", "standard-jsx"],
+  "rules": {
+    "no-useless-escape": 0,
+    "prefer-const": "warn",
+    "no-unused-vars": ["warn", {"varsIgnorePattern": "h"}],
+    "no-undef": "warn",
+    "no-lone-blocks": "warn",
+  },
+  "globals": {
+    "FileReader": true,
+    "localStorage": true,
+    "fetch": true
+  }
+}
