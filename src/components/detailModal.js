@@ -12,7 +12,7 @@ const style = {
     border:       "dotted"
 }
 // input view
-export default (state, actions, params) => {
+export default (state, actions, params, detailModalId) => {
 
       // member data
       let assignedMember = []
@@ -127,8 +127,7 @@ export default (state, actions, params) => {
         }
       );
 
-      return (<div className="modal fade" id={"modalTarget" + params.id} tabIndex={-1} role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div id={"modal" + params.id} data-target={"#modalTarget" + params.id} data-toggle="modal"/>
+      return (<div className="modal fade" id={detailModalId} tabIndex={-1} role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered" role="document">
           <div className="modal-content">
             <div className="modal-header">

@@ -4,6 +4,10 @@ export default new class {
     return value + "px"
   }
 
+  parsePercent(value) {
+    return value + "%"
+  }
+
   widthResized (widthResized, cellWidth) {
     const halfCellWidth = (cellWidth / 2)
     let count           = parseInt(widthResized / cellWidth)
