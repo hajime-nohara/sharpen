@@ -40,6 +40,7 @@
     "webpack-dev-server": "^2.11.1"
   },
   "dependencies": {
+    "flatpickr": "^4.5.1",
     "hyperapp": "^1.2.0",
     "normalize.css": "^7.0.0"
   }
