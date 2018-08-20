@@ -10,7 +10,9 @@ export default {
   },
   onload: ()=>(state, actions)=>{
     console.log("onload gantt")
-    parent.window.init(state)
+    //parent.window.init(state)
+    // semantic ui
+    //$('.ui.dropdown').dropdown()
   },
 
   // master member

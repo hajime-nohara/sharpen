@@ -1,6 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
   entry: [
@@ -57,6 +58,12 @@ module.exports = {
   },
   devtool: 'inline-source-map',
   plugins: [
+
+    new CopyWebpackPlugin([
+      { from: 'semantic/dist/**/*', to: '' },
+      { from: 'node_modules/semantic-ui-calendar/dist/*', to: '' }
+    ], []),
+
     new webpack.LoaderOptionsPlugin({
       options: {
         stylus: {

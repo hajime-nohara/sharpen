@@ -62,23 +62,27 @@ export default (state, actions, data) => {
   }
 
   /* resizer start */
+  const startPointResizeEnd = (e)=>actions.tasks.startPointResizeEnd([e, state, data.id, pageXStartPoint]) 
   const resizeOnStart = (e) => {
     openModalFlg     = false
     pageXStartPoint  = e.pageX
     const row        = document.getElementById(rowId)
     row.addEventListener('mousemove', resizeStartPoint)
     row.addEventListener('touchmove', resizeStartPoint)
-    row.addEventListener('mouseup', (e)=>actions.tasks.startPointResizeEnd([e, state, data.id, pageXStartPoint]))
+    row.addEventListener('mouseup', startPointResizeEnd)
+    row.addEventListener('mouseleave', startPointResizeEnd)
   }
 
   /* resizer end */
+  const endPointResizeEnd = (e)=>actions.tasks.endPointResizeEnd([e, state, data.id, pageXStartPoint])
   const resizeOnEnd = (e) => {
     openModalFlg     = false
     pageXStartPoint  = e.pageX
     const row        = document.getElementById(rowId)
     row.addEventListener('mousemove', resizeEndPoint)
     row.addEventListener('touchmove', resizeEndPoint)
-    row.addEventListener('mouseup', (e)=>actions.tasks.endPointResizeEnd([e, state, data.id, pageXStartPoint]))
+    row.addEventListener('mouseup', endPointResizeEnd)
+    row.addEventListener('mouseleave', endPointResizeEnd)
   }
 
   /* progress-bar */

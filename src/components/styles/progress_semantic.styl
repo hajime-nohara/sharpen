@@ -1,0 +1,27 @@
+.title
+ white-space: nowrap
+ text-align: left !important
+
+.row 
+  background-image: url(/assets/division.jpg)
+
+.progress
+ position:          relative
+ cursor:            pointer
+
+resizer()
+  position: absolute
+  height:   100%
+  width:    30px
+  cursor:   col-resize
+  top: 0
+
+.resizerEnd
+  resizer()
+  right: 0
+
+.resizerStart
+  resizer()
+  left: 0
+
+

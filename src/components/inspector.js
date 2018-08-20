@@ -18,9 +18,6 @@ export default (state, actions) => {
         </div>
         <form class="form-inline my-2 my-lg-0">
 
-          <input oncreate={(e)=>flatpickr(e, {})} onchange={(e)=>actions.changeStartDate(e.target.value)} class="form-control form-control-sm mr-sm-2" type="search" placeholder="start date" id="startDate" aria-label="Search"/>
-          <input oncreate={(e)=>flatpickr(e, {})} onchange={(e)=>actions.changeEndDate(e.target.value)} class="form-control form-control-sm mr-sm-2" type="search" placeholder="end date" id="endDate" aria-label="Search"/>
-
           <input type="number" min="50" max="100" value={state.globalCellWidth} onchange={(e)=>actions.changeTalbeCellWidth(e.target.value)} class="form-control form-control-sm mr-sm-2" placeholder="width each day" id="width" aria-label="Search"/>
         </form>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
