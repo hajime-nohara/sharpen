@@ -44,7 +44,7 @@
     "flatpickr": "^4.5.1",
     "hyperapp": "^1.2.0",
     "normalize.css": "^7.0.0",
-    "semantic-ui": "^2.3.3",
+    "semantic-ui": "^2.2.14",
     "semantic-ui-calendar": "0.0.8"
   }
 }
