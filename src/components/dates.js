@@ -1,5 +1,6 @@
 import { h } from "hyperapp"
 import utils from '../classes/utils'
+import styl  from './styles/dates_semantic.styl'
 
 var dayOfWeekStr = [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ]
 
@@ -22,11 +23,21 @@ export default (state, actions, params) => {
     } else {
       dateStr = (("" + dt.getDate()).slice(-2))
     }
-    dates.push(<span style={dayStyle}><div>{dateStr}</div><div>{dayStr}</div></span>)
+    dates.push(
+                <div class={styl.statistic + " ui statistic"}>
+                  <div style={{width: utils.parsePx(state.globalCellWidth)}} class={styl.value}>
+                  {dateStr}
+                  </div>
+                  <div style={dayStyle} class={styl.label + " label"}>
+                    {dayStr}
+                  </div>
+                </div>
+    )
+
     idx = idx + 1
   }
   return (
-      <div oncreate={(e)=>e.style.backgroundSize=state.globalCellWidth+"px"} onupdate={(e)=>e.style.backgroundSize=state.globalCellWidth+"px"} style={{backgroundSize: state.globalCellWidth + "px", position: "sticky", top: "0px", zIndex: 9, background: "url(/assets/division.jpg)top left / " + state.globalCellWidth + "px " + Object.keys(state.tasks).length * state.globalCellWidth + "px repeat-x", width: dateCount * state.globalCellWidth + "px", borderBottom: "dotted 1px #e9ecef", baddingBottom: "5px"}}>
+      <div oncreate={(e)=>e.style.backgroundSize=state.globalCellWidth+"px"} onupdate={(e)=>e.style.backgroundSize=state.globalCellWidth+"px"} style={{backgroundSize: state.globalCellWidth + "px", position: "sticky", top: "0px", zIndex: 9, background: "url(/assets/division.jpg)top left / " + state.globalCellWidth + "px " + Object.keys(state.tasks).length * state.globalCellWidth + "px repeat-x", width: dateCount * state.globalCellWidth + "px", borderBottom: "dotted 1px #e9ecef", marginBottom: "5px"}}>
         {dates}
       </div>
   )
