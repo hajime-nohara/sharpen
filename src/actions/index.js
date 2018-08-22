@@ -211,14 +211,12 @@ export default {
         let endPosition   = width + startPosition
 
         // 1日分よりは小さくならない様にする
-        if ((state[globalUpdateId].endPosition - pageX) <= globalState.globalCellWidth) {
+        if ((state[globalUpdateId].endPosition - (pageX-pageXPoint)) <= globalState.globalCellWidth || width <= 0) {
           startPosition = state[globalUpdateId].endPosition - globalState.globalCellWidth
           width         = globalState.globalCellWidth
-          endPosition   = width + startPosition
         }
 
         state[globalUpdateId].startPosition = startPosition
-        state[globalUpdateId].endPosition   = endPosition
         state[globalUpdateId].startDate     = utils.get_date(startPosition, globalState.globalCellWidth, window.startDate)
         state[globalUpdateId].endDate       = utils.get_date(startPosition + width -1, globalState.globalCellWidth, window.startDate)
         state[globalUpdateId].width         = width -1

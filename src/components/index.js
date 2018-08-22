@@ -6,7 +6,6 @@ import dates            from './dates'
 import utils            from '../classes/utils'
 //import redoUndoActions  from '../actions/hyperapp-undo'
 import inspector        from './inspector_semantic';
-import footer           from './footer';
 import detailModal from './detailModal_semantic'
 
 export default (state, actions) => {
@@ -31,16 +30,15 @@ console.log("dateCount", dateCount)
 
   return (
 
-    <main className="bg-light">
+    <main class="ui container">
       {detailModalComponents}
       {inspector(state, actions)}
-      <div style={{ position: "relative", width: "98%", overflow: "scroll", border: "solid 1px #8080803b", margin: "auto", height: "88%", marginBottom: "2%"}}>
+      <div class="ui segment" style={{  overflow: "scroll" }}>
         <div oncreate={(e)=>e.style.backgroundSize=state.globalCellWidth+"px"} onupdate={(e)=>e.style.backgroundSize=state.globalCellWidth+"px"} style={{backgroundImage: "url(/assets/division.jpg)", width: dateCount * state.globalCellWidth + "px", height: "100%"}}>
         {dates(state, actions)}
         {tasksComponents}
         </div>
       </div>
-      {footer}
     </main>
   )
 }

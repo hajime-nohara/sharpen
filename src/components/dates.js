@@ -14,7 +14,7 @@ export default (state, actions, params) => {
     let dateStr = ""
     let dt = new Date(state.tableStartDate);
     dt.setDate(dt.getDate() + idx);
-    let dayStr  = dayOfWeekStr[dt.getDay()]
+    let dayStr   = dayOfWeekStr[dt.getDay()]
     let dayColor = dt.getDay() == 0 ? "#732141" : dt.getDay() == 6 ? "#74A5CF" : ""
 
     const dayStyle = Object.assign(JSON.parse(JSON.stringify(style)), {color: dayColor})
