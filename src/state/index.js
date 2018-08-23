@@ -1,11 +1,11 @@
 import utils from '../classes/utils'
+import i18n  from './i18n'
 
 // default data
-const globalCellWidth     = 70;
-
-window.resizeStartingPoint     = "";
-window.globalUpdateId     = 0;
-window.clickCancel     = false
+const globalCellWidth      = 70;
+window.resizeStartingPoint = "";
+window.globalUpdateId      = 0;
+window.clickCancel         = false
 
 // default endDate is 1 month later for table
 window.startDate = new Date 
@@ -19,10 +19,12 @@ window.defaultTaskEndDate   = new Date()
 window.defaultTaskEndDate.setDate(sd+1)
 
 export default {
+
   pageXStartPoint: 0,
   resizeStartingPoint: "",
   globalCellWidth: globalCellWidth,
-
+  locale: "ja",
+  i18n:    i18n,
   member: {},
   tableStartDate: utils.getDateStr(window.startDate),
   tableEndDate:   utils.getDateStr(window.endDate),
