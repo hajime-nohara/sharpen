@@ -61,7 +61,8 @@ module.exports = {
 
     new CopyWebpackPlugin([
       { from: 'semantic/dist/**/*', to: '' },
-      { from: 'node_modules/semantic-ui-calendar/dist/*', to: '' }
+      { from: 'node_modules/semantic-ui-calendar/dist/*', to: '' },
+      { from: 'assets/**/*', to: '' },
     ], []),
 
     new webpack.LoaderOptionsPlugin({

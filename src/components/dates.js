@@ -1,39 +1,35 @@
-import { h } from "hyperapp"
-import utils from '../classes/utils'
-import styl  from './styles/dates_semantic.styl'
-import dateformat  from 'dateformat'
+import { h }      from "hyperapp"
+import utils      from '../classes/utils'
+import styl       from './styles/dates_semantic.styl'
+import dateformat from 'dateformat'
 
 export default (state, actions, params) => {
-  const dates        = Array()
-  const numberOfDays = utils.getDateDiff(state.tableStartDate, state.tableEndDate)
-  const dt           = new Date(state.tableStartDate);
-  let   idx          = 0 
 
-  while (idx < numberOfDays) {
-    dt.setDate(dt.getDate() + idx);
-    const day = state.i18n[state.locale].dayOfWeekArr[dt.getDay()]
+  const dates             = Array()
+  const numberOfDays      = utils.getDateDiff(state.tableStartDate, state.tableEndDate)
+  const globalCellWidthPx = utils.parsePx(state.globalCellWidth)
 
-    const dayColorStyle = {
-      color: state.i18n[state.locale].dayColorsHash[dt.getDay()] ||  ""
-    }
-
-    const date = (idx == 0 || dt.getDate() == 1) ? dateformat(dt, 'm/d') : dateformat(dt, 'd')
-
-    dates.push(
-                <div class={styl.statistic + " ui statistic"}>
-                  <div style={{width: utils.parsePx(state.globalCellWidth)}} class={styl.value}>
-                  {date}
-                  </div>
-                  <div style={dayColorStyle} class={styl.label + " label"}>
-                    {day}
-                  </div>
-                </div>
-    )
-    idx++
-  }
-  return (
-      <div oncreate={(e)=>e.style.backgroundSize=state.globalCellWidth+"px"} onupdate={(e)=>e.style.backgroundSize=state.globalCellWidth+"px"} style={{backgroundSize: state.globalCellWidth + "px", position: "sticky", top: "0px", zIndex: 9, background: "url(/assets/division.jpg)top left / " + state.globalCellWidth + "px " + Object.keys(state.tasks).length * state.globalCellWidth + "px repeat-x", width: numberOfDays * state.globalCellWidth + "px", borderBottom: "dotted 1px #e9ecef", marginBottom: "5px"}}>
-        {dates}
-      </div>
+  utils.range(numberOfDays).forEach(
+    function(key) {
+      const dateObj = new Date(state.tableStartDate);
+      dateObj.setDate(dateObj.getDate() + key);
+      dates.push(
+        <div class={styl.statistic + " ui statistic"}>
+          <div style={{width: globalCellWidthPx}} class={styl.value}>
+            {(key == 0 || dateObj.getDate() == 1) ? dateformat(dateObj, 'm/d') : dateformat(dateObj, 'd')}
+          </div>
+          <div style={{color: state.i18n[state.locale].dayColorsHash[dateObj.getDay()] || ""}} class={styl.label + " label"}>
+            {state.i18n[state.locale].dayOfWeekArr[dateObj.getDay()]}
+          </div>
+        </div>
+      )
+    } 
   )
+  
+  return (
+    <div class={styl.dates} style={{backgroundSize: globalCellWidthPx}}>
+      {dates}
+    </div>
+  )
+
 }

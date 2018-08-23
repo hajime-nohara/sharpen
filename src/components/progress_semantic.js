@@ -74,7 +74,7 @@ export default (state, actions, data) => {
   }
 
   /* resizer end */
-  const endPointResizeEnd = (e)=>actions.tasks.endPointResizeEnd([e, state, data.id, pageXStartPoint])
+  const endPointResizeEnd = (e) => actions.tasks.endPointResizeEnd([e, state, data.id, pageXStartPoint])
   const resizeOnEnd = (e) => {
     openModalFlg     = false
     pageXStartPoint  = e.pageX

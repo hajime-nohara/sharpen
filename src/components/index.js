@@ -34,7 +34,7 @@ console.log("dateCount", dateCount)
       {detailModalComponents}
       {inspector(state, actions)}
       <div class="ui segment" style={{  overflow: "scroll" }}>
-        <div oncreate={(e)=>e.style.backgroundSize=state.globalCellWidth+"px"} onupdate={(e)=>e.style.backgroundSize=state.globalCellWidth+"px"} style={{backgroundImage: "url(/assets/division.jpg)", width: dateCount * state.globalCellWidth + "px", height: "100%"}}>
+        <div oncreate={(e)=>e.style.backgroundSize=state.globalCellWidth+"px"} onupdate={(e)=>e.style.backgroundSize=state.globalCellWidth+"px"} style={{backgroundImage: "url(/assets/images/division.jpg)", width: dateCount * state.globalCellWidth + "px", height: "100%"}}>
         {dates(state, actions)}
         {tasksComponents}
         </div>

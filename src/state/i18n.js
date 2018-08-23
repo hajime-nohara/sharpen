@@ -4,6 +4,7 @@ export default {
     dayColorsHash: {0: "#732141", 6:  "#74A5CF"}
   }, 
   en: {
-    dayOfWeekArr: [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ]
+    dayOfWeekArr: [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ],
+    dayColorsHash: {0: "#732141", 6:  "#74A5CF"}
   }
 }

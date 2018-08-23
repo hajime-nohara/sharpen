@@ -10,7 +10,7 @@ export default (state, actions) => {
     return (
       <div class="ui menu borderless">
   <div class="item">
-    <img src="/assets/logo.png"/>
+    <img src="/assets/images/logo.png"/>
   </div>
         <a class="item">Browse</a>
         <a class="item">Submit</a>

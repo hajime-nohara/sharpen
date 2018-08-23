@@ -1,5 +1,9 @@
 export default new class {
 
+  range (range) {
+    return Array.apply(null, {length: range}).map(Number.call, Number)
+  }
+
   constructor(){
     this.dayOfWeekArr = [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ]
   }
