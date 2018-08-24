@@ -161,29 +161,26 @@ export default {
     },
 
     changePosition: (params) => (state, actions) => {
-      if (params.e.dataTransfer.getData("text") != params.id) {
-        const sourceId = parseInt(params.e.dataTransfer.getData("text"))
-        const source   = JSON.parse(JSON.stringify(state[sourceId]))
-        const target   = JSON.parse(JSON.stringify(state[params.id]))
-        source.id      = params.id
-        source.display = ""
-        state[params.id] = source
-        target.id = sourceId
-        state[sourceId] = target
-        return {}
-      }
+      const [id, sourceId] = params
+      const source   = JSON.parse(JSON.stringify(state[sourceId]))
+      const target   = JSON.parse(JSON.stringify(state[id]))
+      source.id      = id
+      source.display = ""
+      state[id]      = source
+      target.id      = sourceId
+      state[sourceId]= target
+      return {}
     },
 
     dragEnd: (params) => (state, actions) => {
 
-      const [e, globalState, globalUpdateId, pageXPoint] = params
+      const [pageX, globalState, globalUpdateId, pageXPoint] = params
 
-      e.preventDefault();
       let startPosition = 0
-      if (e.pageX > pageXPoint) {
-        startPosition = utils.widthResized((e.pageX - pageXPoint), globalState.globalCellWidth) + state[globalUpdateId].startPosition
+      if (pageX > pageXPoint) {
+        startPosition = utils.widthResized((pageX - pageXPoint), globalState.globalCellWidth) + state[globalUpdateId].startPosition
       } else {
-        startPosition = state[globalUpdateId].startPosition - utils.widthResized((pageXPoint - e.pageX), globalState.globalCellWidth)
+        startPosition = state[globalUpdateId].startPosition - utils.widthResized((pageXPoint - pageX), globalState.globalCellWidth)
       }
       state[globalUpdateId].startPosition = startPosition
       state[globalUpdateId].endPosition   = startPosition + state[globalUpdateId].width
