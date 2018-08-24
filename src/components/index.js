@@ -26,7 +26,6 @@ export default (state, actions) => {
   );
 
   const dateCount = utils.getDateDiff(state.tableStartDate, state.tableEndDate)
-console.log("dateCount", dateCount)
 
   return (
 

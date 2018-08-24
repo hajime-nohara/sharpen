@@ -5,7 +5,7 @@ import progress    from './styles/progress_semantic.styl'
 
 export default (state, actions, data) => {
 
-  let openModalFlg    = true
+  let isResizing    = false
   let pageXStartPoint = 0
 
   /* row */
@@ -22,6 +22,7 @@ export default (state, actions, data) => {
     e.style.backgroundSize=utils.parsePx(state.globalCellWidth)
   }
   const resizeStartPoint = (e) => {
+    console.log("resizeStartPoint")
     e.preventDefault()
     const progress = document.getElementById(data.id)
     if ((data.width + (pageXStartPoint - e.pageX)) <= state.globalCellWidth) {
@@ -49,12 +50,17 @@ export default (state, actions, data) => {
   const detailModalOpenId = "detailModalOpen_" + data.id
   const detailModalId     = "detailModal_" + data.id
   const openModal = () => {
-    if (openModalFlg) {
+    if (!isResizing) {
       document.getElementById(detailModalOpenId).click()
     }
   }
   const onDragEnd   = (e) => actions.tasks.dragEnd([e, state, data.id, pageXStartPoint])
   const ondragstart = (e) => {
+
+    //if (isResizing) {
+    //  return
+    //}
+
     pageXStartPoint        = e.pageX
     e.target.style.opacity = '0.1'
     e.target.style.border  = "dashed 0.5px"
@@ -64,25 +70,36 @@ export default (state, actions, data) => {
   /* resizer start */
   const startPointResizeEnd = (e)=>actions.tasks.startPointResizeEnd([e, state, data.id, pageXStartPoint]) 
   const resizeOnStart = (e) => {
-    openModalFlg     = false
+    console.log("resizeOnStart")
+    isResizing     = true
     pageXStartPoint  = e.pageX
     const row        = document.getElementById(rowId)
     row.addEventListener('mousemove', resizeStartPoint)
     row.addEventListener('touchmove', resizeStartPoint)
     row.addEventListener('mouseup', startPointResizeEnd)
     row.addEventListener('mouseleave', startPointResizeEnd)
+
+    // for firefox 
+    //const progress = document.getElementById(data.id)
+    //progress.addEventListener('mousemove', resizeStartPoint)
+    //progress.addEventListener('touchmove', resizeStartPoint)
   }
 
   /* resizer end */
   const endPointResizeEnd = (e) => actions.tasks.endPointResizeEnd([e, state, data.id, pageXStartPoint])
   const resizeOnEnd = (e) => {
-    openModalFlg     = false
+    isResizing     = true
     pageXStartPoint  = e.pageX
     const row        = document.getElementById(rowId)
     row.addEventListener('mousemove', resizeEndPoint)
     row.addEventListener('touchmove', resizeEndPoint)
     row.addEventListener('mouseup', endPointResizeEnd)
     row.addEventListener('mouseleave', endPointResizeEnd)
+
+    // for firefox 
+    //const progress        = document.getElementById(rowId)
+    //progress.addEventListener('mousemove', resizeEndPoint)
+    //progress.addEventListener('touchmove', resizeEndPoint)
   }
 
   /* progress-bar */
