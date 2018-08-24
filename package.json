@@ -6,7 +6,7 @@
   "author": "Hajime Nohara <nohara.hajime@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node_modules/.bin/webpack-dev-server",
+    "start": "stylus assets/styles/common.styl -o assets/styles && node_modules/.bin/webpack-dev-server",
     "deploy": "node_modules/.bin/webpack && node_modules/.bin/gh-pages -d dist -b master",
     "lint": "node_modules/.bin/eslint src/"
   },
@@ -31,15 +31,17 @@
     "eslint-plugin-react": "^7.6.0",
     "eslint-plugin-standard": "^3.0.1",
     "gh-pages": "^1.2.0",
-    "html-webpack-plugin": "^2.30.1",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.4.2",
     "nib": "^1.1.2",
     "pug": "^2.0.0-rc.4",
     "pug-loader": "^2.3.0",
     "style-loader": "^0.20.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
-    "webpack": "^3.10.0",
-    "webpack-dev-server": "^2.11.1"
+    "webpack": "^4.3.0",
+    "webpack-dev-server": "^3.1.5",
+    "write-file-webpack-plugin": "^4.3.2"
   },
   "dependencies": {
     "dateformat": "^3.0.3",
@@ -47,6 +49,7 @@
     "hyperapp": "^1.2.0",
     "normalize.css": "^7.0.0",
     "semantic-ui": "^2.2.14",
-    "semantic-ui-calendar": "0.0.8"
+    "semantic-ui-calendar": "0.0.8",
+    "webpack-cli": "^3.1.0"
   }
 }
