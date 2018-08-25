@@ -1,8 +1,8 @@
 export default {
   ja: {
-    dayColorsHash: {0: "#732141", 6:  "#74A5CF"},
-    save: "保存",
-    add:  "追加",
+    dayColorsHash: {0: '#732141', 6:  '#74A5CF'},
+    save: '保存',
+    add:  '追加',
     calendar: {
       text: {
         days: [ '日', '月', '火', '水', '木', '金', '土' ],
@@ -13,15 +13,27 @@ export default {
         am: '午前',
         pm: '午後',
       },
-      dayColorsHash: {0: "#732141", 6:  "#74A5CF"},
-    }
+      dayColorsHash: {0: '#732141', 6:  '#74A5CF'},
+    },
+    locale:   'ロケール',
+    language: '言語',
+    english:  '英語',
+    japanese: '日本語',
+    western:  '欧米',
+    asia:     'アジア',
+    setting:  '設定',
+    size:     'サイズ',
+    dayWidth: '日付の幅',
+    small:    '小',
+    size:     '中',
+    size:     '大',
   }, 
   en: {
-    save: "save",
-    add:  "add",
+    save: 'save',
+    add:  'add',
     calendar: {
       text: {
-        days: [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ],
+        days: [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ],
         months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         today: 'Today',
@@ -29,7 +41,19 @@ export default {
         am: 'AM',
         pm: 'PM',
       },
-      dayColorsHash: {0: "#732141", 6:  "#74A5CF"},
-    }
+      dayColorsHash: {0: '#732141', 6:  '#74A5CF'},
+    },
+    locale:   'locale',
+    language: 'language', 
+    english:  'english',
+    japanese: 'japanese',
+    western:  'western',
+    asia:     'asia',
+    setting:  'setting',
+    size:     'size',
+    dayWidth: 'a day width',
+    small:    'small',
+    size:     'medium',
+    size:     'big',
   }
 }

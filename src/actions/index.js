@@ -5,6 +5,11 @@ export default {
 
   ...table(),
 
+  changeLanguage: (locale)=>(state, actions)=>{
+    Object.assign(state, {locale: locale})
+    return {}
+  },
+
   historyWrapper: ()=>(state, actions)=>{
     actions.history(JSON.parse(JSON.stringify(state))) 
   },
