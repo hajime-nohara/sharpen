@@ -154,12 +154,6 @@ export default {
       return {}
     }, 
 
-    changePositioning: (params) => (state, actions) => {
-      if (globalUpdateId != params.id) {
-        params.e.preventDefault()
-      }
-    },
-
     changePosition: (params) => (state, actions) => {
       const [id, sourceId] = params
       const source   = JSON.parse(JSON.stringify(state[sourceId]))

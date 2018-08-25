@@ -1,7 +1,7 @@
 import { h }       from "hyperapp"
 import utils       from '../classes/utils'
-import detailModal from './detailModal_semantic'
-import progress    from './styles/progress_semantic.styl'
+import detailModal from './detailModal'
+import styl        from './styles/progress.styl'
 
 export default (state, actions, data) => {
 
@@ -11,10 +11,10 @@ export default (state, actions, data) => {
   let sourceId        = 0
 
   /* row */
-  const dateCount = utils.getDateDiff(state.tableStartDate, state.tableEndDate)
-  const rowStyle  = {width: dateCount * utils.parsePx(state.globalCellWidth)}
+  const numberOfDays = utils.getDateDiff(state.tableStartDate, state.tableEndDate)
+  const rowStyle     = {width: numberOfDays * utils.parsePx(state.globalCellWidth)}
   const ondragover = (e) => {
-    actions.tasks.changePositioning({id: data.id, e: e})
+    e.preventDefault()
   }
   const ondrop = (e) => {
     pageX    = e.pageX
@@ -70,13 +70,13 @@ export default (state, actions, data) => {
     }
   }
 
-  const ondragstart = (e) => {
+  const onDragStart = (e) => {
     if (isResizing) {
       return
     }
-    pageXStartPoint        = e.pageX
-    e.target.style.opacity = '0.3'
-    e.target.style.border  = "dashed 0.5px"
+    pageXStartPoint              = e.pageX
+    e.target.style.opacity       = '0.3'
+    e.target.style.border        = "dashed 0.5px"
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData("text/plain", e.target.id)
   }
@@ -123,18 +123,18 @@ export default (state, actions, data) => {
   return (
     <div>
       {/* row */}
-      <div class={progress.row} key={utils.random()} oncreate={setBackgroundSize} onupdate={setBackgroundSize} ondrop={ondrop} style={rowStyle} ondragover={ondragover}>
-        <div class={progress.progress + " ui indicating progress active"} onmouseup={draggableOff} onmousedown={draggableOn} ontouchstart={draggableOn} id={data.id} onclick={openModal} ondragstart={ondragstart} ondragend={onDragEnd} style={progressStyle}>
+      <div class={styl.row} key={utils.random()} oncreate={setBackgroundSize} onupdate={setBackgroundSize} ondrop={ondrop} style={rowStyle} ondragover={ondragover}>
+        <div class={styl.progress + " ui indicating progress active"} onmouseup={draggableOff} onmousedown={draggableOn} ontouchstart={draggableOn} id={data.id} onclick={openModal} ondragstart={onDragStart} ondragend={onDragEnd} style={progressStyle}>
           <div class="bar" style={progressBarStyle}>
             <div class="progress">{utils.parsePercent(data.progress)}</div>
           </div>
           {/* resizer start */}
-          <div class={progress.resizerStart} onmousedown={resizeOnStart} ontouchstart={resizeOnStart} />
+          <div class={styl.resizerStart} onmousedown={resizeOnStart} ontouchstart={resizeOnStart} />
           {/* resizer end */}
-          <div class={progress.resizerEnd} onmousedown={resizeOnEnd} ontouchstart={resizeOnEnd} />
+          <div class={styl.resizerEnd} onmousedown={resizeOnEnd} ontouchstart={resizeOnEnd} />
           {/* progress-bar */}
-          <div class={progress.progressBarStyle + " progress-bar bg-faded"} style={progressBarStyle}/>
-          <div class={progress.title + " label"}>{data.title}</div>
+          <div class={styl.progressBarStyle + " progress-bar bg-faded"} style={progressBarStyle}/>
+          <div class={styl.title + " label"}>{data.title}</div>
         </div>
       </div>
     </div>

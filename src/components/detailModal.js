@@ -12,7 +12,7 @@ const style = {
     border:       "dotted"
 }
 // input view
-export default (state, actions, params, detailModalId) => {
+export default (state, actions, params) => {
 
       // member data
       let assignedMember = []
@@ -127,257 +127,233 @@ export default (state, actions, params, detailModalId) => {
         }
       );
 
-      return (<div className="modal fade" id={detailModalId} tabIndex={-1} role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div className="modal-dialog modal-dialog-centered" role="document">
-          <div className="modal-content">
-            <div className="modal-header">
-              <div className="modal-title h4" contentEditable="true" style={{width: "100%"}} id={"title_"+params.id}
-                onfocusout={(e)=>{if(e.target.childNodes.length>0){actions.tasks.changeTitle({id: params.id, title: e.target.childNodes[0].data})}}}
-                onkeydown={
-                            (e)=>{
-                                    if(
-                                        !( 
-                                          e.keyCode !== 13
-                                         )
-                                      ) {
-                                          e.target.blur();
-                                          actions.tasks.changeTitle({id: params.id, title: e.target.childNodes[0].data});
-                                        }
-                                 }
-                          }
+      const selectId = "select_" + params.id
+      const detailModalId = "detailModal_" + params.id
+      const detailModalOpenId = "detailModalOpen_" + params.id
+      return (
 
-                 onupdate={()=>document.getElementById("title_" + params.id).innerHTML=params.title}
-                 oncreate={()=>document.getElementById("title_" + params.id).innerHTML=params.title}
-              >
+        <div class="ui longer test modal transition scrolling" id={detailModalId}>
+
+          <div id={detailModalOpenId} onclick={()=>$('#'+detailModalId).modal({detachable: false}).modal('show')}/>
+
+          <div class="header">
+            Profile Picture
+          </div>
+          <div class="scrolling content">
+
+            <div class="ui form">
+
+              <h4 class="ui dividing header">Date</h4>
+              <div class="ui labels">
+                <div class="ui label">
+                  2018-11-25
+                </div>
+                <div class="ui label">
+                  2018-11-25
+                </div>
               </div>
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
-            <div className="modal-body">
 
-              <dl class="row">
-                <dt class="col-sm-3">Description</dt>
-                <dd class="col-sm-9">
-                    <div class="card">
-                      <div class="card-body" contentEditable="true" id={"description_" + params.id}
-                        onfocusout={(e)=>actions.tasks.changeDescription({id: params.id, description: e.target.innerHTML})}
-                        onkeydown={
-                                    (e)=>{
-                                            if(
-                                                !( 
-                                                  e.keyCode !== 13 || ( e.keyCode === 13 && (e.shiftKey === true || e.ctrlKey === true || e.altKey === true) )
-                                                 )
-                                              ) {
-                                                  e.target.blur();
-                                                  actions.tasks.changeDescription({id: params.id, description: e.target.innerHTML});
-                                                }
-                                         }
-                                  }
-                         onupdate={()=>document.getElementById("description_" + params.id).innerHTML=params.description}
-                         oncreate={()=>document.getElementById("description_" + params.id).innerHTML=params.description}
-                      >
+
+              <h4 class="ui dividing header">Description</h4>
+              <div class="field">
+                <textarea></textarea>
+              </div>
+
+
+
+
+
+              <h4 class="ui dividing header">Member</h4>
+              <div class="ui fluid search dropdown selection multiple upward" id={selectId} oncreate={()=>{$('#' + selectId).dropdown();$(".sizer").remove()}}>
+                  <select multiple="">
+                      <option value="">State</option>
+                      <option value="AL">Alabama</option>
+                      <option value="AK">Alaska</option>
+                      <option value="AZ">Arizona</option>
+                      <option value="AR">Arkansas</option>
+                      <option value="CA">California</option>
+                      <option value="CO">Colorado</option>
+                      <option value="CT">Connecticut</option>
+                      <option value="DE">Delaware</option>
+                      <option value="DC">District Of Columbia</option>
+                      <option value="FL">Florida</option>
+                      <option value="GA">Georgia</option>
+                      <option value="HI">Hawaii</option>
+                      <option value="ID">Idaho</option>
+                      <option value="IL">Illinois</option>
+                      <option value="IN">Indiana</option>
+                      <option value="IA">Iowa</option>
+                      <option value="KS">Kansas</option>
+                      <option value="KY">Kentucky</option>
+                      <option value="LA">Louisiana</option>
+                      <option value="ME">Maine</option>
+                      <option value="MD">Maryland</option>
+                      <option value="MA">Massachusetts</option>
+                      <option value="MI">Michigan</option>
+                      <option value="MN">Minnesota</option>
+                      <option value="MS">Mississippi</option>
+                      <option value="MO">Missouri</option>
+                      <option value="MT">Montana</option>
+                      <option value="NE">Nebraska</option>
+                      <option value="NV">Nevada</option>
+                      <option value="NH">New Hampshire</option>
+                      <option value="NJ">New Jersey</option>
+                      <option value="NM">New Mexico</option>
+                      <option value="NY">New York</option>
+                      <option value="NC">North Carolina</option>
+                      <option value="ND">North Dakota</option>
+                      <option value="OH">Ohio</option>
+                      <option value="OK">Oklahoma</option>
+                      <option value="OR">Oregon</option>
+                      <option value="PA">Pennsylvania</option>
+                      <option value="RI">Rhode Island</option>
+                      <option value="SC">South Carolina</option>
+                      <option value="SD">South Dakota</option>
+                      <option value="TN">Tennessee</option>
+                      <option value="TX">Texas</option>
+                      <option value="UT">Utah</option>
+                      <option value="VT">Vermont</option>
+                      <option value="VA">Virginia</option>
+                      <option value="WA">Washington</option>
+                      <option value="WV">West Virginia</option>
+                      <option value="WI">Wisconsin</option>
+                      <option value="WY">Wyoming</option>
+                    </select><i class="dropdown icon"></i><input class="search" autocomplete="off" tabindex="0"/><div class="default text">State</div><div class="menu" tabindex="-1"><div class="item" data-value="AL">Alabama</div><div class="item" data-value="AK">Alaska</div><div class="item" data-value="AZ">Arizona</div><div class="item" data-value="AR">Arkansas</div><div class="item" data-value="CA">California</div><div class="item" data-value="CO">Colorado</div><div class="item" data-value="CT">Connecticut</div><div class="item" data-value="DE">Delaware</div><div class="item" data-value="DC">District Of Columbia</div><div class="item" data-value="FL">Florida</div><div class="item" data-value="GA">Georgia</div><div class="item" data-value="HI">Hawaii</div><div class="item" data-value="ID">Idaho</div><div class="item" data-value="IL">Illinois</div><div class="item" data-value="IN">Indiana</div><div class="item" data-value="IA">Iowa</div><div class="item" data-value="KS">Kansas</div><div class="item" data-value="KY">Kentucky</div><div class="item" data-value="LA">Louisiana</div><div class="item" data-value="ME">Maine</div><div class="item" data-value="MD">Maryland</div><div class="item" data-value="MA">Massachusetts</div><div class="item" data-value="MI">Michigan</div><div class="item" data-value="MN">Minnesota</div><div class="item" data-value="MS">Mississippi</div><div class="item" data-value="MO">Missouri</div><div class="item" data-value="MT">Montana</div><div class="item" data-value="NE">Nebraska</div><div class="item" data-value="NV">Nevada</div><div class="item" data-value="NH">New Hampshire</div><div class="item" data-value="NJ">New Jersey</div><div class="item" data-value="NM">New Mexico</div><div class="item" data-value="NY">New York</div><div class="item" data-value="NC">North Carolina</div><div class="item" data-value="ND">North Dakota</div><div class="item" data-value="OH">Ohio</div><div class="item" data-value="OK">Oklahoma</div><div class="item" data-value="OR">Oregon</div><div class="item" data-value="PA">Pennsylvania</div><div class="item" data-value="RI">Rhode Island</div><div class="item" data-value="SC">South Carolina</div><div class="item" data-value="SD">South Dakota</div><div class="item" data-value="TN">Tennessee</div><div class="item" data-value="TX">Texas</div><div class="item" data-value="UT">Utah</div><div class="item" data-value="VT">Vermont</div><div class="item" data-value="VA">Virginia</div><div class="item" data-value="WA">Washington</div><div class="item" data-value="WV">West Virginia</div><div class="item" data-value="WI">Wisconsin</div><div class="item" data-value="WY">Wyoming</div></div></div>
+
+
+
+              <h4 class="ui dividing header">todo</h4>
+
+<div class="ui large vertical menu">
+  <a class="active item">
+    <div class="ui small teal label">1</div>
+    Inbox
+  </a>
+  <a class="item">
+    <div class="ui small label">51</div>
+    Spam
+  </a>
+  <a class="item">
+    <div class="ui small label">1</div>
+    Updates
+  </a>
+  <div class="item">
+    <div class="ui icon input">
+      <input type="text" placeholder="Search mail..."/>
+      <i class="search icon"></i>
+    </div>
+  </div>
+</div>
+
+
+
+              <div class="ui middle aligned divided list">
+                <div class="item">
+                  <div class="right floated content">
+                    <div class="ui button">Add</div>
+                  </div>
+                  <img class="ui avatar image" src="/images/avatar2/small/lena.png"/>
+                  <div class="content">
+                    Lena
+                  </div>
+                </div>
+                <div class="item">
+                  <div class="right floated content">
+                    <div class="ui button">Add</div>
+                  </div>
+                  <img class="ui avatar image" src="/images/avatar2/small/lindsay.png"/>
+                  <div class="content">
+                    Lindsay
+                  </div>
+                </div>
+              </div>
+
+
+
+
+              <h4 class="ui dividing header">Comment</h4>
+              <div class="ui comments">
+                    <div class="comment">
+                      <a class="avatar">
+                        <img src="/images/avatar/small/matt.jpg"/>
+                      </a>
+                      <div class="content">
+                        <a class="author">Matt</a>
+                        <div class="metadata">
+                          <span class="date">Today at 5:42PM</span>
+                        </div>
+                        <div class="text">
+                          How artistic!
+                        </div>
+                        <div class="actions">
+                          <a class="reply">Reply</a>
+                        </div>
                       </div>
                     </div>
-                </dd>
-              
-                <dt class="col-sm-3">Date</dt>
-                <dd class="col-sm-9">
-                  {params.startDate} - {params.endDate}
-                </dd>
-              
-                <dt class="col-sm-3">Member</dt>
-                <dd class="col-sm-9">
-              
-                  <select class="custom-select" id={"select" + params.id} multiple
-                    onchange={(e)=>console.log(e.target.selectedIndex)}
-                    oncreate={()=>{
-                                    let multi = document.getElementById("select"+params.id)
-                                    let multiLen = multi.options.length;
-                                    for (let i = 0; i < multiLen; i++) {
-                                      if ((params.member || params.member != undefined) && params.member.includes(Number(multi.options[i].value))) {
-                                        multi.options[i].selected = true;
-                                      } else {
-                                        multi.options[i].selected = false;
-                                      }
-                                    }
-                                  }
-                             }
-                    onupdate={()=>{
-                                    let multi = document.getElementById("select"+params.id)
-                                    let multiLen = multi.options.length;
-                                    for (let i = 0; i < multiLen; i++) {
-                                      if (params.member.includes(Number(multi.options[i].value))) {
-                                        multi.options[i].selected = true;
-                                      } else {
-                                        multi.options[i].selected = false;
-                                      }
-                                    }
-                                  }
-                             }
-                  >
-                    {assignedMember}
-                  </select>
-                  <div class="text-sm-right text-secondary">※ double click for delete</div>
-
-                </dd>
-
-                <dt class="col-sm-3"></dt>
-                <dd class="col-sm-9">
-
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text" id="basic-addon1"><span id={"addMember"+params.id}><i class="fas fa-plus-circle"></i></span></span>
+                    <div class="comment">
+                      <a class="avatar">
+                        <img src="/images/avatar/small/elliot.jpg"/>
+                      </a>
+                      <div class="content">
+                        <a class="author">Elliot Fu</a>
+                        <div class="metadata">
+                          <span class="date">Yesterday at 12:30AM</span>
+                        </div>
+                        <div class="text">
+                          <p>This has been very useful for my research. Thanks as well!</p>
+                        </div>
+                        <div class="actions">
+                          <a class="reply">Reply</a>
+                        </div>
+                      </div>
+                      <div class="comments">
+                        <div class="comment">
+                          <a class="avatar">
+                            <img src="/images/avatar/small/jenny.jpg"/>
+                          </a>
+                          <div class="content">
+                            <a class="author">Jenny Hess</a>
+                            <div class="metadata">
+                              <span class="date">Just now</span>
+                            </div>
+                            <div class="text">
+                              Elliot you are always so right :)
+                            </div>
+                            <div class="actions">
+                              <a class="reply">Reply</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <input type="text" class="form-control" placeholder="type user name and press enter key" aria-label="Username" aria-describedby="basic-addon1"
+                    <form class="ui reply form">
+                      <div class="field">
+                        <textarea></textarea>
+                      </div>
+                      <div class="ui blue labeled submit icon button">
+                        <i class="icon edit"></i> Add Reply
+                      </div>
+                    </form>
 
-                      onfocusout={(e)=>{
-                                          let id = 1
-                                          if (Object.keys(state.member).length > 0) {
-                                            id = Number(Object.keys(state.member)[Object.keys(state.member).length -1]) + 1
-                                          }
-                                          if (e.target.value.length > 0) {
-                                            actions.changeMasterMember({id: id, value: e.target.value})
-                                          }
-                                          e.target.value = ''
-                                       }
-                                 }
-
-                      onkeydown={
-                                  (e)=>{
-                                          if(
-                                              !( 
-                                                e.keyCode !== 13
-                                               )
-                                            ) {
-                                                e.target.blur();
-                                                let id = 1
-                                                if (Object.keys(state.member).length > 0) {
-                                                  id = Number(Object.keys(state.member)[Object.keys(state.member).length-1]) + 1
-                                                }
-                                                if (e.target.value.length > 0) {
-                                                  actions.changeMasterMember({id: id, value: e.target.value})
-                                                }
-                                                e.target.value = ''
-                                              }
-                                       }
-                                }
-
-
-                    />
                   </div>
 
-                </dd>
-              
-                <dt class="col-sm-3 text-truncate">Todo</dt>
-                <dd class="col-sm-9">
-                  {todo}
-                </dd>
-
-                <dt class="col-sm-3"></dt>
-                <dd class="col-sm-9">
-
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text" id="basic-addon1"><span id={"addMember"+params.id}><i class="fas fa-plus-circle"></i></span></span>
-                    </div>
-                    <input type="text" class="form-control" placeholder="type task name and press enter key" aria-label="Taskname" aria-describedby="basic-addon1"
-
-                      onfocusout={(e)=>{
-                                          let id = 1
-                                          if (Object.keys(params.todo).length > 0) {
-                                            id = Number(Object.keys(params.todo)[Object.keys(params.todo).length -1]) + 1
-                                          }
-                                          if (e.target.value.length > 0) {
-                                            actions.tasks.changeTodo({id: params.id, value: {id: id, title: e.target.value, done: false}})
-                                          }
-                                          e.target.value = ''
-                                       }
-                                 }
-
-                      onkeydown={
-                                  (e)=>{
-                                          if(
-                                              !( 
-                                                e.keyCode !== 13
-                                               )
-                                            ) {
-                                                e.target.blur();
-                                                let id = 1
-                                                if (Object.keys(params.todo).length > 0) {
-                                                  id = Number(Object.keys(params.todo)[Object.keys(params.todo).length-1]) + 1
-                                                }
-                                                if (e.target.value.length > 0) {
-                                                  actions.tasks.changeTodo({id: params.id, value: {id: id, title: e.target.value, done: false}})
-                                                }
-                                                e.target.value = ''
-                                              }
-                                       }
-                                }
 
 
-                    />
-                  </div>
-
-                </dd>
 
 
-              
-                <dt class="col-sm-3">Comment</dt>
-
-                <dd class="col-sm-9">
-
-                  {comment}
-
-                  <div class="card">
-                    <div class="card-body" contentEditable="true" id={"description_" + params.id}
-
-                        onfocusout={(e)=>{
-                                            let id = 1
-                                            if (Object.keys(params.comment).length > 0) {
-                                              id = Number(Object.keys(params.comment)[Object.keys(params.comment).length -1]) + 1
-                                            }
-                                            if (e.target.innerHTML.length > 0) {
-                                              actions.tasks.changeComment({id: params.id, value: {id: id, comment: e.target.innerHTML, timestamp: utils.get_datetime_str(new Date)}})
-                                            }
-                                            e.target.innerHTML = ''
-                                         }
-                                   }
-                        onkeydown={
-                                    (e)=>{
-                                            if(
-                                                !( 
-                                                  e.keyCode !== 13 || ( e.keyCode === 13 && (e.shiftKey === true || e.ctrlKey === true || e.altKey === true) )
-                                                 )
-                                              ) {
-                                                  e.target.blur();
-                                                  let id = 1
-                                                  if (Object.keys(params.comment).length > 0) {
-                                                    id = Number(Object.keys(params.comment)[Object.keys(params.comment).length-1]) + 1
-                                                  }
-
-                                                  e.target.blur();
-                                                  if (e.target.innerHTML.length > 0) {
-                                                    actions.tasks.changeComment({id: params.id, value: {id: id, comment: e.target.innerHTML, done: false}})
-                                                  }
-                                                  e.target.innerHTML = ''
-                                                }
-                                         }
-                                  }
-
-                    >
-                    </div>
-                  </div>
-
-                </dd>
-              </dl>
             </div>
-            <div className="modal-footer">
-              <button type="button" onclick={()=>actions.tasks.del(params.id)} className="btn btn-danger btn-sm mr-auto" data-dismiss="modal">Delete</button>
-              <button type="button" className="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+
+
+          </div>
+          <div class="actions">
+            <div class="ui primary approve button">
+              Proceed
+              <i class="right chevron icon"></i>
             </div>
           </div>
         </div>
-      </div>
+
+
+
       )
 }

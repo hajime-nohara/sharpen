@@ -23,7 +23,7 @@ export default {
   pageXStartPoint: 0,
   resizeStartingPoint: "",
   globalCellWidth: globalCellWidth,
-  locale: "ja",
+  locale: "en",
   i18n:    i18n,
   member: {},
   tableStartDate: utils.getDateStr(window.startDate),
