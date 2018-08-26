@@ -1,22 +1,31 @@
 import { h }       from "hyperapp"
 import utils       from '../classes/utils'
 import detailModal from './detailModal'
-import progress    from './styles/progress.styl'
+import styl        from './styles/progress.styl'
 
 export default (state, actions, data) => {
 
-  let openModalFlg    = true
+  let isResizing      = false
+  let pageX           = 0
   let pageXStartPoint = 0
+  let sourceId        = 0
 
   /* row */
-  const dateCount = utils.getDateDiff(state.tableStartDate, state.tableEndDate)
-  const rowId     = "row_" + data.id
-  const rowStyle  = {width: dateCount * utils.parsePx(state.globalCellWidth)}
+  const numberOfDays = utils.getTermFromDate(state.tableStartDate, state.tableEndDate)
+  const rowStyle     = {width: numberOfDays * utils.parsePx(state.globalCellWidth)}
   const ondragover = (e) => {
-    actions.tasks.changePositioning({id: data.id, e: e})
+    e.preventDefault()
   }
   const ondrop = (e) => {
-    actions.tasks.changePosition({id: data.id, e: e})
+    pageX    = e.pageX
+    sourceId = parseInt(e.dataTransfer.getData("text"))
+    if (e.stopPropagation) {
+      e.stopPropagation()
+    }
+    e.preventDefault();
+    if (sourceId != data.id) {
+      actions.tasks.changePosition([data.id, sourceId])
+    }
   }
   const setBackgroundSize = (e) => {
     e.style.backgroundSize=utils.parsePx(state.globalCellWidth)
@@ -42,6 +51,8 @@ export default (state, actions, data) => {
   }
 
   /* progress */
+  const draggableOn  = (e)=>e.target.draggable=true
+  const draggableOff = (e)=>e.target.draggable=false
   const progressStyle = {
     left:  utils.parsePx(data.startPosition),
     width: utils.parsePx(data.width),
@@ -49,36 +60,61 @@ export default (state, actions, data) => {
   const detailModalOpenId = "detailModalOpen_" + data.id
   const detailModalId     = "detailModal_" + data.id
   const openModal = () => {
-    if (openModalFlg) {
+    if (!isResizing) {
       document.getElementById(detailModalOpenId).click()
     }
   }
-  const onDragEnd   = (e) => actions.tasks.dragEnd([e, state, data.id, pageXStartPoint])
-  const ondragstart = (e) => {
-    pageXStartPoint        = e.pageX
-    e.target.style.opacity = '0.1'
-    e.target.style.border  = "dashed 0.5px"
+  const onDragEnd = (e) => {
+    if (sourceId == data.id) {
+      actions.tasks.dragEnd([pageX, state, data.id, pageXStartPoint])
+    }
+  }
+
+  const onDragStart = (e) => {
+    if (isResizing) {
+      return
+    }
+    pageXStartPoint              = e.pageX
+    e.target.style.opacity       = '0.3'
+    e.target.style.border        = "dashed 0.5px"
+    e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData("text/plain", e.target.id)
   }
 
   /* resizer start */
+  const startPointResizeEnd = (e)=>{
+    document.removeEventListener('mousemove', resizeStartPoint)
+    document.removeEventListener('touchmove', resizeStartPoint)
+    document.removeEventListener('mouseup', startPointResizeEnd)
+    document.removeEventListener('mouseleave', startPointResizeEnd)
+    actions.tasks.startPointResizeEnd([e, state, data.id, pageXStartPoint])
+  }
   const resizeOnStart = (e) => {
-    openModalFlg     = false
-    pageXStartPoint  = e.pageX
-    const row        = document.getElementById(rowId)
-    row.addEventListener('mousemove', resizeStartPoint)
-    row.addEventListener('touchmove', resizeStartPoint)
-    row.addEventListener('mouseup', (e)=>actions.tasks.startPointResizeEnd([e, state, data.id, pageXStartPoint]))
+    isResizing      = true
+    pageXStartPoint = e.pageX
+    e.preventDefault()
+    document.addEventListener('mousemove', resizeStartPoint)
+    document.addEventListener('touchmove', resizeStartPoint)
+    document.addEventListener('mouseup', startPointResizeEnd)
+    document.addEventListener('mouseleave', startPointResizeEnd)
   }
 
   /* resizer end */
+  const endPointResizeEnd = (e) => {
+    document.removeEventListener('mousemove', resizeEndPoint)
+    document.removeEventListener('touchmove', resizeEndPoint)
+    document.removeEventListener('mouseup', endPointResizeEnd)
+    document.removeEventListener('mouseleave', endPointResizeEnd)
+    actions.tasks.endPointResizeEnd([e, state, data.id, pageXStartPoint])
+  }
   const resizeOnEnd = (e) => {
-    openModalFlg     = false
-    pageXStartPoint  = e.pageX
-    const row        = document.getElementById(rowId)
-    row.addEventListener('mousemove', resizeEndPoint)
-    row.addEventListener('touchmove', resizeEndPoint)
-    row.addEventListener('mouseup', (e)=>actions.tasks.endPointResizeEnd([e, state, data.id, pageXStartPoint]))
+    isResizing      = true
+    pageXStartPoint = e.pageX
+    e.preventDefault()
+    document.addEventListener('mousemove', resizeEndPoint)
+    document.addEventListener('touchmove', resizeEndPoint)
+    document.addEventListener('mouseup', endPointResizeEnd)
+    document.addEventListener('mouseleave', endPointResizeEnd)
   }
 
   /* progress-bar */
@@ -86,22 +122,19 @@ export default (state, actions, data) => {
 
   return (
     <div>
-       <div id={detailModalOpenId} data-target={"#" + detailModalId} data-toggle="modal"/>
-      {detailModal(state, actions, data, detailModalId)}
       {/* row */}
-      <div class={progress.row} key={utils.random()} id={rowId} oncreate={setBackgroundSize} onupdate={setBackgroundSize} ondrop={ondrop} style={rowStyle} ondragover={ondragover}>
-        {/* progress */}
-        <div class={progress.progress + " progress"} draggable="true" id={data.id} onclick={openModal} ondragstart ={ondragstart} ondragend={onDragEnd} style={progressStyle}>
-          {/* title */}
-          <div class={progress.title}>
-            {data.title}
+      <div class={styl.row} key={utils.random()} oncreate={setBackgroundSize} onupdate={setBackgroundSize} ondrop={ondrop} style={rowStyle} ondragover={ondragover}>
+        <div class={styl.progress + " ui indicating progress active"} onmouseup={draggableOff} onmousedown={draggableOn} ontouchstart={draggableOn} id={data.id} onclick={openModal} ondragstart={onDragStart} ondragend={onDragEnd} style={progressStyle}>
+          <div class="bar" style={progressBarStyle}>
+            <div class="progress">{utils.parsePercent(data.progress)}</div>
           </div>
           {/* resizer start */}
-          <div class={progress.resizerStart} onmousedown={(e)=>resizeOnStart(e)} ontouchstart={(e)=>resizeOnStart(e)} />
+          <div class={styl.resizerStart} onmousedown={resizeOnStart} ontouchstart={resizeOnStart} />
           {/* resizer end */}
-          <div class={progress.resizerEnd} onmousedown={(e)=>resizeOnEnd(e)} ontouchstart={(e)=>resizeOnEnd(e)} />
+          <div class={styl.resizerEnd} onmousedown={resizeOnEnd} ontouchstart={resizeOnEnd} />
           {/* progress-bar */}
-          <div class={progress.progressBarStyle + " progress-bar bg-faded"} style={progressBarStyle}/>
+          <div class={styl.progressBarStyle + " progress-bar bg-faded"} style={progressBarStyle}/>
+          <div class={styl.title + " label"}>{data.title}</div>
         </div>
       </div>
     </div>

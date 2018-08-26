@@ -1,17 +1,15 @@
-import { h } from 'hyperapp'
-//import s from './index.styl'
-
-import progress         from './progress'
-import dates            from './dates'
-import utils            from '../classes/utils'
-//import redoUndoActions  from '../actions/hyperapp-undo'
-import inspector        from './inspector';
-import footer           from './footer';
-
+import { h }       from 'hyperapp'
+import styl        from './styles/index.styl'
+import progress    from './progress'
+import dates       from './dates'
+import utils       from '../classes/utils'
+import inspector   from './inspector';
+import detailModal from './detailModal'
 
 export default (state, actions) => {
 
   const tasksComponents = []
+  const detailModalComponents = []
   
   Object.keys(state.tasks).sort((a,b)=>{
                                         if( Number(a) > Number(b) ) return -1;
@@ -20,24 +18,29 @@ export default (state, actions) => {
                                        }).forEach(
     function(key) {
       tasksComponents.push(progress(state, actions, this[key]))
+      detailModalComponents.push(detailModal(state, actions, this[key]))
     }, 
     state.tasks
   );
 
-  const dateCount = utils.getDateDiff(state.tableStartDate, state.tableEndDate)
-console.log("dateCount", dateCount)
+  const dateCount = utils.getTermFromDate(state.tableStartDate, state.tableEndDate)
 
   return (
 
-    <main className="bg-light">
-      {inspector(state, actions)}
-      <div style={{ position: "relative", width: "98%", overflow: "scroll", border: "solid 1px #8080803b", margin: "auto", height: "88%", marginBottom: "2%"}}>
-        <div oncreate={(e)=>e.style.backgroundSize=state.globalCellWidth+"px"} onupdate={(e)=>e.style.backgroundSize=state.globalCellWidth+"px"} style={{backgroundImage: "url(/assets/division.jpg)", width: dateCount * state.globalCellWidth + "px", height: "100%"}}>
+    <main class={styl.container + " ui container"}>
+      {detailModalComponents}
+      <div class="ui card" style={{height: "80%", width: "100%"}}>
+        <div class={styl.cardHeader + " content"}>
+          {inspector(state, actions)}
+        </div>
+
+        <div class={styl.cardMainContent + " ui card"} style={{ overflow: "scroll", width: "100%"}} >
+        <div oncreate={(e)=>e.style.backgroundSize=state.globalCellWidth+"px"} onupdate={(e)=>e.style.backgroundSize=state.globalCellWidth+"px"} style={{backgroundImage: "url(/assets/images/division.jpg)", width: dateCount * state.globalCellWidth + "px", height: tasksComponents.length * 40 + "%"}}>
         {dates(state, actions)}
         {tasksComponents}
         </div>
+        </div>
       </div>
-      {footer}
     </main>
   )
 }

@@ -5,12 +5,19 @@ export default {
 
   ...table(),
 
+  changeLanguage: (locale)=>(state, actions)=>{
+    Object.assign(state, {locale: locale})
+    return {}
+  },
+
   historyWrapper: ()=>(state, actions)=>{
     actions.history(JSON.parse(JSON.stringify(state))) 
   },
   onload: ()=>(state, actions)=>{
     console.log("onload gantt")
-    parent.window.init(state)
+    //parent.window.init(state)
+    // semantic ui
+    //$('.ui.dropdown').dropdown()
   },
 
   // master member
@@ -44,7 +51,22 @@ export default {
           }
         }
       );
-      state[globalUpdateId].progress = (checked.toFixed(2) / total.toFixed(2)) * 100
+      state[globalUpdateId].progress = parseInt((checked.toFixed(2) / total.toFixed(2)) * 100)
+      return {}
+    },
+
+    changeStartDateFromCalendar: (params) => (state) => {
+      const [id, startDate, globalState] = params
+      state[id].startDate     = startDate
+      state[id].startPosition = utils.getWidthOfStartPoint(globalState.tableStartDate, startDate, globalState.globalCellWidth)
+      state[id].width         = utils.getWidthFromTerm(startDate, state[id].endDate, globalState.globalCellWidth)
+      return {}
+    },
+
+    changeEndDateFromCalendar: (params) => (state) => {
+      const [id, endDate, globalState] = params
+      state[id].endDate = endDate
+      state[id].width   = utils.getWidthFromTerm(state[id].startDate, endDate, globalState.globalCellWidth)
       return {}
     },
 
@@ -66,7 +88,7 @@ export default {
           }
         }
       );
-      state[globalUpdateId].progress = (checked.toFixed(2) / total.toFixed(2)) * 100
+      state[globalUpdateId].progress = parseInt((checked.toFixed(2) / total.toFixed(2)) * 100)
       return {}
     },
 
@@ -82,7 +104,7 @@ export default {
           }
         }
       );
-      state[globalUpdateId].progress = (checked.toFixed(2) / total.toFixed(2)) * 100
+      state[globalUpdateId].progress = parseInt((checked.toFixed(2) / total.toFixed(2)) * 100)
       return {}
     },
 
@@ -100,8 +122,9 @@ export default {
     },
 
     changeMember: (params) => (state, actions) => {
-      globalUpdateId = params.id;
-      state[globalUpdateId].member = params.member 
+      const [id, member] = params
+      globalUpdateId = id
+      state[globalUpdateId].member = member 
       return {}
     },
 
@@ -123,7 +146,7 @@ export default {
       let id = Number(Object.keys(state)[Object.keys(state).length -1]) + 1
 
       let tempDate     = new Date()
-      let start        = Math.abs(utils.getDateDiff(utils.getDateStr(tempDate), utils.getDateStr(window.startDate))) + 1
+      let start        = Math.abs(utils.getTermFromDate(utils.getDateStr(tempDate), utils.getDateStr(window.startDate))) + 1
       let addStartDate = window.startDate.getDate()
 
       state[id] = 
@@ -152,36 +175,27 @@ export default {
       return {}
     }, 
 
-    changePositioning: (params) => (state, actions) => {
-      if (globalUpdateId != params.id) {
-        params.e.preventDefault()
-      }
-    },
-
     changePosition: (params) => (state, actions) => {
-      if (params.e.dataTransfer.getData("text") != params.id) {
-        const sourceId = parseInt(params.e.dataTransfer.getData("text"))
-        const source   = JSON.parse(JSON.stringify(state[sourceId]))
-        const target   = JSON.parse(JSON.stringify(state[params.id]))
-        source.id      = params.id
-        source.display = ""
-        state[params.id] = source
-        target.id = sourceId
-        state[sourceId] = target
-        return {}
-      }
+      const [id, sourceId] = params
+      const source   = JSON.parse(JSON.stringify(state[sourceId]))
+      const target   = JSON.parse(JSON.stringify(state[id]))
+      source.id      = id
+      source.display = ""
+      state[id]      = source
+      target.id      = sourceId
+      state[sourceId]= target
+      return {}
     },
 
     dragEnd: (params) => (state, actions) => {
 
-      const [e, globalState, globalUpdateId, pageXPoint] = params
+      const [pageX, globalState, globalUpdateId, pageXPoint] = params
 
-      e.preventDefault();
       let startPosition = 0
-      if (e.pageX > pageXPoint) {
-        startPosition = utils.widthResized((e.pageX - pageXPoint), globalState.globalCellWidth) + state[globalUpdateId].startPosition
+      if (pageX > pageXPoint) {
+        startPosition = utils.widthResized((pageX - pageXPoint), globalState.globalCellWidth) + state[globalUpdateId].startPosition
       } else {
-        startPosition = state[globalUpdateId].startPosition - utils.widthResized((pageXPoint - e.pageX), globalState.globalCellWidth)
+        startPosition = state[globalUpdateId].startPosition - utils.widthResized((pageXPoint - pageX), globalState.globalCellWidth)
       }
       state[globalUpdateId].startPosition = startPosition
       state[globalUpdateId].endPosition   = startPosition + state[globalUpdateId].width
@@ -209,14 +223,12 @@ export default {
         let endPosition   = width + startPosition
 
         // 1日分よりは小さくならない様にする
-        if ((state[globalUpdateId].endPosition - pageX) <= globalState.globalCellWidth) {
+        if ((state[globalUpdateId].endPosition - (pageX-pageXPoint)) <= globalState.globalCellWidth || width <= 0) {
           startPosition = state[globalUpdateId].endPosition - globalState.globalCellWidth
           width         = globalState.globalCellWidth
-          endPosition   = width + startPosition
         }
 
         state[globalUpdateId].startPosition = startPosition
-        state[globalUpdateId].endPosition   = endPosition
         state[globalUpdateId].startDate     = utils.get_date(startPosition, globalState.globalCellWidth, window.startDate)
         state[globalUpdateId].endDate       = utils.get_date(startPosition + width -1, globalState.globalCellWidth, window.startDate)
         state[globalUpdateId].width         = width -1

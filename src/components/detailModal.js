@@ -1,383 +1,369 @@
 import { h, app } from "hyperapp"
-import utils from '../classes/utils'
+import utils      from '../classes/utils'
+import flatpickr  from "flatpickr";
+import dateformat from 'dateformat'
+import styl       from './styles/edit.styl'
 
-const style = {
-    boxSizing:    "border-box",
-    width:        "100%",
-    marginBottom: 10,
-    padding:      35,
-    transform:    "translate3d(0,0,0)",
-    color:        "#2b2e38",
-    background:   "#fff",
-    border:       "dotted"
-}
 // input view
-export default (state, actions, params, detailModalId) => {
+export default (state, actions, params) => {
 
-      // member data
-      let assignedMember = []
+      /* member */
+      const optionOnclick = (e) => {
+        const selectedValue = []
+        const select = e.target.parentElement
+        for (let i = 0; i < select.childNodes.length; i++) {
+          if (select.childNodes[i].selected) {
+            selectedValue.push(Number(select.childNodes[i].value))
+          }
+        }
+        actions.tasks.changeMember([params.id, selectedValue])
+      }
+
+      const assignedMember = []
       Object.keys(state.member).forEach(
         function(index,val,arr) {
-          assignedMember.push(<option value={index}   
-                                                    onclick={(e)=>{
-                                                                    let selectedValue = []
-                                                                    let multi = document.getElementById("select"+params.id)
-                                                                    let multiLen = multi.options.length;
-                                                                    for (let i = 0; i < multiLen; i++) {
-                                                                      if (multi.options[i].selected) {
-                                                                        selectedValue.push(Number(multi.options[i].value))
-                                                                      }
-                                                                    }
-                                                                    actions.tasks.changeMember({id: params.id, member: selectedValue})
-                                                                  }
-                                                            }
-
-                                                    ondblclick={(e)=>{
-                                                                    actions.deleteMasterMember(index)
-                                                                  }
-                                                            }
-                                                  >@{state.member[index]}</option>)
+          const isSelected = ((params.member || params.member != undefined) && params.member.includes(Number(index)))
+          assignedMember.push(<option 
+                                    key={utils.random()} 
+                                    value={index}
+                                    oncreate={(e)=>e.selected=isSelected}
+                                    onupdate={(e)=>e.selected=isSelected}
+                                    onclick={optionOnclick}
+                                    ondblclick={()=>actions.deleteMasterMember(index)}
+                              >@{state.member[index]}</option>
+          )
         }
-      );
+      )
 
-      // todo data
+      /* todo */
       let todo = []
       if (!params.todo || params.todo == undefined) {
         params.todo = {}
       }
+
       Object.keys(params.todo).forEach(
         function(index,val,arr) {
+          const todoId = params.id + "_" + index
+          const todoOnclick = (e) => {
+            console.log({id: index, status: document.getElementById(todoId).checked})
+            actions.tasks.changeTodoStatus({id: params.id, value: {id: index, status: document.getElementById(todoId).checked}})
+          }
+
+          const todoTitleOnFocusout = (e) => actions.tasks.changeTodoTitle({id: params.id, value: {id: index, title: e.target.value}})
+
+          const todoTitleOnKeydown = (e) => {
+            if (e.keyCode === 13) {
+                e.target.blur();
+                actions.tasks.changeTodoTitle({id: params.id, value: {id: index, title: e.target.value}})
+              }
+          }
+
+          const todoDeleteOnClick   = (e)=>{
+            actions.tasks.deleteTodo({id: params.id, value: index})
+          }
+
           todo.push(
-                      <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <div class="input-group-text">
-                            <input type="checkbox" aria-label="Checkbox for following text input" checked={params.todo[index].done} 
-                              onclick={(e)=>{
-                                              actions.tasks.changeTodoStatus({id: params.id, value: {id: index, status: e.target.checked}})
-                                            }
-                                      }
-                            />
-                          </div>
-                        </div>
-                        <input type="text" class="form-control" aria-label="Text input with checkbox" value={params.todo[index].title}
-                          onfocusout={(e)=>actions.tasks.changeTodoTitle({id: params.id, value: {id: index, title: e.target.value}})}
-                          onkeydown={
-                                      (e)=>{
-                                              if(
-                                                  !( 
-                                                    e.keyCode !== 13
-                                                   )
-                                                ) {
-                                                    e.target.blur();
-                                                    actions.tasks.changeTodoTitle({id: params.id, value: {id: index, title: e.target.value}})
-                                                  }
-                                           }
-                                    }
-                        />
-                        <div class="input-group-append">
-                          <label class="input-group-text" for="inputGroupSelect02"
-                            onclick={(e)=>{
-                                            actions.tasks.deleteTodo({id: params.id, value: index})
-                                          }
-                                    }
-                          ><i class="far fa-times-circle"></i></label>
-                        </div>
-                      </div>)
+            <div class="item">
+              <div class="ui checkbox" 
+                oncreate={(e)=>$(e).checkbox()}
+                >
+                <input type="checkbox" id={todoId} checked={params.todo[index].done} onchange={todoOnclick}/>
+                <label>{params.todo[index].title}</label>
+              </div>
+              <i class={styl.iconClick + " trash icon"} onclick={(e)=>actions.tasks.deleteTodo({id: params.id, value: index})}></i>
+            </div>
+          )
         }
-      );
+      )
 
       // comment data
       let comment = []
       if (!params.comment || params.comment == undefined) {
         params.comment = {}
       }
+
+
       Object.keys(params.comment).forEach(
         function(index,val,arr) {
+
+          const commentEditOnFocusout = (e)=>actions.tasks.changeComment({id: params.id, value: {id: index, comment: e.target.innerHTML, timestamp: params.comment[index].timestamp}})
+
+          const commentEditOnKeydown = (e)=>{
+            if( e.keyCode === 13 && !(e.shiftKey === true || e.ctrlKey === true || e.altKey === true) ) {
+                e.target.blur();
+                actions.tasks.changeComment({id: params.id, value: {id: index, comment: e.target.innerHTML, timestamp: params.comment[index].timestamp}})
+              }
+          }
+
+
           comment.push(
-                        <div class="bs-callout bs-callout-info">
-                          <p contentEditable="true" id={"comment_" + index + "_" + params.id}
-                            onfocusout={(e)=>actions.tasks.changeComment({id: params.id, value: {id: index, comment: e.target.innerHTML, timestamp: params.comment[index].timestamp}})}
-                            onkeydown={
-                                        (e)=>{
-                                                if(
-                                                    !( 
-                                                      e.keyCode !== 13 || ( e.keyCode === 13 && (e.shiftKey === true || e.ctrlKey === true || e.altKey === true) )
-                                                     )
-                                                  ) {
-                                                      e.target.blur();
-                                                      actions.tasks.changeComment({id: params.id, value: {id: index, comment: e.target.innerHTML, timestamp: params.comment[index].timestamp}})
-                                                    }
-                                             }
-                                      }
-                            onupdate={()=>document.getElementById("comment_" + index + "_" + params.id).innerHTML=params.comment[index].comment}
-                            oncreate={()=>document.getElementById("comment_" + index + "_" + params.id).innerHTML=params.comment[index].comment}
-                          ></p>
-                          
-                          <div class="carbon-wrap text-sm-right text-secondary" style={{height: "10%"}}><small>{params.comment[index].timestamp}&nbsp;  
 
-                            <span
-                              onclick={(e)=>{
-                                              actions.tasks.deleteComment({id: params.id, value: index})
-                                            }
-                                      }
-                            ><i class="far fa-times-circle" ></i></span>
-</small>
-                          </div>
-                        </div>)
-        }
-      );
 
-      return (<div className="modal fade" id={detailModalId} tabIndex={-1} role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div className="modal-dialog modal-dialog-centered" role="document">
-          <div className="modal-content">
-            <div className="modal-header">
-              <div className="modal-title h4" contentEditable="true" style={{width: "100%"}} id={"title_"+params.id}
-                onfocusout={(e)=>{if(e.target.childNodes.length>0){actions.tasks.changeTitle({id: params.id, title: e.target.childNodes[0].data})}}}
-                onkeydown={
-                            (e)=>{
-                                    if(
-                                        !( 
-                                          e.keyCode !== 13
-                                         )
-                                      ) {
-                                          e.target.blur();
-                                          actions.tasks.changeTitle({id: params.id, title: e.target.childNodes[0].data});
-                                        }
-                                 }
-                          }
-
-                 onupdate={()=>document.getElementById("title_" + params.id).innerHTML=params.title}
-                 oncreate={()=>document.getElementById("title_" + params.id).innerHTML=params.title}
-              >
-              </div>
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
-            <div className="modal-body">
-
-              <dl class="row">
-                <dt class="col-sm-3">Description</dt>
-                <dd class="col-sm-9">
-                    <div class="card">
-                      <div class="card-body" contentEditable="true" id={"description_" + params.id}
-                        onfocusout={(e)=>actions.tasks.changeDescription({id: params.id, description: e.target.innerHTML})}
-                        onkeydown={
-                                    (e)=>{
-                                            if(
-                                                !( 
-                                                  e.keyCode !== 13 || ( e.keyCode === 13 && (e.shiftKey === true || e.ctrlKey === true || e.altKey === true) )
-                                                 )
-                                              ) {
-                                                  e.target.blur();
-                                                  actions.tasks.changeDescription({id: params.id, description: e.target.innerHTML});
-                                                }
-                                         }
-                                  }
-                         onupdate={()=>document.getElementById("description_" + params.id).innerHTML=params.description}
-                         oncreate={()=>document.getElementById("description_" + params.id).innerHTML=params.description}
-                      >
+                    <div class="comment">
+                      <a class="avatar">
+                        <i class={styl.avatarIcon + " user circle icon"}></i>
+                      </a>
+                      <div class="content">
+                        <a class="author">You</a>
+                        <div class="metadata">
+                          <span class="date">{params.comment[index].timestamp}</span>
+                        </div>
+                        <div class="text" contentEditable="true" 
+                          onfocusout={commentEditOnFocusout}
+                          onkeydown={commentEditOnKeydown}
+                          onupdate={(e)=>e.innerHTML=params.comment[index].comment}
+                          oncreate={(e)=>e.innerHTML=params.comment[index].comment}
+                        >
+                        </div>
+                        <div class="actions">
+                          <a class="reply">Reply</a>
+                          <i class={styl.iconClick + " trash icon"} onclick={(e)=>actions.tasks.deleteComment({id: params.id, value: index})}></i>
+                        </div>
                       </div>
                     </div>
-                </dd>
-              
-                <dt class="col-sm-3">Date</dt>
-                <dd class="col-sm-9">
-                  {params.startDate} - {params.endDate}
-                </dd>
-              
-                <dt class="col-sm-3">Member</dt>
-                <dd class="col-sm-9">
-              
-                  <select class="custom-select" id={"select" + params.id} multiple
-                    onchange={(e)=>console.log(e.target.selectedIndex)}
-                    oncreate={()=>{
-                                    let multi = document.getElementById("select"+params.id)
-                                    let multiLen = multi.options.length;
-                                    for (let i = 0; i < multiLen; i++) {
-                                      if ((params.member || params.member != undefined) && params.member.includes(Number(multi.options[i].value))) {
-                                        multi.options[i].selected = true;
-                                      } else {
-                                        multi.options[i].selected = false;
-                                      }
-                                    }
-                                  }
-                             }
-                    onupdate={()=>{
-                                    let multi = document.getElementById("select"+params.id)
-                                    let multiLen = multi.options.length;
-                                    for (let i = 0; i < multiLen; i++) {
-                                      if (params.member.includes(Number(multi.options[i].value))) {
-                                        multi.options[i].selected = true;
-                                      } else {
-                                        multi.options[i].selected = false;
-                                      }
-                                    }
-                                  }
-                             }
-                  >
-                    {assignedMember}
-                  </select>
-                  <div class="text-sm-right text-secondary">※ double click for delete</div>
 
-                </dd>
 
-                <dt class="col-sm-3"></dt>
-                <dd class="col-sm-9">
 
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text" id="basic-addon1"><span id={"addMember"+params.id}><i class="fas fa-plus-circle"></i></span></span>
+          )
+        }
+      )
+
+      const commentOnFocusout = (e)=>{
+        let id = 1
+          if (Object.keys(params.comment).length > 0) {
+            id = Number(Object.keys(params.comment)[Object.keys(params.comment).length -1]) + 1
+          }
+        if (e.target.innerHTML.length > 0) {
+          actions.tasks.changeComment({id: params.id, value: {id: id, comment: e.target.innerHTML, timestamp: dateformat(new Date, 'yyyy-mm-dd hh:mm:ss')}})
+        }
+        e.target.innerHTML = ''
+      }
+
+      const commentOnKeydown = (e)=>{
+        if( e.keyCode === 13 && !(e.shiftKey === true || e.ctrlKey === true || e.altKey === true) ) {
+          
+            e.target.blur();
+            let id = 1
+              if (Object.keys(params.comment).length > 0) {
+                id = Number(Object.keys(params.comment)[Object.keys(params.comment).length-1]) + 1
+              }
+
+            e.target.blur();
+            if (e.target.innerHTML.length > 0) {
+              actions.tasks.changeComment({id: params.id, value: {id: id, comment: e.target.innerHTML, timestamp: dateformat(new Date, 'yyyy-mm-dd hh:mm:ss')}})
+            }
+            e.target.innerHTML = ''
+          }
+      }
+
+
+
+      const selectId = "select_" + params.id
+      const detailModalId = "detailModal_" + params.id
+      const detailModalOpenId = "detailModalOpen_" + params.id
+
+
+
+      /* title */
+      const titleOnFocusout = (e) => {
+        if (e.target.childNodes.length > 0) {
+          actions.tasks.changeTitle({id: params.id, title: e.target.childNodes[0].data})
+        }
+      }
+      const titleOnKeydown = (e) => {
+        if (e.keyCode === 13) {
+          e.target.blur()
+          actions.tasks.changeTitle({id: params.id, title: e.target.childNodes[0].data})
+        }
+      }
+
+      /* date */
+      const bindCalendar = (e) => {
+        console.log("e", e.getAttribute("value"))
+        const options = {
+                          disableMobile: true,
+                          defaultDate: e.getAttribute("value"),
+                          locale: state.i18n[state.locale].flatpickr,
+                          onChange: function (date) {
+                            actions.tasks[e.getAttribute("actionName")]([params.id, dateformat(date, 'yyyy-mm-dd'), state])
+                          }
+                        }
+        flatpickr(e, options)
+      }
+
+
+      /* description */
+      const descriptionOnFocusout = (e) => {
+        actions.tasks.changeDescription({id: params.id, description: e.target.value})
+      }
+
+      const descriptionOnKeydown = (e)=> {
+        if( e.keyCode === 13 && !(e.shiftKey === true || e.ctrlKey === true || e.altKey === true) ) {
+            e.target.blur();
+            actions.tasks.changeDescription({id: params.id, description: e.target.value});
+          }
+      }
+      /* add member input */
+      const addMemberOnfocusout = (e) => {
+        let id = 1
+        if (Object.keys(state.member).length > 0) {
+          id = Number(Object.keys(state.member)[Object.keys(state.member).length -1]) + 1
+        }
+        if (e.target.value.length > 0) {
+          actions.changeMasterMember({id: id, value: e.target.value})
+        }
+        e.target.value = ''
+      }
+      const addMemberOnKeydown = (e) => {
+        if (e.keyCode === 13) {
+            e.target.blur()
+            let id = 1
+              if (Object.keys(state.member).length > 0) {
+                id = Number(Object.keys(state.member)[Object.keys(state.member).length-1]) + 1
+              }
+            if (e.target.value.length > 0) {
+              actions.changeMasterMember({id: id, value: e.target.value})
+            }
+            e.target.value = ''
+          }
+      }
+
+
+      const todoRegistOnfocusout = (e) => {
+        let id = 1
+        if (Object.keys(params.todo).length > 0) {
+          id = Number(Object.keys(params.todo)[Object.keys(params.todo).length -1]) + 1
+        }
+        if (e.target.value.length > 0) {
+          actions.tasks.changeTodo({id: params.id, value: {id: id, title: e.target.value, done: false}})
+        }
+        e.target.value = ''
+      }
+
+      const todoRegistOnKeydown = (e) => {
+        if (e.keyCode === 13) {
+          e.target.blur();
+          let id = 1
+            if (Object.keys(params.todo).length > 0) {
+              id = Number(Object.keys(params.todo)[Object.keys(params.todo).length-1]) + 1
+            }
+          if (e.target.value.length > 0) {
+            actions.tasks.changeTodo({id: params.id, value: {id: id, title: e.target.value, done: false}})
+          }
+          e.target.value = ''
+        }
+      }
+
+
+
+
+      return (
+
+        <div key={utils.random()} class="ui longer modal transition scrolling" id={detailModalId}>
+
+          <div id={detailModalOpenId} onclick={()=>$('#'+detailModalId).modal({detachable: false}).modal('show')}/>
+          <div class="header">
+            <div class="header" contentEditable="true" 
+              onfocusout={titleOnFocusout}
+              onkeydown={titleOnKeydown}
+              onupdate={(e)=>e.innerHTML=params.title}
+              oncreate={(e)=>e.innerHTML=params.title}
+            />
+          </div>
+
+          <div class="scrolling content">
+            <div class="ui form">
+              <h4 class="ui dividing header">{state.i18n[state.locale].date}</h4>
+              <div class="six wide field">
+                <div class="two fields">
+                  <div class="field">
+                    <div class="ui calendar" value={params.startDate} actionName="changeStartDateFromCalendar" oncreate={bindCalendar}>
+                      <div class="ui input left icon">
+                        <i class="calendar icon"></i>
+                        <input type="text" placeholder="StartDate" value={params.startDate}/>
+                      </div>
                     </div>
-                    <input type="text" class="form-control" placeholder="type user name and press enter key" aria-label="Username" aria-describedby="basic-addon1"
+                  </div>
+                  <div class="field">
+                    <div class="ui calendar" value={params.endDate} actionName="changeEndDateFromCalendar" oncreate={bindCalendar}>
+                      <div class="ui input left icon">
+                        <i class="calendar icon"></i>
+                        <input type="text" placeholder="EndDate" value={params.endDate}/>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-                      onfocusout={(e)=>{
-                                          let id = 1
-                                          if (Object.keys(state.member).length > 0) {
-                                            id = Number(Object.keys(state.member)[Object.keys(state.member).length -1]) + 1
-                                          }
-                                          if (e.target.value.length > 0) {
-                                            actions.changeMasterMember({id: id, value: e.target.value})
-                                          }
-                                          e.target.value = ''
-                                       }
-                                 }
+              <h4 class="ui dividing header">{state.i18n[state.locale].description}</h4>
+              <div class="field">
+                <textarea contentEditable="true" 
+                  onfocusout={descriptionOnFocusout}
+                  onkeydown={descriptionOnKeydown}
+                  onupdate={(e)=>e.innerHTML=params.description}
+                  oncreate={(e)=>e.innerHTML=params.description}
+                />
+              </div>
 
-                      onkeydown={
-                                  (e)=>{
-                                          if(
-                                              !( 
-                                                e.keyCode !== 13
-                                               )
-                                            ) {
-                                                e.target.blur();
-                                                let id = 1
-                                                if (Object.keys(state.member).length > 0) {
-                                                  id = Number(Object.keys(state.member)[Object.keys(state.member).length-1]) + 1
-                                                }
-                                                if (e.target.value.length > 0) {
-                                                  actions.changeMasterMember({id: id, value: e.target.value})
-                                                }
-                                                e.target.value = ''
-                                              }
-                                       }
-                                }
+              <h4 class="ui dividing header">{state.i18n[state.locale].member}</h4>
+              <div class="six wide field">
+                <div class="two fields">
+                  <div class="field">
+                    <select class="ui search selection" multiple>
+                      {assignedMember}
+                    </select>
+                  </div>
+                  <div class="field">
+                    <div class="ui left icon input">
+                      <input type="text" placeholder={state.i18n[state.locale].addMember}
+                        onfocusout={addMemberOnfocusout}
+                        onkeydown={addMemberOnKeydown}
+                      />
+                      <i class="user plus icon"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-
+              <h4 class="ui dividing header">{state.i18n[state.locale].todo}</h4>
+              <div class="ui large vertical menu">
+                {todo}
+                <div class="item">
+                  <div class="ui icon input">
+                    <input type="text" placeholder=""
+                      onfocusout={todoRegistOnfocusout}
+                      onkeydown={todoRegistOnKeydown}
                     />
+                    <i class="plus circle icon"></i>
                   </div>
+                </div>
+              </div>
 
-                </dd>
-              
-                <dt class="col-sm-3 text-truncate">Todo</dt>
-                <dd class="col-sm-9">
-                  {todo}
-                </dd>
-
-                <dt class="col-sm-3"></dt>
-                <dd class="col-sm-9">
-
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text" id="basic-addon1"><span id={"addMember"+params.id}><i class="fas fa-plus-circle"></i></span></span>
-                    </div>
-                    <input type="text" class="form-control" placeholder="type task name and press enter key" aria-label="Taskname" aria-describedby="basic-addon1"
-
-                      onfocusout={(e)=>{
-                                          let id = 1
-                                          if (Object.keys(params.todo).length > 0) {
-                                            id = Number(Object.keys(params.todo)[Object.keys(params.todo).length -1]) + 1
-                                          }
-                                          if (e.target.value.length > 0) {
-                                            actions.tasks.changeTodo({id: params.id, value: {id: id, title: e.target.value, done: false}})
-                                          }
-                                          e.target.value = ''
-                                       }
-                                 }
-
-                      onkeydown={
-                                  (e)=>{
-                                          if(
-                                              !( 
-                                                e.keyCode !== 13
-                                               )
-                                            ) {
-                                                e.target.blur();
-                                                let id = 1
-                                                if (Object.keys(params.todo).length > 0) {
-                                                  id = Number(Object.keys(params.todo)[Object.keys(params.todo).length-1]) + 1
-                                                }
-                                                if (e.target.value.length > 0) {
-                                                  actions.tasks.changeTodo({id: params.id, value: {id: id, title: e.target.value, done: false}})
-                                                }
-                                                e.target.value = ''
-                                              }
-                                       }
-                                }
-
-
-                    />
-                  </div>
-
-                </dd>
-
-
-              
-                <dt class="col-sm-3">Comment</dt>
-
-                <dd class="col-sm-9">
-
-                  {comment}
-
-                  <div class="card">
-                    <div class="card-body" contentEditable="true" id={"description_" + params.id}
-
-                        onfocusout={(e)=>{
-                                            let id = 1
-                                            if (Object.keys(params.comment).length > 0) {
-                                              id = Number(Object.keys(params.comment)[Object.keys(params.comment).length -1]) + 1
-                                            }
-                                            if (e.target.innerHTML.length > 0) {
-                                              actions.tasks.changeComment({id: params.id, value: {id: id, comment: e.target.innerHTML, timestamp: utils.get_datetime_str(new Date)}})
-                                            }
-                                            e.target.innerHTML = ''
-                                         }
-                                   }
-                        onkeydown={
-                                    (e)=>{
-                                            if(
-                                                !( 
-                                                  e.keyCode !== 13 || ( e.keyCode === 13 && (e.shiftKey === true || e.ctrlKey === true || e.altKey === true) )
-                                                 )
-                                              ) {
-                                                  e.target.blur();
-                                                  let id = 1
-                                                  if (Object.keys(params.comment).length > 0) {
-                                                    id = Number(Object.keys(params.comment)[Object.keys(params.comment).length-1]) + 1
-                                                  }
-
-                                                  e.target.blur();
-                                                  if (e.target.innerHTML.length > 0) {
-                                                    actions.tasks.changeComment({id: params.id, value: {id: id, comment: e.target.innerHTML, done: false}})
-                                                  }
-                                                  e.target.innerHTML = ''
-                                                }
-                                         }
-                                  }
-
-                    >
-                    </div>
-                  </div>
-
-                </dd>
-              </dl>
+              <h4 class="ui dividing header">{state.i18n[state.locale].comment}</h4>
+              <div class="ui comments">
+                    {comment}
+                    <form class="ui reply form">
+                      <div class="field">
+                        <div class="ui segment" contentEditable="true"
+                          onfocusout={commentOnFocusout}
+                          onkeydown={commentOnKeydown}
+                        ></div>
+                      </div>
+                    </form>
+              </div>
             </div>
-            <div className="modal-footer">
-              <button type="button" onclick={()=>actions.tasks.del(params.id)} className="btn btn-danger btn-sm mr-auto" data-dismiss="modal">Delete</button>
-              <button type="button" className="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+
+          </div>
+
+          <div class="actions">
+            <div class="ui black deny button" onclick={()=>actions.tasks.del(params.id)}>
+              {state.i18n[state.locale].del}
+            </div>
+            <div class="ui positive icon button">
+              {state.i18n[state.locale].close}
             </div>
           </div>
+
         </div>
-      </div>
       )
 }

@@ -1,33 +1,57 @@
-import { h } from "hyperapp"
-import utils from '../classes/utils'
+import { h }      from "hyperapp"
+import utils      from '../classes/utils'
+import styl       from './styles/dates.styl'
+import dateformat from 'dateformat'
+import flatpickr  from "flatpickr";
 
-var dayOfWeekStr = [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ]
+export default (state, actions) => {
 
-export default (state, actions, params) => {
-  const dates     = Array()
-  const dateStyle = { width: state.globalCellWidth + "px",  display: "inline-block", textAlign: "center", color: "gray"}
-  const dateCount = utils.getDateDiff(state.tableStartDate, state.tableEndDate)
-  const style     = Object.assign(dateStyle, {left: (idx * state.globalCellWidth) + "px"})
-  let   idx       = 0 
-  while (idx < dateCount) {
-    let dateStr = ""
-    let dt = new Date(state.tableStartDate);
-    dt.setDate(dt.getDate() + idx);
-    let dayStr  = dayOfWeekStr[dt.getDay()]
-    let dayColor = dt.getDay() == 0 ? "#732141" : dt.getDay() == 6 ? "#74A5CF" : ""
+  const dates             = Array()
+  const numberOfDays      = utils.getTermFromDate(state.tableStartDate, state.tableEndDate)
+  const globalCellWidthPx = utils.parsePx(state.globalCellWidth)
 
-    const dayStyle = Object.assign(JSON.parse(JSON.stringify(style)), {color: dayColor})
-    if (idx == 0 || dt.getDate() == 1) {
-      dateStr = (("" + (dt.getMonth() + 1)).slice(-2)) + "/" + (("" + dt.getDate()).slice(-2))
-    } else {
-      dateStr = (("" + dt.getDate()).slice(-2))
-    }
-    dates.push(<span style={dayStyle}><div>{dateStr}</div><div>{dayStr}</div></span>)
-    idx = idx + 1
-  }
-  return (
-      <div oncreate={(e)=>e.style.backgroundSize=state.globalCellWidth+"px"} onupdate={(e)=>e.style.backgroundSize=state.globalCellWidth+"px"} style={{backgroundSize: state.globalCellWidth + "px", position: "sticky", top: "0px", zIndex: 9, background: "url(/assets/division.jpg)top left / " + state.globalCellWidth + "px " + Object.keys(state.tasks).length * state.globalCellWidth + "px repeat-x", width: dateCount * state.globalCellWidth + "px", borderBottom: "dotted 1px #e9ecef", baddingBottom: "5px"}}>
-        {dates}
-      </div>
+  utils.range(numberOfDays).forEach(
+    function(key) {
+      const dateObj          = new Date(state.tableStartDate);
+      dateObj.setDate(dateObj.getDate() + key);
+      const isFirstOrLastDay = key == 0 || dateObj.getDate() == 1 || key == numberOfDays-1
+      const isStartOrEnd     = key == 0 || key == numberOfDays-1
+      const dayId            = "day_" + key
+      const attributes = {class: styl.statistic + " ui statistic", id: dayId, key: utils.random()}
+      if (isStartOrEnd) {
+        const actionName = key == 0 ? "changeStartDate" : "changeEndDate"
+        const bindCalendar = () => {
+          const options = {
+
+                            disableMobile: true,
+                            defaultDate: dateformat(dateObj, 'yyyy-mm-dd'),
+                            locale: state.i18n[state.locale].flatpickr,
+                            onChange: function (date, text, mode) {
+                              actions[actionName](dateformat(date, 'yyyy-mm-dd'))
+                            }
+                         }
+          flatpickr(document.getElementById(dayId), options)
+        }
+        attributes["oncreate"] = bindCalendar
+        attributes["onupdate"] = bindCalendar
+      }
+
+      const day = h(isStartOrEnd ? "a" : "div", attributes, [
+          <div style={{width: globalCellWidthPx}} class={styl.value}>
+            {isFirstOrLastDay ? dateformat(dateObj, 'm/d') : dateformat(dateObj, 'd')}
+          </div>,
+          <div style={{color: state.i18n[state.locale].calendar.dayColorsHash[dateObj.getDay()] || ""}} class={styl.label + " label"}>
+            {state.i18n[state.locale].calendar.text.days[dateObj.getDay()]}
+          </div>
+      ])
+      dates.push(day)
+    } 
   )
+  
+  return (
+    <div class={styl.dates} style={{backgroundSize: globalCellWidthPx}}>
+      {dates}
+    </div>
+  )
+
 }

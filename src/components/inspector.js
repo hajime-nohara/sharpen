@@ -1,31 +1,44 @@
 import { h }     from "hyperapp"
-import flatpickr from "flatpickr"
 
 export default (state, actions) => {
-
-    return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <span className="navbar-brand"><img style={{width: "40px"}}src="/assets/logo.png"></img>sharpen</span>
-        <div className="collapse navbar-collapse">
-          <ul className="navbar-nav form-inline">
-            <li className="nav-item">
-              <a className="nav-link" href="#" onclick={()=>actions.save()}>Save</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#" onclick={()=>actions.tasks.add(state)}>Add</a>
-            </li>
-          </ul>
+  return (
+    <div class="ui secondary menu">
+      <div class="item">
+        <img src="/assets/images/logo.png"/>sharpen
+      </div>
+      <a class="item" onclick={()=>actions.save()}>{state.i18n[state.locale].save}</a>
+      <a class="item" onclick={()=>actions.tasks.add(state)}>{state.i18n[state.locale].add}</a>
+      <div class="right menu">
+        <div class="ui pointing dropdown link item" oncreate={(e)=>$(e).dropdown()}>
+          <i class="wrench icon"></i>
+          <i class="dropdown icon"></i>
+          <div class="menu">
+            <div class="item">
+              <i class="dropdown icon"></i>
+              <span class="text">{state.i18n[state.locale].language}</span>
+              <div class="menu">
+                <div class="header">{state.i18n[state.locale].western}</div>
+                <div class="item" onclick={()=>actions.changeLanguage("en")}>{state.i18n[state.locale].english}</div>
+                <div class="divider"></div>
+                <div class="header">{state.i18n[state.locale].asia}</div>
+                <div class="item" onclick={()=>actions.changeLanguage("ja")}>{state.i18n[state.locale].japanese}</div>
+              </div>
+            </div>
+            <div class="item">
+              <i class="dropdown icon"></i>
+              <span class="text">{state.i18n[state.locale].dayWidth}</span>
+              <div class="menu">
+                <div class="item" onclick={()=>actions.changeTalbeCellWidth(50)}>1</div>
+                <div class="item" onclick={()=>actions.changeTalbeCellWidth(60)}>2</div>
+                <div class="item" onclick={()=>actions.changeTalbeCellWidth(70)}>3</div>
+                <div class="item" onclick={()=>actions.changeTalbeCellWidth(80)}>4</div>
+                <div class="item" onclick={()=>actions.changeTalbeCellWidth(90)}>5</div>
+                <div class="item" onclick={()=>actions.changeTalbeCellWidth(100)}>6</div>
+              </div>
+            </div>
+          </div>
         </div>
-        <form class="form-inline my-2 my-lg-0">
-
-          <input oncreate={(e)=>flatpickr(e, {})} onchange={(e)=>actions.changeStartDate(e.target.value)} class="form-control form-control-sm mr-sm-2" type="search" placeholder="start date" id="startDate" aria-label="Search"/>
-          <input oncreate={(e)=>flatpickr(e, {})} onchange={(e)=>actions.changeEndDate(e.target.value)} class="form-control form-control-sm mr-sm-2" type="search" placeholder="end date" id="endDate" aria-label="Search"/>
-
-          <input type="number" min="50" max="100" value={state.globalCellWidth} onchange={(e)=>actions.changeTalbeCellWidth(e.target.value)} class="form-control form-control-sm mr-sm-2" placeholder="width each day" id="width" aria-label="Search"/>
-        </form>
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon" />
-        </button>
-      </nav>
-    )
+      </div>
+    </div>
+  )
 }

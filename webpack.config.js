@@ -1,6 +1,9 @@
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const WriteFileWebpackPlugin = require('write-file-webpack-plugin')
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
   entry: [
@@ -43,7 +46,20 @@ module.exports = {
       }]
     }, {
       test: /\.css$/,
-      use: ['style-loader', 'css-loader']
+
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              // you can specify a publicPath here
+              // by default it use publicPath in webpackOptions.output
+              publicPath: '../'
+            }
+          },
+          "css-loader"
+        ]
+
+
     }, {
       test: /\.pug$/,
       use: 'pug-loader'
@@ -57,6 +73,25 @@ module.exports = {
   },
   devtool: 'inline-source-map',
   plugins: [
+
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: "[name].css",
+      chunkFilename: "[id].css"
+    }),
+
+    new CopyWebpackPlugin([
+      { from: 'semantic/dist/**/*', to: '', force: true },
+      { from: 'assets/**/*', to: '', force: true },
+    ], []),
+
+    //new WriteFileWebpackPlugin([
+    //  { from: 'semantic/dist/**/*', to: '', force: true },
+    //  { from: 'node_modules/semantic-ui-calendar/dist/*', to: '', force: true },
+    //  { from: 'assets/**/*', to: '', force: true },
+    //], []),
+
     new webpack.LoaderOptionsPlugin({
       options: {
         stylus: {
