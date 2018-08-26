@@ -108,7 +108,7 @@ export default (state, actions, params) => {
                         <div class="metadata">
                           <span class="date">{params.comment[index].timestamp}</span>
                         </div>
-                        <div class="text" contentEditable="true" 
+                        <div class="text" contentEditable="true" key={utils.random()} 
                           onfocusout={commentEditOnFocusout}
                           onkeydown={commentEditOnKeydown}
                           onupdate={(e)=>e.innerHTML=params.comment[index].comment}
@@ -259,11 +259,11 @@ export default (state, actions, params) => {
 
       return (
 
-        <div key={utils.random()} class="ui longer modal transition scrolling" id={detailModalId}>
+        <div class="ui longer modal transition scrolling" id={detailModalId}>
 
           <div id={detailModalOpenId} onclick={()=>$('#'+detailModalId).modal({detachable: false}).modal('show')}/>
           <div class="header">
-            <div class="header" contentEditable="true" 
+            <div class="header" contentEditable="true" key={utils.random()} 
               onfocusout={titleOnFocusout}
               onkeydown={titleOnKeydown}
               onupdate={(e)=>e.innerHTML=params.title}
@@ -277,7 +277,7 @@ export default (state, actions, params) => {
               <div class="six wide field">
                 <div class="two fields">
                   <div class="field">
-                    <div class="ui calendar" value={params.startDate} actionName="changeStartDateFromCalendar" oncreate={bindCalendar}>
+                    <div class="ui calendar" value={params.startDate} actionName="changeStartDateFromCalendar" oncreate={bindCalendar} key={utils.random()}>
                       <div class="ui input left icon">
                         <i class="calendar icon"></i>
                         <input type="text" placeholder="StartDate" value={params.startDate}/>
@@ -285,7 +285,7 @@ export default (state, actions, params) => {
                     </div>
                   </div>
                   <div class="field">
-                    <div class="ui calendar" value={params.endDate} actionName="changeEndDateFromCalendar" oncreate={bindCalendar}>
+                    <div class="ui calendar" value={params.endDate} actionName="changeEndDateFromCalendar" oncreate={bindCalendar} key={utils.random()}>
                       <div class="ui input left icon">
                         <i class="calendar icon"></i>
                         <input type="text" placeholder="EndDate" value={params.endDate}/>
@@ -297,7 +297,7 @@ export default (state, actions, params) => {
 
               <h4 class="ui dividing header">{state.i18n[state.locale].description}</h4>
               <div class="field">
-                <textarea contentEditable="true" 
+                <textarea contentEditable="true" key={utils.random()} 
                   onfocusout={descriptionOnFocusout}
                   onkeydown={descriptionOnKeydown}
                   onupdate={(e)=>e.innerHTML=params.description}
@@ -344,7 +344,7 @@ export default (state, actions, params) => {
                     {comment}
                     <form class="ui reply form">
                       <div class="field">
-                        <div class="ui segment" contentEditable="true"
+                        <div class="ui segment" contentEditable="true" key={utils.random()} 
                           onfocusout={commentOnFocusout}
                           onkeydown={commentOnKeydown}
                         ></div>
