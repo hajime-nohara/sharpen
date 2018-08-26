@@ -45,7 +45,6 @@ export default (state, actions, params) => {
         function(index,val,arr) {
           const todoId = params.id + "_" + index
           const todoOnclick = (e) => {
-            console.log({id: index, status: document.getElementById(todoId).checked})
             actions.tasks.changeTodoStatus({id: params.id, value: {id: index, status: document.getElementById(todoId).checked}})
           }
 
@@ -179,7 +178,6 @@ export default (state, actions, params) => {
 
       /* date */
       const bindCalendar = (e) => {
-        console.log("e", e.getAttribute("value"))
         const options = {
                           disableMobile: true,
                           defaultDate: e.getAttribute("value"),

@@ -14,7 +14,6 @@ export default {
     actions.history(JSON.parse(JSON.stringify(state))) 
   },
   onload: ()=>(state, actions)=>{
-    console.log("onload gantt")
     //parent.window.init(state)
     // semantic ui
     //$('.ui.dropdown').dropdown()
@@ -22,7 +21,6 @@ export default {
 
   // master member
   changeMasterMember: (params)=>(state)=>{
-    console.log("changeMasterMember")
     Object.assign(state.member, {[params.id]: params.value})
     return {}
   },
