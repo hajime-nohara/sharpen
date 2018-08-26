@@ -51,7 +51,22 @@ export default {
           }
         }
       );
-      state[globalUpdateId].progress = (checked.toFixed(2) / total.toFixed(2)) * 100
+      state[globalUpdateId].progress = parseInt((checked.toFixed(2) / total.toFixed(2)) * 100)
+      return {}
+    },
+
+    changeStartDateFromCalendar: (params) => (state) => {
+      const [id, startDate, globalState] = params
+      state[id].startDate     = startDate
+      state[id].startPosition = utils.getWidthOfStartPoint(globalState.tableStartDate, startDate, globalState.globalCellWidth)
+      state[id].width         = utils.getWidthFromTerm(startDate, state[id].endDate, globalState.globalCellWidth)
+      return {}
+    },
+
+    changeEndDateFromCalendar: (params) => (state) => {
+      const [id, endDate, globalState] = params
+      state[id].endDate = endDate
+      state[id].width   = utils.getWidthFromTerm(state[id].startDate, endDate, globalState.globalCellWidth)
       return {}
     },
 
@@ -73,7 +88,7 @@ export default {
           }
         }
       );
-      state[globalUpdateId].progress = (checked.toFixed(2) / total.toFixed(2)) * 100
+      state[globalUpdateId].progress = parseInt((checked.toFixed(2) / total.toFixed(2)) * 100)
       return {}
     },
 
@@ -89,7 +104,7 @@ export default {
           }
         }
       );
-      state[globalUpdateId].progress = (checked.toFixed(2) / total.toFixed(2)) * 100
+      state[globalUpdateId].progress = parseInt((checked.toFixed(2) / total.toFixed(2)) * 100)
       return {}
     },
 
@@ -107,8 +122,9 @@ export default {
     },
 
     changeMember: (params) => (state, actions) => {
-      globalUpdateId = params.id;
-      state[globalUpdateId].member = params.member 
+      const [id, member] = params
+      globalUpdateId = id
+      state[globalUpdateId].member = member 
       return {}
     },
 
@@ -130,7 +146,7 @@ export default {
       let id = Number(Object.keys(state)[Object.keys(state).length -1]) + 1
 
       let tempDate     = new Date()
-      let start        = Math.abs(utils.getDateDiff(utils.getDateStr(tempDate), utils.getDateStr(window.startDate))) + 1
+      let start        = Math.abs(utils.getTermFromDate(utils.getDateStr(tempDate), utils.getDateStr(window.startDate))) + 1
       let addStartDate = window.startDate.getDate()
 
       state[id] = 

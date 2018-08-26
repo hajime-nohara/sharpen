@@ -11,7 +11,7 @@ export default (state, actions, data) => {
   let sourceId        = 0
 
   /* row */
-  const numberOfDays = utils.getDateDiff(state.tableStartDate, state.tableEndDate)
+  const numberOfDays = utils.getTermFromDate(state.tableStartDate, state.tableEndDate)
   const rowStyle     = {width: numberOfDays * utils.parsePx(state.globalCellWidth)}
   const ondragover = (e) => {
     e.preventDefault()

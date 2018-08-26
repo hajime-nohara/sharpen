@@ -23,7 +23,7 @@ export default (state, actions) => {
     state.tasks
   );
 
-  const dateCount = utils.getDateDiff(state.tableStartDate, state.tableEndDate)
+  const dateCount = utils.getTermFromDate(state.tableStartDate, state.tableEndDate)
 
   return (
 

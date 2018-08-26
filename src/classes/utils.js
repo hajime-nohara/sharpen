@@ -1,13 +1,21 @@
+import dateformat from 'dateformat'
+
 export default new class {
 
   range (range) {
     return Array.apply(null, {length: range}).map(Number.call, Number)
   }
 
-  constructor(){
-    this.dayOfWeekArr = [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ]
+  /* date to position */
+  getWidthFromTerm (startDate, endDate, globalCellWidth) {
+    return (this.getTermFromDate(startDate, endDate)) * globalCellWidth
   }
 
+  getWidthOfStartPoint (startDate, endDate, globalCellWidth) {
+    return (this.getTermFromDate(startDate, endDate)-1) * globalCellWidth
+  }
+
+  /* int to something unit */
   parsePx(value) {
     return value + "px"
   }
@@ -16,6 +24,7 @@ export default new class {
     return value + "%"
   }
 
+  /* pageX value to sharpen's unit */
   widthResized (widthResized, cellWidth) {
     const halfCellWidth = (cellWidth / 2)
     let count           = parseInt(widthResized / cellWidth)
@@ -29,14 +38,6 @@ export default new class {
     return count * cellWidth
   }
 
-  get_date_str(date) {
-      return date.getFullYear() + "-" + (("0" + (date.getMonth() + 1)).slice(-2)) + "-" + (("0" + date.getDate()).slice(-2));
-  }
-
-  get_datetime_str(date) {
-      return date.getFullYear() + "-" + (("0" + (date.getMonth() + 1)).slice(-2)) + "-" + (("0" + date.getDate()).slice(-2)) + " " + (("0" + date.getHours()).slice(-2)) + ":" + (("0" + date.getMinutes()).slice(-2)) + ":" + (("0" + date.getSeconds()).slice(-2));
-  }
-
   /*
    * リサイズ時の開始日、終了日を位置情報からの計算してyyyy-mm-ddの文字列で返却
    */
@@ -44,7 +45,7 @@ export default new class {
     var cellCount = parseInt(leftPositioin / cellWidth);
     var dt        = new Date(tableStartDate);
     dt.setDate(dt.getDate() + cellCount);
-    return this.get_date_str(dt);
+    return dateformat(dt, 'yyyy-mm-dd');
   }
 
   smoothScroll () {
@@ -59,18 +60,18 @@ export default new class {
     return date.getFullYear() + "-" + (("0" + (date.getMonth() + 1)).slice(-2)) + "-" + (("0" + date.getDate()).slice(-2));
   }
 
-  getDateDiff (date1Str, date2Str) {
-  var date1 = new Date(date1Str);
-  var date2 = new Date(date2Str);
+  getTermFromDate (date1Str, date2Str) {
+    var date1 = new Date(date1Str);
+    var date2 = new Date(date2Str);
 
-  // getTimeメソッドで経過ミリ秒を取得し、２つの日付の差を求める
-  var msDiff = date2.getTime() - date1.getTime();
+    // getTimeメソッドで経過ミリ秒を取得し、２つの日付の差を求める
+    var msDiff = date2.getTime() - date1.getTime();
 
-  // 求めた差分（ミリ秒）を日付へ変換します（経過ミリ秒÷(1000ミリ秒×60秒×60分×24時間)。端数切り捨て）
-  var daysDiff = Math.floor(msDiff / (1000 * 60 * 60 *24));
+    // 求めた差分（ミリ秒）を日付へ変換します（経過ミリ秒÷(1000ミリ秒×60秒×60分×24時間)。端数切り捨て）
+    var daysDiff = Math.floor(msDiff / (1000 * 60 * 60 *24));
 
-  // 差分へ1日分加算して返却します
-  return ++daysDiff;
+    // 差分へ1日分加算して返却します
+    return ++daysDiff;
   }
 
   getUrlVars (){

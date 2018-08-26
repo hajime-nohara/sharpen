@@ -14,9 +14,9 @@ export default () => {
         Object.keys(state.tasks).forEach(
           function(key, val, arr) {
             const value         = state.tasks[key]
-            const widthCount    = utils.getDateDiff(value.startDate, value.endDate)
+            const widthCount    = utils.getTermFromDate(value.startDate, value.endDate)
             value.width         = widthCount * width -1
-            value.startPosition = (utils.getDateDiff(utils.getDateStr(window.startDate), value.startDate)-1) * width
+            value.startPosition = (utils.getTermFromDate(utils.getDateStr(window.startDate), value.startDate)-1) * width
             value.endPosition   = value.startPosition + value.width
           }
         )
@@ -36,7 +36,7 @@ export default () => {
 
         Object.keys(state.tasks).forEach(
             function(index,val,arr) {
-              state.tasks[index].startPosition = (utils.getDateDiff(utils.getDateStr(window.startDate), state.tasks[index].startDate)-1) * state.globalCellWidth
+              state.tasks[index].startPosition = (utils.getTermFromDate(utils.getDateStr(window.startDate), state.tasks[index].startDate)-1) * state.globalCellWidth
           state.tasks[index].endPosition = state.tasks[index].startPosition + state.tasks[index].width
             }
             );

@@ -2,11 +2,12 @@ import { h }      from "hyperapp"
 import utils      from '../classes/utils'
 import styl       from './styles/dates.styl'
 import dateformat from 'dateformat'
+import flatpickr  from "flatpickr";
 
 export default (state, actions) => {
 
   const dates             = Array()
-  const numberOfDays      = utils.getDateDiff(state.tableStartDate, state.tableEndDate)
+  const numberOfDays      = utils.getTermFromDate(state.tableStartDate, state.tableEndDate)
   const globalCellWidthPx = utils.parsePx(state.globalCellWidth)
 
   utils.range(numberOfDays).forEach(
@@ -21,15 +22,15 @@ export default (state, actions) => {
         const actionName = key == 0 ? "changeStartDate" : "changeEndDate"
         const bindCalendar = () => {
           const options = {
-                            type: 'date',
-                            popupOptions: { position: 'bottom right' },
-                            text: state.i18n[state.locale].calendar.text,
+
+                            disableMobile: true,
+                            defaultDate: dateformat(dateObj, 'yyyy-mm-dd'),
+                            locale: state.i18n[state.locale].flatpickr,
                             onChange: function (date, text, mode) {
                               actions[actionName](dateformat(date, 'yyyy-mm-dd'))
                             }
                          }
-          $("#"+dayId).calendar(options)
-          $("#"+dayId).calendar('set date', dateObj, false, false)
+          flatpickr(document.getElementById(dayId), options)
         }
         attributes["oncreate"] = bindCalendar
         attributes["onupdate"] = bindCalendar

@@ -25,7 +25,7 @@ export default {
   globalCellWidth: globalCellWidth,
   locale: "en",
   i18n:    i18n,
-  member: {},
+  member: {1: 'hajime', 2: 'takashi'},
   tableStartDate: utils.getDateStr(window.startDate),
   tableEndDate:   utils.getDateStr(window.endDate),
   tasks: 
