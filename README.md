@@ -26,5 +26,5 @@ Shapen is still α version.
 I can not guarantee that always to keep correctly your gantt chart data.  
 I will do my best for user of Sharpen.  
 
-# Attention
+# License
 Sharpen is MIT licensed.
