@@ -4,9 +4,6 @@ Sharpen is a JavaScript framework for building web gantt chart applications.
 * Useful — Sharpen is made by Hyperapp JavaScript framework. It's easy that you will inject to gantt chart in your application.
 * Well-designed — Sharpen is designed by Semantic-UI design framework. It gives you good experience.
   
-
-Quickstarting a web application with Hyperapp, JSX, Stylus, Pug, Eslint.
-
 # Getting Started
 You can start standalone sharpen gantt chart application quickly.
 ```
