@@ -87,6 +87,7 @@ export default (state, actions, data) => {
     document.removeEventListener('touchmove', resizeStartPoint)
     document.removeEventListener('mouseup', startPointResizeEnd)
     document.removeEventListener('mouseleave', startPointResizeEnd)
+    document.removeEventListener('touchend', startPointResizeEnd)
     actions.tasks.startPointResizeEnd([e, state, data.id, pageXStartPoint])
   }
   const resizeOnStart = (e) => {
@@ -97,6 +98,7 @@ export default (state, actions, data) => {
     document.addEventListener('touchmove', resizeStartPoint)
     document.addEventListener('mouseup', startPointResizeEnd)
     document.addEventListener('mouseleave', startPointResizeEnd)
+    document.addEventListener('touchend', startPointResizeEnd)
   }
 
   /* resizer end */
@@ -105,6 +107,7 @@ export default (state, actions, data) => {
     document.removeEventListener('touchmove', resizeEndPoint)
     document.removeEventListener('mouseup', endPointResizeEnd)
     document.removeEventListener('mouseleave', endPointResizeEnd)
+    document.removeEventListener('touchend', endPointResizeEnd)
     actions.tasks.endPointResizeEnd([e, state, data.id, pageXStartPoint])
   }
   const resizeOnEnd = (e) => {
@@ -115,6 +118,7 @@ export default (state, actions, data) => {
     document.addEventListener('touchmove', resizeEndPoint)
     document.addEventListener('mouseup', endPointResizeEnd)
     document.addEventListener('mouseleave', endPointResizeEnd)
+    document.addEventListener('touchend', endPointResizeEnd)
   }
 
   /* progress-bar */
