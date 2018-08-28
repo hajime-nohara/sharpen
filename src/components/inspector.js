@@ -3,9 +3,7 @@ import { h }     from "hyperapp"
 export default (state, actions) => {
   return (
     <div class="ui secondary menu">
-      <div class="item">
-        <img src="/assets/images/logo.png"/>sharpen
-      </div>
+      <a class="item" href="http://www.sharpen.tokyo">sharpen</a>
       <a class="item" onclick={()=>actions.save()}>{state.i18n[state.locale].save}</a>
       <a class="item" onclick={()=>actions.tasks.add(state)}>{state.i18n[state.locale].add}</a>
       <div class="right menu">

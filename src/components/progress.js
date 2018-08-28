@@ -2,6 +2,12 @@ import { h }       from "hyperapp"
 import utils       from '../classes/utils'
 import detailModal from './detailModal'
 import styl        from './styles/progress.styl'
+// for mobile D&D
+import {polyfill}  from "mobile-drag-drop";
+import {scrollBehaviourDragImageTranslateOverride} from "mobile-drag-drop/scroll-behaviour"
+polyfill({
+  dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
+})
 
 export default (state, actions, data) => {
 
@@ -18,7 +24,7 @@ export default (state, actions, data) => {
   }
   const ondrop = (e) => {
     pageX    = e.pageX
-    sourceId = parseInt(e.dataTransfer.getData("text"))
+    sourceId = parseInt(e.dataTransfer.getData("text/plain"))
     if (e.stopPropagation) {
       e.stopPropagation()
     }
@@ -65,6 +71,11 @@ export default (state, actions, data) => {
     }
   }
   const onDragEnd = (e) => {
+    // when sourceId is Zero it's mobile device. 
+    if (sourceId === 0) {
+      sourceId = e.target.id
+      pageX    = e.pageX
+    } 
     if (sourceId == data.id) {
       actions.tasks.dragEnd([pageX, state, data.id, pageXStartPoint])
     }
@@ -127,7 +138,7 @@ export default (state, actions, data) => {
   return (
     <div>
       {/* row */}
-      <div class={styl.row} key={utils.random()} oncreate={setBackgroundSize} onupdate={setBackgroundSize} ondrop={ondrop} style={rowStyle} ondragover={ondragover}>
+      <div class={styl.row} key={utils.random()} oncreate={setBackgroundSize} onupdate={setBackgroundSize} ondrop={ondrop} style={rowStyle} ondragover={ondragover} ondragenter={ondragover}>
         <div class={styl.progress + " ui indicating progress active"} onmouseup={draggableOff} onmousedown={draggableOn} ontouchstart={draggableOn} id={data.id} onclick={openModal} ondragstart={onDragStart} ondragend={onDragEnd} style={progressStyle}>
           <div class="bar" style={progressBarStyle}>
             <div class="progress">{utils.parsePercent(data.progress)}</div>
