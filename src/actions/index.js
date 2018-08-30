@@ -31,6 +31,15 @@ export default {
 
   save: () => (state) => {
     localStorage.setItem('state', JSON.stringify(state))
+    const formData = new FormData();
+    formData.append("uid", utils.random())
+    formData.append("state", JSON.stringify(state))
+    const request = new XMLHttpRequest();
+    request.open("POST", "http://localhost:3000/sharpens", true);
+    request.onload = function () {
+      alert("sucess!")
+    }
+    request.send(formData);
   },
 
   tasks: { 
