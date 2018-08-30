@@ -30,16 +30,21 @@ export default {
   },
 
   save: () => (state) => {
-    localStorage.setItem('state', JSON.stringify(state))
+
+    const firstSave = (state.sharpenId == null)
     const formData = new FormData();
-    formData.append("uid", utils.random())
+    if (firstSave) {
+      Object.assign(state, {sharpenId: utils.random()})
+    }
+    formData.append("id", state.sharpenId)
     formData.append("state", JSON.stringify(state))
     const request = new XMLHttpRequest();
-    request.open("POST", "http://localhost:3000/sharpens", true);
+    request.open(firstSave ? "POST": "PUT", state.apiEndPoint + (firstSave ? "" : state.sharpenId) + "?state=edddd" , true);
     request.onload = function () {
       alert("sucess!")
     }
     request.send(formData);
+    localStorage.setItem('state', JSON.stringify(state))
   },
 
   tasks: { 

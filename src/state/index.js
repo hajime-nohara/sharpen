@@ -19,7 +19,9 @@ window.defaultTaskEndDate   = new Date()
 window.defaultTaskEndDate.setDate(sd+1)
 
 export default {
-
+  apiEndPoint: "http://localhost:3000/sharpens/",
+  sharpenId: null,  
+  name: null,  
   pageXStartPoint: 0,
   resizeStartingPoint: "",
   globalCellWidth: globalCellWidth,
