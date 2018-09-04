@@ -26,7 +26,7 @@ if (getPrams.id != undefined && getPrams.id.length > 0) {
       sharpenIdList.push(getPrams.id)
       localStorage.setItem('sharpenIdList', JSON.stringify(sharpenIdList))
     }
-    start(Object.assign(state, JSON.parse(request.response)))
+    start(JSON.parse(JSON.parse(request.response).state))
   }
   request.send()
 } else if (localStorage.getItem('state') && localStorage.getItem('state').length > 0) {

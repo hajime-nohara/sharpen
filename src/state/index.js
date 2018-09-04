@@ -19,17 +19,26 @@ window.defaultTaskEndDate   = new Date()
 window.defaultTaskEndDate.setDate(sd+1)
 
 export default {
-  apiEndPoint: "http://localhost:3000/sharpens/",
-  sharpenId: null,  
-  name: null,  
-  pageXStartPoint: 0,
-  resizeStartingPoint: "",
-  globalCellWidth: globalCellWidth,
-  locale: "en",
-  i18n:    i18n,
-  member: {1: 'hajime', 2: 'takashi'},
-  tableStartDate: utils.getDateStr(window.startDate),
-  tableEndDate:   utils.getDateStr(window.endDate),
+  // common state value for api
+  apiEndPoint:          "http://localhost:3000/sharpen",
+  sharpenId:            null,  
+
+  // common state value for table
+  name:                 "Nameless project",  
+  pageXStartPoint:      0,
+  resizeStartingPoint:  "",
+  globalCellWidth:      globalCellWidth,
+  tableStartDate:       utils.getDateStr(window.startDate),
+  tableEndDate:         utils.getDateStr(window.endDate),
+
+  // common state value for locale
+  locale:               "en",
+  i18n:                 i18n,
+
+  // common state value for task
+  member:               {1: 'hajime', 2: 'takashi'},
+
+  // default task
   tasks: 
     {
       1: { 

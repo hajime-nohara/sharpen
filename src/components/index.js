@@ -26,16 +26,25 @@ export default (state, actions) => {
   const dateCount = utils.getTermFromDate(state.tableStartDate, state.tableEndDate)
 
   return (
+    <main class={styl.container + " ui fluid container"}>
+        <div class="ui inverted menu"/>
+        <div class="ui fixed inverted menu">
+          <div class="ui container">
+            <a href="http://www.sharpen.tokyo" class={styl.headerLogo + " header item borderless"}>
+              <img class="logo" src="assets/images/logo.png"/>
+              Sharpen
+            </a>
+          </div>
+        </div>
 
-    <main class={styl.container + " ui container"}>
       {detailModalComponents}
-      <div class="ui card" style={{height: "80%", width: "100%"}}>
+      <div class={styl.card + " ui card"}>
         <div class={styl.cardHeader + " content"}>
           {inspector(state, actions)}
         </div>
 
         <div class={styl.cardMainContent + " ui card"} style={{ overflow: "scroll", width: "100%"}} >
-        <div oncreate={(e)=>e.style.backgroundSize=state.globalCellWidth+"px"} onupdate={(e)=>e.style.backgroundSize=state.globalCellWidth+"px"} style={{backgroundImage: "url(/assets/images/division.jpg)", width: dateCount * state.globalCellWidth + "px", height: tasksComponents.length * 40 + "%"}}>
+        <div oncreate={(e)=>e.style.backgroundSize=state.globalCellWidth+"px"} onupdate={(e)=>e.style.backgroundSize=state.globalCellWidth+"px"} style={{backgroundImage: "url(/assets/images/division.jpg)", width: dateCount * state.globalCellWidth + "px", height: "100%"}}>
         {dates(state, actions)}
         {tasksComponents}
         </div>

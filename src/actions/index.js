@@ -39,7 +39,7 @@ export default {
     formData.append("id", state.sharpenId)
     formData.append("state", JSON.stringify(state))
     const request = new XMLHttpRequest();
-    request.open(firstSave ? "POST": "PUT", state.apiEndPoint + (firstSave ? "" : state.sharpenId) + "?state=edddd" , true);
+    request.open(firstSave ? "POST": "PUT", state.apiEndPoint + (firstSave ? "" : state.sharpenId), true);
     request.onload = function () {
       alert("sucess!")
     }
