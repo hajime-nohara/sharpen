@@ -3,6 +3,40 @@ import table from './table'
 
 export default {
 
+  // this action does not update state
+  saveToLocalStorage: () => (state, actions) => {
+    /* local storage layout
+        sharpen: {
+          memberId:   "xxxxx",
+          memberName: "xxxxx",
+          projects: {
+            xxxxx: {id: "xxxxx", name: "xxxxx"},
+            xxxxx: {id: "xxxxx", name: "xxxxx"}
+          },
+          currentProject: "xxxxx" 
+        }
+    */
+    let sharpenLocalStorage = localStorage.getItem('sharpen')
+    if (sharpenLocalStorage) {
+      sharpenLocalStorage = JSON.parse(sharpenLocalStorage)
+      sharpenLocalStorage.projects[state.projectId] = {id: state.projectId, name: state.projectName, state: state}
+      localStorage.setItem('sharpen', JSON.stringify(sharpenLocalStorage))
+    } else {
+      // first regist
+      if (!state.projectId) {
+        state.projectId = utils.random()
+      }
+      const sharpenLocalStorage = {}
+      const memberId            = utils.random()
+      sharpenLocalStorage["currentProject"]            = state.projectId
+      sharpenLocalStorage["memberId"]                  = memberId
+      sharpenLocalStorage["memberName"]                = memberId
+      sharpenLocalStorage["projects"]                  = {}
+      sharpenLocalStorage["projects"][state.projectId] = {id: state.projectId, name: state.projectId, state: state}
+      localStorage.setItem('sharpen', JSON.stringify(sharpenLocalStorage))
+    }
+  },
+
   ...table(),
 
   changeLanguage: (locale)=>(state, actions)=>{
@@ -13,6 +47,7 @@ export default {
   historyWrapper: ()=>(state, actions)=>{
     actions.history(JSON.parse(JSON.stringify(state))) 
   },
+
   onload: ()=>(state, actions)=>{
     //parent.window.init(state)
     // semantic ui

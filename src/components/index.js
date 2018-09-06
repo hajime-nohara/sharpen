@@ -25,6 +25,7 @@ export default (state, actions) => {
 
   const dateCount = utils.getTermFromDate(state.tableStartDate, state.tableEndDate)
 
+  actions.saveToLocalStorage()
   return (
     <main class={styl.container + " ui fluid container"}>
         <div class="ui inverted menu"/>

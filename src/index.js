@@ -5,6 +5,20 @@ import view    from './components'
 import utils   from './classes/utils'
 import 'normalize.css'
 
+// first regist to local storage
+//if (!localStorage.getItem('sharpen')) {
+//  const projectId           = utils.random()
+//  state.projectId           = projectId
+//  const sharpenLocalStorage = {}
+//  const memberId            = utils.random()
+//  sharpenLocalStorage["currentProject"]            = state.projectId
+//  sharpenLocalStorage["memberId"]                  = memberId
+//  sharpenLocalStorage["memberName"]                = memberId
+//  sharpenLocalStorage["projects"]                  = {}
+//  sharpenLocalStorage["projects"][state.projectId] = {id: state.projectId, name: state.projectId, state: state}
+//  localStorage.setItem('sharpen', JSON.stringify(sharpenLocalStorage))
+//}
+
 const getPrams = utils.getUrlVars()
 
 const start = (state) => app(state, actions, view, document.getElementById('sharpen'))
@@ -29,10 +43,10 @@ if (getPrams.id != undefined && getPrams.id.length > 0) {
     start(JSON.parse(JSON.parse(request.response).state))
   }
   request.send()
-} else if (localStorage.getItem('state') && localStorage.getItem('state').length > 0) {
-  start(Object.assign(state, JSON.parse(localStorage.getItem('state'))))
+} else if (localStorage.getItem('sharpen')) {
+  const sharpenLocalStorage = JSON.parse(localStorage.getItem('sharpen'))
+  const currentProjectState = sharpenLocalStorage.projects[sharpenLocalStorage.currentProject].state
+  start(currentProjectState)
 } else {
   start(state)
 }
-
-

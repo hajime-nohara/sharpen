@@ -21,10 +21,10 @@ window.defaultTaskEndDate.setDate(sd+1)
 export default {
   // common state value for api
   apiEndPoint:          "http://localhost:3000/sharpen",
-  sharpenId:            null,  
+  projectId:            null,  
 
   // common state value for table
-  name:                 "Nameless project",  
+  projectName:          "First Project",  
   pageXStartPoint:      0,
   resizeStartingPoint:  "",
   globalCellWidth:      globalCellWidth,
