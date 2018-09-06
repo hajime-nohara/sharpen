@@ -37,7 +37,7 @@ export default {
   i18n:                 i18n,
 
   // common state value for task
-  member:               {1: 'hajime', 2: 'takashi'},
+  member:               {},
 
   // default task
   tasks: 

@@ -26,13 +26,11 @@ export default (state, actions) => {
   const dateCount = utils.getTermFromDate(state.tableStartDate, state.tableEndDate)
 
   const onFocusoutMemberName = (e) => {
-    console.log(e)
-//    actions.changeMemberName(e.val)
+    actions.changeMemberName(e.target.value)
   }
 
   const onFocusoutProjectName = (e) => {
-    console.log(e.val)
-    actions.changeProjectName(e.val)
+    actions.changeProjectName(e.target.value)
   }
 
   actions.saveToLocalStorage()

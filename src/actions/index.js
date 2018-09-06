@@ -30,7 +30,7 @@ export default {
       const memberId            = utils.random()
       sharpenLocalStorage["currentProject"]            = state.projectId
       sharpenLocalStorage["memberId"]                  = memberId
-      sharpenLocalStorage["memberName"]                = memberId
+//      sharpenLocalStorage["memberName"]                = memberId
       sharpenLocalStorage["projects"]                  = {}
       sharpenLocalStorage["projects"][state.projectId] = {id: state.projectId, name: state.projectId, state: state}
       localStorage.setItem('sharpen', JSON.stringify(sharpenLocalStorage))
