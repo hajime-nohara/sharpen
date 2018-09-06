@@ -37,6 +37,19 @@ export default {
     }
   },
 
+  changeMemberName: (memberName) => (state, actions) => {
+    let sharpenLocalStorage        = localStorage.getItem('sharpen')
+    sharpenLocalStorage            = JSON.parse(sharpenLocalStorage)
+    sharpenLocalStorage.memberName = memberName
+    localStorage.setItem('sharpen', JSON.stringify(sharpenLocalStorage))
+    Object.assign(state.member, {[sharpenLocalStorage.memberId]: sharpenLocalStorage.memberName})
+    //return {}
+  },
+  changeProjectName: (projectName) => (state, actions) => {
+    Object.assign(state, {projectName: projectName})
+    //return {}
+  },
+
   ...table(),
 
   changeLanguage: (locale)=>(state, actions)=>{

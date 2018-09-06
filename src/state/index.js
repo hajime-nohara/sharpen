@@ -22,6 +22,7 @@ export default {
   // common state value for api
   apiEndPoint:          "http://localhost:3000/sharpen",
   projectId:            null,  
+  projectOwner:         null,  
 
   // common state value for table
   projectName:          "First Project",  
