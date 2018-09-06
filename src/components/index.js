@@ -10,7 +10,6 @@ export default (state, actions) => {
 
   const tasksComponents       = []
   const detailModalComponents = []
-  
   Object.keys(state.tasks).sort((a,b)=>{
                                         if( Number(a) > Number(b) ) return -1;
                                         if( Number(a) < Number(b) ) return 1;
@@ -77,7 +76,7 @@ export default (state, actions) => {
               </div>
               <div class="field">
                 <div class="actions">
-                  <div class="ui right floated green ok inverted button">
+                  <div class="ui right floated green ok inverted button" onclick={actions.reRender}>
                     <i class="checkmark icon"></i>
                     {state.i18n[state.locale].getStarted}
                   </div>

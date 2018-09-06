@@ -3,6 +3,10 @@ import table from './table'
 
 export default {
 
+  reRender: () => (state, actions) => {
+    return {} 
+  },
+
   // this action does not update state
   saveToLocalStorage: () => (state, actions) => {
     /* local storage layout
@@ -16,36 +20,44 @@ export default {
           currentProject: "xxxxx" 
         }
     */
-    let sharpenLocalStorage = localStorage.getItem('sharpen')
-    if (sharpenLocalStorage) {
-      sharpenLocalStorage = JSON.parse(sharpenLocalStorage)
-      sharpenLocalStorage.projects[state.projectId] = {id: state.projectId, name: state.projectName, state: state}
-      localStorage.setItem('sharpen', JSON.stringify(sharpenLocalStorage))
+    let sharpenDataLS = localStorage.getItem('sharpen_data')
+    if (sharpenDataLS) {
+      sharpenDataLS = JSON.parse(sharpenDataLS)
+      sharpenDataLS[state.projectId] = state
+      localStorage.setItem('sharpen_data', JSON.stringify(sharpenDataLS))
     } else {
       // first regist
       if (!state.projectId) {
         state.projectId = utils.random()
       }
-      const sharpenLocalStorage = {}
+      const sharpenUserLS = {}
       const memberId            = utils.random()
-      sharpenLocalStorage["currentProject"]            = state.projectId
-      sharpenLocalStorage["memberId"]                  = memberId
-//      sharpenLocalStorage["memberName"]                = memberId
-      sharpenLocalStorage["projects"]                  = {}
-      sharpenLocalStorage["projects"][state.projectId] = {id: state.projectId, name: state.projectId, state: state}
-      localStorage.setItem('sharpen', JSON.stringify(sharpenLocalStorage))
+      sharpenUserLS["currentProject"]            = state.projectId
+      sharpenUserLS["memberId"]                  = memberId
+      sharpenUserLS["memberName"]                = null
+      sharpenUserLS["projects"]                  = {}
+      sharpenUserLS["projects"][state.projectId] = {id: state.projectId, name: state.projectId}
+      localStorage.setItem('sharpen_user', JSON.stringify(sharpenUserLS))
+
+      const sharpenDataLS = {}
+      sharpenDataLS[state.projectId] = JSON.parse(JSON.stringify(state))
+      localStorage.setItem('sharpen_data', JSON.stringify(sharpenDataLS))
     }
   },
 
   changeMemberName: (memberName) => (state, actions) => {
-    let sharpenLocalStorage        = localStorage.getItem('sharpen')
-    sharpenLocalStorage            = JSON.parse(sharpenLocalStorage)
-    sharpenLocalStorage.memberName = memberName
-    localStorage.setItem('sharpen', JSON.stringify(sharpenLocalStorage))
-    Object.assign(state.member, {[sharpenLocalStorage.memberId]: sharpenLocalStorage.memberName})
+    let sharpenUserLS        = localStorage.getItem('sharpen_user')
+    sharpenUserLS            = JSON.parse(sharpenUserLS)
+    sharpenUserLS.memberName = memberName
+    localStorage.setItem('sharpen_user', JSON.stringify(sharpenUserLS))
+    Object.assign(state.member, {[sharpenUserLS.memberId]: sharpenUserLS.memberName})
     //return {}
   },
   changeProjectName: (projectName) => (state, actions) => {
+    let sharpenUserLS        = localStorage.getItem('sharpen_user')
+    sharpenUserLS            = JSON.parse(sharpenUserLS)
+    sharpenUserLS.projects[sharpenUserLS.currentProject] = {id: sharpenUserLS.currentProject, name: projectName}
+    localStorage.setItem('sharpen_user', JSON.stringify(sharpenUserLS))
     Object.assign(state, {projectName: projectName})
     //return {}
   },
