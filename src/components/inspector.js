@@ -1,10 +1,10 @@
 import { h } from "hyperapp"
 import utils from '../classes/utils'
 
-
 export default (state, actions) => {
 
   const projects = []
+
   const sharpenUserLS = JSON.parse(localStorage.getItem('sharpen_user'))
   if (localStorage.getItem('sharpen_user')) {
     Object.keys(sharpenUserLS.projects).forEach(
@@ -12,32 +12,54 @@ export default (state, actions) => {
         const id   = sharpenUserLS.projects[index].id
         const name = sharpenUserLS.projects[index].name
         projects.push(
-          <div id={id} data-value={id} class="item">{name}</div>
+          <div class="item" id={id} data-value={id}>
+            {name}
+          </div>
         )
       }
     )
   }
 
+  const addProject = () => {
+    document.querySelector(".scrolling.menu").click()
+    const projectName = document.querySelector(".project.menu.transition.visible input[type='text']")
+    actions.addProject(projectName.value)
+  }
+
+  const projectSearchOnChange = () => {
+    const addProjectElement = document.querySelector(".project.menu.transition.visible div[class='message']")
+    if (addProjectElement) {
+      addProjectElement.innerHTML = state.i18n[state.locale].addProject
+      addProjectElement.addEventListener('click', addProject)
+    }
+  }
+
   return (
     <div class="ui secondary menu">
-      <div class="item" key={utils.random()}>
-        <div class="ui scrolling dropdown" tabindex="0" oncreate={(e)=>$(e).dropdown({onChange: (e, e2, e3)=>console.log(e, e2, e3[0].id)})}>
-          <input type="hidden" name={sharpenUserLS.projects[sharpenUserLS.currentProject].name} value={sharpenUserLS.currentProject}/>
-          <div class="default text">Select choice</div>
-          <i class="dropdown icon"></i>
-          <div class="menu" tabindex="-1">
-            {projects}
+      <div class="item">
+        <div class="ui floating dropdown icon" tabindex="0" oncreate={(e)=>$(e).dropdown({onChange: (val1, val2, el)=>console.log(el[0].id)})} key={utils.random()}>
+          <input type="hidden" name={state.projectName} value={state.projectId}/>
+          <span class="text"></span>
+          <div class="project menu transition hidden" tabindex="-1">
+            <div class="ui icon search input">
+              <i class="search icon"></i>
+              <input type="text" placeholder="Search Project" onkeyup={projectSearchOnChange}/>
+            </div>
+            <div class="scrolling menu">
+              {projects}
+            </div>
           </div>
         </div>
       </div>
 
       <a class="item" onclick={()=>actions.save()}>{state.i18n[state.locale].save}</a>
       <a class="item" onclick={()=>actions.tasks.add(state)}>{state.i18n[state.locale].add}</a>
-      <div class="right menu">
-        <div class="ui pointing dropdown link item" oncreate={(e)=>$(e).dropdown()}>
+
+      <div class="item">
+        <div class="ui dropdown link" oncreate={(e)=>$(e).dropdown()}>
           <i class="wrench icon"></i>
           <i class="dropdown icon"></i>
-          <div class="menu">
+          <div class="menu"> 
             <div class="item">
               <i class="dropdown icon"></i>
               <span class="text">{state.i18n[state.locale].language}</span>
@@ -64,6 +86,7 @@ export default (state, actions) => {
           </div>
         </div>
       </div>
+
     </div>
   )
 }

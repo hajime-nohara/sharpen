@@ -3,9 +3,7 @@ import table from './table'
 
 export default {
 
-  reRender: () => (state, actions) => {
-    return {} 
-  },
+  reRender: () => ({}),
 
   // this action does not update state
   saveToLocalStorage: () => (state, actions) => {
@@ -45,21 +43,29 @@ export default {
     }
   },
 
+  addProject: (projectName) => (state, actions) => {
+    console.log(projectName)
+    // store to sharpen_user, sharpen_data (local storage)
+    // return default state updated project name, id
+    return {}
+  },
+
   changeMemberName: (memberName) => (state, actions) => {
     let sharpenUserLS        = localStorage.getItem('sharpen_user')
     sharpenUserLS            = JSON.parse(sharpenUserLS)
     sharpenUserLS.memberName = memberName
     localStorage.setItem('sharpen_user', JSON.stringify(sharpenUserLS))
     Object.assign(state.member, {[sharpenUserLS.memberId]: sharpenUserLS.memberName})
-    //return {}
+    return {}
   },
+
   changeProjectName: (projectName) => (state, actions) => {
     let sharpenUserLS        = localStorage.getItem('sharpen_user')
     sharpenUserLS            = JSON.parse(sharpenUserLS)
-    sharpenUserLS.projects[sharpenUserLS.currentProject] = {id: sharpenUserLS.currentProject, name: projectName}
+    Object.assign(sharpenUserLS.projects[sharpenUserLS.currentProject], {name: projectName})
     localStorage.setItem('sharpen_user', JSON.stringify(sharpenUserLS))
     Object.assign(state, {projectName: projectName})
-    //return {}
+    return {}
   },
 
   ...table(),
