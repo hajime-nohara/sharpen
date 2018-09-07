@@ -17,7 +17,7 @@ export default {
   projectOwner:         null,  
 
   // common state value for table
-  projectName:          "First Project",  
+  projectName:          null,  
   pageXStartPoint:      0,
   globalCellWidth:      globalCellWidth,
   tableStartDate:       utils.getDateStr(startDate),

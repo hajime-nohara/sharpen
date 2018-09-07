@@ -1,5 +1,6 @@
-import utils from '../classes/utils'
-import table from './table'
+import utils        from '../classes/utils'
+import table        from './table'
+import defaultState from '../state'
 
 export default {
 
@@ -44,10 +45,19 @@ export default {
   },
 
   addProject: (projectName) => (state, actions) => {
-    console.log(projectName)
     // store to sharpen_user, sharpen_data (local storage)
+    const sharpenUserLS = JSON.parse(localStorage.getItem('sharpen_user'))
+    const projectId     = utils.random()
+    sharpenUserLS["projects"][projectId] = {id: projectId, name: projectName}
+    sharpenUserLS.currentProject = projectId
+    localStorage.setItem('sharpen_user', JSON.stringify(sharpenUserLS))
+    const sharpenDataLS = JSON.parse(localStorage.getItem('sharpen_data'))
+    defaultState.projectName = projectName
+    defaultState.projectId   = projectId
+    sharpenDataLS[projectId] = defaultState
+    localStorage.setItem('sharpen_data', JSON.stringify(sharpenDataLS))
     // return default state updated project name, id
-    return {}
+    return defaultState
   },
 
   changeMemberName: (memberName) => (state, actions) => {
@@ -57,6 +67,21 @@ export default {
     localStorage.setItem('sharpen_user', JSON.stringify(sharpenUserLS))
     Object.assign(state.member, {[sharpenUserLS.memberId]: sharpenUserLS.memberName})
     return {}
+  },
+
+  changeProject: (projectId) => (state, actions) => {
+    // store to sharpen_user, sharpen_data (local storage)
+    const sharpenUserLS = JSON.parse(localStorage.getItem('sharpen_user'))
+    sharpenUserLS.currentProject = projectId
+    localStorage.setItem('sharpen_user', JSON.stringify(sharpenUserLS))
+    const sharpenDataLS = JSON.parse(localStorage.getItem('sharpen_data'))
+    if (!sharpenDataLS[projectId]) {
+      // get data by api
+      localStorage.setItem('sharpen_data', JSON.stringify(sharpenDataLS))
+    } else {
+      // return default state updated project name, id
+      return sharpenDataLS[projectId]
+    }
   },
 
   changeProjectName: (projectName) => (state, actions) => {

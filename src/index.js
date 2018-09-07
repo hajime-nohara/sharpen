@@ -35,6 +35,5 @@ if (getPrams.id != undefined && getPrams.id.length > 0) {
   const currentProjectState = sharpenDataLS[sharpenUserLS.currentProject]
   start(currentProjectState)
 } else {
-  console.log("index!", state)
   start(state)
 }

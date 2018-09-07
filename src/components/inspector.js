@@ -26,18 +26,26 @@ export default (state, actions) => {
     actions.addProject(projectName.value)
   }
 
+  let setTimeoutAddProject = null
   const projectSearchOnChange = () => {
     const addProjectElement = document.querySelector(".project.menu.transition.visible div[class='message']")
     if (addProjectElement) {
-      addProjectElement.innerHTML = state.i18n[state.locale].addProject
-      addProjectElement.addEventListener('click', addProject)
+      clearTimeout(setTimeoutAddProject)
+      const addProjectTimer = () => {
+        addProjectElement.innerHTML = state.i18n[state.locale].addProject
+        addProjectElement.addEventListener('click', addProject)
+      }
+      setTimeoutAddProject = setTimeout(addProjectTimer, 600)
     }
   }
 
+  const changeProject = (val1, val2, el) => {
+    actions.changeProject(el[0].id)
+  }
   return (
     <div class="ui secondary menu">
       <div class="item">
-        <div class="ui floating dropdown icon" tabindex="0" oncreate={(e)=>$(e).dropdown({onChange: (val1, val2, el)=>console.log(el[0].id)})} key={utils.random()}>
+        <div class="ui floating dropdown icon" tabindex="0" oncreate={(e)=>$(e).dropdown({onChange: changeProject})} key={utils.random()}>
           <input type="hidden" name={state.projectName} value={state.projectId}/>
           <span class="text"></span>
           <div class="project menu transition hidden" tabindex="-1">
