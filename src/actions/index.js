@@ -30,11 +30,17 @@ export default {
       const memberId            = utils.random()
       sharpenLocalStorage["currentProject"]            = state.projectId
       sharpenLocalStorage["memberId"]                  = memberId
-//      sharpenLocalStorage["memberName"]                = memberId
       sharpenLocalStorage["projects"]                  = {}
       sharpenLocalStorage["projects"][state.projectId] = {id: state.projectId, name: state.projectId, state: state}
       localStorage.setItem('sharpen', JSON.stringify(sharpenLocalStorage))
     }
+  },
+
+  addProject: (projectName) => (state, actions) => {
+    console.log(projectName)
+    // store to sharpen_user, sharpen_data (local storage)
+    // return default state updated project name, id
+    return {}
   },
 
   changeMemberName: (memberName) => (state, actions) => {
@@ -43,11 +49,11 @@ export default {
     sharpenLocalStorage.memberName = memberName
     localStorage.setItem('sharpen', JSON.stringify(sharpenLocalStorage))
     Object.assign(state.member, {[sharpenLocalStorage.memberId]: sharpenLocalStorage.memberName})
-    //return {}
+    return {}
   },
   changeProjectName: (projectName) => (state, actions) => {
     Object.assign(state, {projectName: projectName})
-    //return {}
+    return {}
   },
 
   ...table(),
