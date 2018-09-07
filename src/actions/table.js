@@ -7,7 +7,9 @@ export default () => {
 
   return {
 
-    changeTalbeCellWidth: (width) => (state, actions) => {
+    changeTalbeCellWidth: (params) => (state, actions) => {
+
+      const [width, globalState] = params
 
       if (width >= cellMinWidth && width <= cellMaxWidth) {
 
@@ -16,7 +18,7 @@ export default () => {
             const value         = state.tasks[key]
             const widthCount    = utils.getTermFromDate(value.startDate, value.endDate)
             value.width         = widthCount * width -1
-            value.startPosition = (utils.getTermFromDate(utils.getDateStr(window.startDate), value.startDate)-1) * width
+            value.startPosition = (utils.getTermFromDate(globalState.tableStartDate, value.startDate)-1) * width
             value.endPosition   = value.startPosition + value.width
           }
         )
@@ -26,29 +28,30 @@ export default () => {
       }
     },
 
-    changeStartDate: (date)=>(state, actions)=>{
+    changeStartDate: (params)=>(state, actions)=>{
 
-      window.startDate = new Date(date) 
+      const [date, globalState] = params
 
-        window.defaultTaskEndDate = new Date(window.startDate)
-        var sd = startDate.getDate()
-        window.defaultTaskEndDate.setDate(sd+2)
+      state.tableStartDate = utils.getDateStr(new Date(date))
 
-        Object.keys(state.tasks).forEach(
-            function(index,val,arr) {
-              state.tasks[index].startPosition = (utils.getTermFromDate(utils.getDateStr(window.startDate), state.tasks[index].startDate)-1) * state.globalCellWidth
-          state.tasks[index].endPosition = state.tasks[index].startPosition + state.tasks[index].width
-            }
-            );
+      Object.keys(state.tasks).forEach(
+          function(index,val,arr) {
+            state.tasks[index].startPosition = (utils.getTermFromDate(globalState.tableStartDate, state.tasks[index].startDate)-1) * state.globalCellWidth
+        state.tasks[index].endPosition = state.tasks[index].startPosition + state.tasks[index].width
+          }
+          );
 
       Object.assign(state, {tableStartDate: date})
         return {}
     },
 
-    changeEndDate: (date)=>(state, actions)=>{
-      window.endDate   = new Date(date)
-        Object.assign(state, {tableEndDate: date})
-        return {}
+    changeEndDate: (params)=>(state, actions)=>{
+
+      const [date, globalState] = params
+
+      globalState.tableEndDate = utils.getDateStr(new Date(date))
+      Object.assign(state, {tableEndDate: date})
+      return {}
     },
   }
 }

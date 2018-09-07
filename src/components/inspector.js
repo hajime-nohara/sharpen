@@ -75,12 +75,12 @@ export default (state, actions) => {
               <i class="dropdown icon"></i>
               <span class="text">{state.i18n[state.locale].dayWidth}</span>
               <div class="menu">
-                <div class="item" onclick={()=>actions.changeTalbeCellWidth(50)}>1</div>
-                <div class="item" onclick={()=>actions.changeTalbeCellWidth(60)}>2</div>
-                <div class="item" onclick={()=>actions.changeTalbeCellWidth(70)}>3</div>
-                <div class="item" onclick={()=>actions.changeTalbeCellWidth(80)}>4</div>
-                <div class="item" onclick={()=>actions.changeTalbeCellWidth(90)}>5</div>
-                <div class="item" onclick={()=>actions.changeTalbeCellWidth(100)}>6</div>
+                <div class="item" onclick={()=>actions.changeTalbeCellWidth([50, state])}>1</div>
+                <div class="item" onclick={()=>actions.changeTalbeCellWidth([60, state])}>2</div>
+                <div class="item" onclick={()=>actions.changeTalbeCellWidth([70, state])}>3</div>
+                <div class="item" onclick={()=>actions.changeTalbeCellWidth([80, state])}>4</div>
+                <div class="item" onclick={()=>actions.changeTalbeCellWidth([90, state])}>5</div>
+                <div class="item" onclick={()=>actions.changeTalbeCellWidth([100, state])}>6</div>
               </div>
             </div>
           </div>

@@ -47,6 +47,7 @@ export default {
     nickname:        'ニックネーム',
     projectName:     'プロジェクト名',
     getStarted:      '使ってみる',
+    newTask:         '新しいタスク',
   }, 
 
   en: {
@@ -94,5 +95,6 @@ export default {
     nickname:       'Nickname',
     projectName:    'Project name',
     getStarted:     'Get started',
+    newTask:        'New Task',
   }
 }

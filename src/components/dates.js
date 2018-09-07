@@ -27,7 +27,7 @@ export default (state, actions) => {
                             defaultDate: dateformat(dateObj, 'yyyy-mm-dd'),
                             locale: state.i18n[state.locale].flatpickr,
                             onChange: function (date, text, mode) {
-                              actions[actionName](dateformat(date, 'yyyy-mm-dd'))
+                              actions[actionName]([dateformat(date, 'yyyy-mm-dd'), state])
                             }
                          }
           flatpickr(document.getElementById(dayId), options)

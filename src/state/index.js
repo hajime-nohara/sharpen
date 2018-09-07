@@ -2,21 +2,13 @@ import utils from '../classes/utils'
 import i18n  from './i18n'
 
 // default data
-const globalCellWidth      = 70;
-window.resizeStartingPoint = "";
-window.globalUpdateId      = 0;
-window.clickCancel         = false
+const globalCellWidth = 70;
 
 // default endDate is 1 month later for table
-window.startDate = new Date 
-window.endDate   = new Date
-window.endDate.setMonth(endDate.getMonth() + 1)
-window.endDate.setDate(startDate.getDate() - 1)
-
-window.defaultTaskStartDate = new Date()
-var sd = defaultTaskStartDate.getDate()
-window.defaultTaskEndDate   = new Date()
-window.defaultTaskEndDate.setDate(sd+1)
+const startDate = new Date 
+const endDate   = new Date
+endDate.setMonth(endDate.getMonth() + 1)
+endDate.setDate(startDate.getDate() - 1)
 
 export default {
   // common state value for api
@@ -27,10 +19,9 @@ export default {
   // common state value for table
   projectName:          "First Project",  
   pageXStartPoint:      0,
-  resizeStartingPoint:  "",
   globalCellWidth:      globalCellWidth,
-  tableStartDate:       utils.getDateStr(window.startDate),
-  tableEndDate:         utils.getDateStr(window.endDate),
+  tableStartDate:       utils.getDateStr(startDate),
+  tableEndDate:         utils.getDateStr(endDate),
 
   // common state value for locale
   locale:               "en",
@@ -42,6 +33,7 @@ export default {
   // default task
   tasks: 
     {
+/*
       1: { 
           id:             1,
           title:          "This is first task of 'sharpen'. Please check detail.",
@@ -53,8 +45,8 @@ export default {
           startPosition:  globalCellWidth*2,
           endPosition:    (globalCellWidth*2) + (4*globalCellWidth),
           width:          4 * globalCellWidth-1,
-          startDate:      utils.get_date(globalCellWidth*2, globalCellWidth, window.startDate),
-          endDate:        utils.get_date((globalCellWidth*2)+(4 * globalCellWidth-1), globalCellWidth, window.startDate),
+          startDate:      utils.get_date(globalCellWidth*2, globalCellWidth, startDate),
+          endDate:        utils.get_date((globalCellWidth*2)+(4 * globalCellWidth-1), globalCellWidth, startDate),
          },
       2: { 
           id:             2,
@@ -71,8 +63,8 @@ export default {
           startPosition:  globalCellWidth,
           endPosition:    (globalCellWidth) + (2*globalCellWidth),
           width:          2 * globalCellWidth-1,
-          startDate:      utils.get_date(globalCellWidth, globalCellWidth, window.startDate),
-          endDate:        utils.get_date((globalCellWidth)+(2 * globalCellWidth-1), globalCellWidth, window.startDate),
+          startDate:      utils.get_date(globalCellWidth, globalCellWidth, startDate),
+          endDate:        utils.get_date((globalCellWidth)+(2 * globalCellWidth-1), globalCellWidth, startDate),
          },
       3: { 
           id:             3,
@@ -97,8 +89,8 @@ export default {
           startPosition:  globalCellWidth*2,
           endPosition:    (globalCellWidth*2) + (3* globalCellWidth),
           width:          3 * globalCellWidth-1,
-          startDate:      utils.get_date(globalCellWidth*2, globalCellWidth, window.startDate),
-          endDate:        utils.get_date((globalCellWidth*2)+(3 * globalCellWidth-1), globalCellWidth, window.startDate),
+          startDate:      utils.get_date(globalCellWidth*2, globalCellWidth, startDate),
+          endDate:        utils.get_date((globalCellWidth*2)+(3 * globalCellWidth-1), globalCellWidth, startDate),
          },
       4: { 
           id:             4,
@@ -113,11 +105,11 @@ export default {
           startPosition:  globalCellWidth*3,
           endPosition:    (globalCellWidth*3) + (4 * globalCellWidth),
           width:          4 * globalCellWidth-1,
-          startDate:      utils.get_date(globalCellWidth*3, globalCellWidth, window.startDate),
-          endDate:        utils.get_date((globalCellWidth*3)+(4 * globalCellWidth-1), globalCellWidth, window.startDate),
+          startDate:      utils.get_date(globalCellWidth*3, globalCellWidth, startDate),
+          endDate:        utils.get_date((globalCellWidth*3)+(4 * globalCellWidth-1), globalCellWidth, startDate),
          },
 
-
+*/
     },
 
 }

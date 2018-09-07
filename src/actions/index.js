@@ -220,19 +220,19 @@ export default {
     add: (globalState) => (state) => {
 
       //window.his() くそ重くなるので一旦はずす
-
-      let id = Number(Object.keys(state)[Object.keys(state).length -1]) + 1
-
-      let tempDate     = new Date()
-      let start        = Math.abs(utils.getTermFromDate(utils.getDateStr(tempDate), utils.getDateStr(window.startDate))) + 1
-      let addStartDate = window.startDate.getDate()
+      const taskIds    = Object.keys(state)
+      const id         = taskIds.length ? (Number(Object.keys(state)[Object.keys(state).length -1]) + 1) : 1
+      const startDate  = new Date(globalState.tableStartDate)
+      let tempDate     = new Date(id==1 ? new Date : state[Object.keys(state).length].endDate)
+      let start        = Math.abs(utils.getTermFromDate(utils.getDateStr(tempDate), globalState.tableStartDate)) + 1
+      let addStartDate = startDate.getDate()
 
       state[id] = 
       { 
           id:             id,
           display:        "",
-          title:          "Added task",
-          description:    "",
+          title:          globalState.i18n[globalState.locale].newTask,
+          description:    globalState.i18n[globalState.locale].newTask,
           member:         [],
           todo:           {},
           comment:        {},
@@ -241,10 +241,10 @@ export default {
           endPosition:    (start * globalState.globalCellWidth) + (2*globalState.globalCellWidth),
           width:          2 * globalState.globalCellWidth-1,
           pageX:          0,
-          startDate:      utils.get_date(start * globalState.globalCellWidth, globalState.globalCellWidth, window.startDate),
-          endDate:        utils.get_date((start * globalState.globalCellWidth)+(2 * globalState.globalCellWidth-1), globalState.globalCellWidth, window.startDate),
+          startDate:      utils.get_date(start * globalState.globalCellWidth, globalState.globalCellWidth, startDate),
+          endDate:        utils.get_date((start * globalState.globalCellWidth)+(2 * globalState.globalCellWidth-1), globalState.globalCellWidth, startDate),
       }
-      utils.smoothScroll()
+      //utils.smoothScroll()
       return {}
     }, 
 
@@ -268,6 +268,7 @@ export default {
     dragEnd: (params) => (state, actions) => {
 
       const [pageX, globalState, globalUpdateId, pageXPoint] = params
+      const tableStartDate = new Date(globalState.tableStartDate)
 
       let startPosition = 0
       if (pageX > pageXPoint) {
@@ -277,8 +278,8 @@ export default {
       }
       state[globalUpdateId].startPosition = startPosition
       state[globalUpdateId].endPosition   = startPosition + state[globalUpdateId].width
-      state[globalUpdateId].startDate     = utils.get_date(startPosition, globalState.globalCellWidth, window.startDate)
-      state[globalUpdateId].endDate       = utils.get_date(startPosition + state[globalUpdateId].width, globalState.globalCellWidth, window.startDate)
+      state[globalUpdateId].startDate     = utils.get_date(startPosition, globalState.globalCellWidth, tableStartDate)
+      state[globalUpdateId].endDate       = utils.get_date(startPosition + state[globalUpdateId].width, globalState.globalCellWidth, tableStartDate)
       return {}
     },
 
@@ -289,7 +290,6 @@ export default {
         e.preventDefault();
         let pageX = e.pageX;
 
-        resizeStartingPoint = ""
         let startPosition = 0
         if (e.pageX > pageXPoint) {
           startPosition = utils.widthResized((e.pageX - pageXPoint), globalState.globalCellWidth) + state[globalUpdateId].startPosition
@@ -306,9 +306,11 @@ export default {
           width         = globalState.globalCellWidth
         }
 
+        const tableStartDate = new Date(globalState.tableStartDate)
+
         state[globalUpdateId].startPosition = startPosition
-        state[globalUpdateId].startDate     = utils.get_date(startPosition, globalState.globalCellWidth, window.startDate)
-        state[globalUpdateId].endDate       = utils.get_date(startPosition + width -1, globalState.globalCellWidth, window.startDate)
+        state[globalUpdateId].startDate     = utils.get_date(startPosition, globalState.globalCellWidth, tableStartDate)
+        state[globalUpdateId].endDate       = utils.get_date(startPosition + width -1, globalState.globalCellWidth, tableStartDate)
         state[globalUpdateId].width         = width -1
         return {}
 
@@ -322,7 +324,6 @@ export default {
         e.preventDefault();
         let pageX = e.pageX;
 
-        resizeStartingPoint = ""
 
         let width = 0
         if (e.pageX > pageXPoint) {
@@ -336,9 +337,11 @@ export default {
           width = globalState.globalCellWidth
         }
 
+        const tableStartDate = new Date(globalState.tableStartDate)
+
         state[globalUpdateId].width       = width
         state[globalUpdateId].endPosition = state[globalUpdateId]["startPosition"] + width
-        state[globalUpdateId].endDate     = utils.get_date(state[globalUpdateId]["startPosition"] + width -1, globalState.globalCellWidth, window.startDate)
+        state[globalUpdateId].endDate     = utils.get_date(state[globalUpdateId]["startPosition"] + width -1, globalState.globalCellWidth, tableStartDate)
         return {}
 
     }
