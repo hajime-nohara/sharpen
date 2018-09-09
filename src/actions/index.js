@@ -248,7 +248,7 @@ export default {
       const taskIds    = Object.keys(state)
       const id         = taskIds.length ? (Number(Object.keys(state)[Object.keys(state).length -1]) + 1) : 1
       const startDate  = new Date(globalState.tableStartDate)
-      let tempDate     = new Date(id==1 ? new Date : state[Object.keys(state).length].endDate)
+      let tempDate     = new Date(id==1 ? new Date : state[taskIds[Object.keys(state).length-1]].endDate)
       let start        = Math.abs(utils.getTermFromDate(utils.getDateStr(tempDate), globalState.tableStartDate)) + 1
       let addStartDate = startDate.getDate()
 

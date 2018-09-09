@@ -255,11 +255,21 @@ export default (state, actions, params) => {
 
 
 
+      const deleteTask = () => {
+         actions.tasks.del(params.id)
+      }      
+
+      const deleteTaskWrap = () => {
+        // when semantic moda close it's will actioin with animation so we need  update state after finish amimation perfectly.
+        document.getElementById(params.id).style.display = "none"
+        setTimeout(deleteTask, 1000)
+      }
+
       return (
 
         <div class="ui longer modal transition scrolling" id={detailModalId}>
 
-          <div id={detailModalOpenId} onclick={()=>$('#'+detailModalId).modal({detachable: false}).modal('show')}/>
+          <div id={detailModalOpenId} onclick={()=>$('#'+detailModalId).modal({detachable: false, onDeny: deleteTaskWrap}).modal('show')}/>
           <div class="header">
             <div class="header" contentEditable="true" key={utils.random()} 
               onfocusout={titleOnFocusout}
@@ -354,7 +364,7 @@ export default (state, actions, params) => {
           </div>
 
           <div class="actions">
-            <div class="ui black deny button" onclick={()=>actions.tasks.del(params.id)}>
+            <div class="ui black deny button">
               {state.i18n[state.locale].del}
             </div>
             <div class="ui positive icon button">
