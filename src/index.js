@@ -1,13 +1,14 @@
 import { app } from 'hyperapp'
 import actions from './actions'
 import state   from './state'
-import view    from './components'
-import utils   from './classes/utils'
+import view           from './components'
+import utils          from './classes/utils'
+import { withLogger } from "@hyperapp/logger"
 import 'normalize.css'
 
 const getPrams = utils.getUrlVars()
 
-const start = (state) => app(state, actions, view, document.getElementById('sharpen'))
+const start = (state) => withLogger(app)(state, actions, view, document.getElementById('sharpen'))
 
 if (getPrams.id != undefined && getPrams.id.length > 0) {
   // when there is project id, load data.

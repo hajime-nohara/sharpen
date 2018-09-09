@@ -13,7 +13,7 @@ export default (state, actions, params) => {
         const select = e.target
         for (let i = 0; i < select.childNodes.length; i++) {
           if (select.childNodes[i].selected) {
-            selectedValue.push(Number(select.childNodes[i].value))
+            selectedValue.push(select.childNodes[i].value)
           }
         }
         actions.tasks.changeMember([params.id, selectedValue])
@@ -22,7 +22,7 @@ export default (state, actions, params) => {
       const assignedMember = []
       Object.keys(state.member).forEach(
         function(index,val,arr) {
-          const isSelected = ((params.member || params.member != undefined) && params.member.includes(Number(index)))
+          const isSelected = ((params.member || params.member != undefined) && params.member.includes(index))
           assignedMember.push(<option 
                                     key={utils.random()} 
                                     value={index}
@@ -384,15 +384,16 @@ export default (state, actions, params) => {
               <h4 class="ui dividing header">{state.i18n[state.locale].comment}</h4>
               <div class="ui comments">
                     {comment}
-                    <form class="ui reply form">
-                      <div class="field">
-                        <div class="ui segment" contentEditable="true" key={utils.random()} 
-                          onfocusout={commentOnFocusout}
-                          onkeydown={commentOnKeydown}
-                        ></div>
-                      </div>
-                    </form>
               </div>
+
+              <form class="ui reply form">
+                <div class="field">
+                  <div class="ui segment" contentEditable="true" key={utils.random()} 
+                    onfocusout={commentOnFocusout}
+                    onkeydown={commentOnKeydown}
+                  ></div>
+                </div>
+              </form>
             </div>
 
           </div>

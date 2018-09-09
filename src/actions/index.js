@@ -16,7 +16,7 @@ export default {
             xxxxx: {id: "xxxxx", name: "xxxxx"},
             xxxxx: {id: "xxxxx", name: "xxxxx"}
           },
-          currentProject: "xxxxx" 
+          currentProjectId: "xxxxx" 
         }
     */
     let sharpenDataLS = localStorage.getItem('sharpen_data')
@@ -31,7 +31,7 @@ export default {
       }
       const sharpenUserLS = {}
       const memberId            = utils.random()
-      sharpenUserLS["currentProject"]            = state.projectId
+      sharpenUserLS["currentProjectId"]            = state.projectId
       sharpenUserLS["memberId"]                  = memberId
       sharpenUserLS["memberName"]                = null
       sharpenUserLS["projects"]                  = {}
@@ -49,7 +49,7 @@ export default {
     const sharpenUserLS = JSON.parse(localStorage.getItem('sharpen_user'))
     const projectId     = utils.random()
     sharpenUserLS["projects"][projectId] = {id: projectId, name: projectName}
-    sharpenUserLS.currentProject = projectId
+    sharpenUserLS.currentProjectId = projectId
     localStorage.setItem('sharpen_user', JSON.stringify(sharpenUserLS))
     const sharpenDataLS = JSON.parse(localStorage.getItem('sharpen_data'))
     defaultState.projectName = projectName
@@ -73,7 +73,7 @@ export default {
   changeProject: (projectId) => (state, actions) => {
     // store to sharpen_user, sharpen_data (local storage)
     const sharpenUserLS = JSON.parse(localStorage.getItem('sharpen_user'))
-    sharpenUserLS.currentProject = projectId
+    sharpenUserLS.currentProjectId = projectId
     localStorage.setItem('sharpen_user', JSON.stringify(sharpenUserLS))
     const sharpenDataLS = JSON.parse(localStorage.getItem('sharpen_data'))
     if (!sharpenDataLS[projectId]) {
@@ -88,7 +88,7 @@ export default {
   changeProjectName: (projectName) => (state, actions) => {
     let sharpenUserLS        = localStorage.getItem('sharpen_user')
     sharpenUserLS            = JSON.parse(sharpenUserLS)
-    Object.assign(sharpenUserLS.projects[sharpenUserLS.currentProject], {name: projectName})
+    Object.assign(sharpenUserLS.projects[sharpenUserLS.currentProjectId], {name: projectName})
     localStorage.setItem('sharpen_user', JSON.stringify(sharpenUserLS))
     Object.assign(state, {projectName: projectName})
     //return {}
@@ -123,17 +123,18 @@ export default {
     //return {}
   },
 
-  save: () => (state) => {
+  publish: () => (state) => {
 
-    const firstSave = (state.sharpenId == null)
+    const sharpenUserLS = JSON.parse(localStorage.getItem('sharpen_user'))
+    const sharpenDataLS = JSON.parse(localStorage.getItem('sharpen_data'))
+
     const formData = new FormData();
-    if (firstSave) {
-      Object.assign(state, {sharpenId: utils.random()})
-    }
-    formData.append("id", state.sharpenId)
-    formData.append("state", JSON.stringify(state))
+    const actoin   = state.published ? "PUT" : "POST"
+    formData.append("id",       state.projectId)
+    formData.append("state",    JSON.stringify(state))
+    formData.append("memberId", sharpenUserLS.memberId)
     const request = new XMLHttpRequest();
-    request.open(firstSave ? "POST": "PUT", state.apiEndPoint + (firstSave ? "" : state.sharpenId), true);
+    request.open(actoin, state.apiEndPoint + (state.published ? "" : state.projectId), true);
     request.onload = function () {
       alert("sucess!")
     }

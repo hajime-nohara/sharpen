@@ -38,7 +38,7 @@ export default (state, actions) => {
   return (
     <main class={styl.container + " ui fluid container"}>
 
-      <div class="ui inverted menu dummy"/>
+      <div class={styl.dummyHeader + " ui inverted menu"}/>
       <div class="ui fixed inverted menu">
         <div class="ui container">
           <a href="http://www.sharpen.tokyo" class={styl.headerLogo + " header item borderless"}>

@@ -60,11 +60,11 @@ export default (state, actions) => {
         </div>
       </div>
 
-      <a class="item" onclick={()=>actions.save()}>{state.i18n[state.locale].save}</a>
+      <a class="item" onclick={()=>actions.publish()}>{state.i18n[state.locale].publish}</a>
       <a class="item" onclick={()=>actions.tasks.add(state)}>{state.i18n[state.locale].add}</a>
 
       <div class="item">
-        <div class="ui dropdown link" oncreate={(e)=>$(e).dropdown()}>
+        <div class="ui dropdown link" oncreate={(e)=>$(e).dropdown()} key={utils.random()}>
           <i class="wrench icon"></i>
           <i class="dropdown icon"></i>
           <div class="menu"> 

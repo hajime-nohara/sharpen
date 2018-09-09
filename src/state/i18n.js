@@ -2,6 +2,7 @@ import { Japanese }   from "flatpickr/dist/l10n/ja.js"
 
 export default {
   ja: {
+    publish: '公開する',
     dayColorsHash: {0: '#732141', 6:  '#74A5CF'},
     save: '保存',
     add:  '追加',
@@ -51,6 +52,7 @@ export default {
   }, 
 
   en: {
+    publish: 'publish',
     save: 'save',
     add:  'add',
     calendar: {

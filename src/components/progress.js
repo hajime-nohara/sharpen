@@ -2,13 +2,19 @@ import { h }       from "hyperapp"
 import utils       from '../classes/utils'
 import detailModal from './detailModal'
 import styl        from './styles/progress.styl'
+// for mobile D&D
+import {polyfill}  from "mobile-drag-drop";
+import {scrollBehaviourDragImageTranslateOverride} from "mobile-drag-drop/scroll-behaviour"
+polyfill({
+  dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
+})
 
 export default (state, actions, data) => {
 
-  let isResizing      = false
-  let pageX           = 0
-  let pageXStartPoint = 0
-  let sourceId        = 0
+  let isResizing         = false
+  let pageX              = 0
+  let pageXStartPoint    = 0
+  let sourceId           = 0
 
   /* row */
   const numberOfDays = utils.getTermFromDate(state.tableStartDate, state.tableEndDate)
@@ -16,16 +22,30 @@ export default (state, actions, data) => {
   const ondragover = (e) => {
     e.preventDefault()
   }
+
   const ondrop = (e) => {
+
     pageX    = e.pageX
-    sourceId = parseInt(e.dataTransfer.getData("text"))
+    sourceId = parseInt(e.dataTransfer.getData("text/plain"))
     if (e.stopPropagation) {
       e.stopPropagation()
     }
     e.preventDefault();
     if (sourceId != data.id) {
       actions.tasks.changePosition([data.id, sourceId])
+    } else {
+
+      // when sourceId is Zero it's mobile device. 
+      if (sourceId === 0) {
+        sourceId = e.target.id
+        pageX    = e.pageX
+      } 
+      if (sourceId == data.id) {
+        actions.tasks.dragEnd([pageX, state, data.id, pageXStartPoint])
+      }
+
     }
+
   }
   const setBackgroundSize = (e) => {
     e.style.backgroundSize=utils.parsePx(state.globalCellWidth)
@@ -65,6 +85,11 @@ export default (state, actions, data) => {
     }
   }
   const onDragEnd = (e) => {
+    // when sourceId is Zero it's mobile device. 
+    if (sourceId === 0) {
+      sourceId = e.target.id
+      pageX    = e.pageX
+    } 
     if (sourceId == data.id) {
       actions.tasks.dragEnd([pageX, state, data.id, pageXStartPoint])
     }
@@ -125,10 +150,23 @@ export default (state, actions, data) => {
   const progressBarStyle = {width: utils.parsePercent(data.progress)}
 
   return (
-    <div>
+    <div key={utils.random()}>
       {/* row */}
-      <div class={styl.row} key={utils.random()} oncreate={setBackgroundSize} onupdate={setBackgroundSize} ondrop={ondrop} style={rowStyle} ondragover={ondragover}>
-        <div class={styl.progress + " ui indicating progress active"} onmouseup={draggableOff} onmousedown={draggableOn} ontouchstart={draggableOn} id={data.id} onclick={openModal} ondragstart={onDragStart} ondragend={onDragEnd} style={progressStyle}>
+      <div class={styl.row} 
+        style={rowStyle} 
+        oncreate={setBackgroundSize}
+        onupdate={setBackgroundSize}
+        ondrop={ondrop}
+        ondragover={ondragover}
+        ondragenter={ondragover}>
+        <div class={styl.progress + " ui indicating progress active"} 
+            id={data.id}
+            onmouseup={onDragEnd}
+            onmousedown={draggableOn}
+            ontouchstart={draggableOn}
+            onclick={openModal}
+            ondragstart={onDragStart}
+            style={progressStyle}>
           <div class="bar" style={progressBarStyle}>
             <div class="progress">{utils.parsePercent(data.progress)}</div>
           </div>
