@@ -69,7 +69,9 @@ module.exports = {
     }]
   },
   devServer: {
-    contentBase: './dist'
+    contentBase: './dist',
+    host: '192.168.1.5',
+    disableHostCheck: true
   },
   devtool: 'inline-source-map',
   plugins: [

@@ -2,6 +2,10 @@ import dateformat from 'dateformat'
 
 export default new class {
 
+  isMobile () {
+    return (typeof window.orientation !== 'undefined')
+  }
+
   range (range) {
     return Array.apply(null, {length: range}).map(Number.call, Number)
   }

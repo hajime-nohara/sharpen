@@ -8,9 +8,9 @@ import styl       from './styles/edit.styl'
 export default (state, actions, params) => {
 
       /* member */
-      const optionOnclick = (e) => {
+      const onChangeMemberSelect = (e) => {
         const selectedValue = []
-        const select = e.target.parentElement
+        const select = e.target
         for (let i = 0; i < select.childNodes.length; i++) {
           if (select.childNodes[i].selected) {
             selectedValue.push(Number(select.childNodes[i].value))
@@ -28,7 +28,6 @@ export default (state, actions, params) => {
                                     value={index}
                                     oncreate={(e)=>e.selected=isSelected}
                                     onupdate={(e)=>e.selected=isSelected}
-                                    onclick={optionOnclick}
                                     ondblclick={()=>actions.deleteMasterMember(index)}
                               >@{state.member[index]}</option>
           )
@@ -81,75 +80,107 @@ export default (state, actions, params) => {
         params.comment = {}
       }
 
-
+      const sharpenUserLS = JSON.parse(localStorage.getItem('sharpen_user'))
+    
       Object.keys(params.comment).forEach(
         function(index,val,arr) {
-
-          const commentEditOnFocusout = (e)=>actions.tasks.changeComment({id: params.id, value: {id: index, comment: e.target.innerHTML, timestamp: params.comment[index].timestamp}})
-
-          const commentEditOnKeydown = (e)=>{
-            if( e.keyCode === 13 && !(e.shiftKey === true || e.ctrlKey === true || e.altKey === true) ) {
-                e.target.blur();
-                actions.tasks.changeComment({id: params.id, value: {id: index, comment: e.target.innerHTML, timestamp: params.comment[index].timestamp}})
+          const commentEditOnFocusout = (e)=>{
+            actions.tasks.changeComment({
+              id: params.id,
+              value: {
+                id: index,
+                comment: e.target.innerHTML,
+                timestamp: params.comment[index].timestamp,
+                memberId:   sharpenUserLS.memberId,
+                memberName: sharpenUserLS.memberName
               }
+            })
           }
 
-
+          const commentEditOnKeydown = (e)=>{
+            if( (e.keyCode === 13 && !utils.isMobile()) && !(e.shiftKey === true || e.ctrlKey === true || e.altKey === true) ) {
+              e.target.blur();
+              actions.tasks.changeComment({
+                id: params.id,
+                value: {
+                  id: index,
+                  comment: e.target.innerHTML,
+                  timestamp: params.comment[index].timestamp,
+                  memberId:   sharpenUserLS.memberId,
+                  memberName: sharpenUserLS.memberName
+                }
+              })
+            }
+          }
+          
+          const isMember     = params.comment[index].memberId == sharpenUserLS.memberId 
+          const deleteButton = isMember ?
+            <i class={styl.iconClick + " trash icon"} onclick={(e)=>actions.tasks.deleteComment({id: params.id, value: index})}></i> : null
+  
           comment.push(
-
-
-                    <div class="comment">
-                      <a class="avatar">
-                        <i class={styl.avatarIcon + " user circle icon"}></i>
-                      </a>
-                      <div class="content">
-                        <a class="author">You</a>
-                        <div class="metadata">
-                          <span class="date">{params.comment[index].timestamp}</span>
-                        </div>
-                        <div class="text" contentEditable="true" key={utils.random()} 
-                          onfocusout={commentEditOnFocusout}
-                          onkeydown={commentEditOnKeydown}
-                          onupdate={(e)=>e.innerHTML=params.comment[index].comment}
-                          oncreate={(e)=>e.innerHTML=params.comment[index].comment}
-                        >
-                        </div>
-                        <div class="actions">
-                          <a class="reply">Reply</a>
-                          <i class={styl.iconClick + " trash icon"} onclick={(e)=>actions.tasks.deleteComment({id: params.id, value: index})}></i>
-                        </div>
-                      </div>
-                    </div>
-
-
-
+            <div class="comment">
+              <a class="avatar">
+                <i class={styl.avatarIcon + " user circle icon"}></i>
+              </a>
+              <div class="content">
+                <a class="author">{params.comment[index].memberName}</a>
+                <div class="metadata">
+                  <span class="date">{params.comment[index].timestamp}</span>
+                </div>
+                <div class={styl.comment + " text"} contentEditable={isMember ? "true" : "false"} key={utils.random()} 
+                  onfocusout={commentEditOnFocusout}
+                  onkeydown={commentEditOnKeydown}
+                  onupdate={(e)=>e.innerHTML=params.comment[index].comment}
+                  oncreate={(e)=>e.innerHTML=params.comment[index].comment}
+                >
+                </div>
+                <div class="actions">
+                  {/*<a class="reply">Reply</a>*/}
+                  {deleteButton}
+                </div>
+              </div>
+            </div>
           )
         }
       )
 
       const commentOnFocusout = (e)=>{
-        let id = 1
-          if (Object.keys(params.comment).length > 0) {
-            id = Number(Object.keys(params.comment)[Object.keys(params.comment).length -1]) + 1
-          }
         if (e.target.innerHTML.length > 0) {
-          actions.tasks.changeComment({id: params.id, value: {id: id, comment: e.target.innerHTML, timestamp: dateformat(new Date, 'yyyy-mm-dd hh:mm:ss')}})
+
+          const id = (Object.keys(params.comment).length > 0) ? Number(Object.keys(params.comment)[Object.keys(params.comment).length -1]) + 1 : 1
+
+          actions.tasks.changeComment({
+            id: params.id,
+            value: {
+              id:         id,
+              comment:    e.target.innerHTML,
+              timestamp:  dateformat(new Date, 'yyyy-mm-dd hh:mm:ss'),
+              memberId:   sharpenUserLS.memberId,
+              memberName: sharpenUserLS.memberName
+            }
+          })
         }
         e.target.innerHTML = ''
       }
 
       const commentOnKeydown = (e)=>{
-        if( e.keyCode === 13 && !(e.shiftKey === true || e.ctrlKey === true || e.altKey === true) ) {
+        if( (e.keyCode === 13 && !utils.isMobile()) && !(e.shiftKey === true || e.ctrlKey === true || e.altKey === true) ) {
           
             e.target.blur();
-            let id = 1
-              if (Object.keys(params.comment).length > 0) {
-                id = Number(Object.keys(params.comment)[Object.keys(params.comment).length-1]) + 1
-              }
 
-            e.target.blur();
             if (e.target.innerHTML.length > 0) {
-              actions.tasks.changeComment({id: params.id, value: {id: id, comment: e.target.innerHTML, timestamp: dateformat(new Date, 'yyyy-mm-dd hh:mm:ss')}})
+
+              const id = (Object.keys(params.comment).length > 0) ? Number(Object.keys(params.comment)[Object.keys(params.comment).length -1]) + 1 : 1
+              actions.tasks.changeComment({
+                id: params.id,
+                value: {
+                  id: id,
+                  comment: e.target.innerHTML,
+                  timestamp: dateformat(new Date, 'yyyy-mm-dd hh:mm:ss'),
+                  memberId:   sharpenUserLS.memberId,
+                  memberName: sharpenUserLS.memberName
+                }
+              })
             }
             e.target.innerHTML = ''
           }
@@ -196,7 +227,7 @@ export default (state, actions, params) => {
       }
 
       const descriptionOnKeydown = (e)=> {
-        if( e.keyCode === 13 && !(e.shiftKey === true || e.ctrlKey === true || e.altKey === true) ) {
+        if( (e.keyCode === 13 && !utils.isMobile()) && !(e.shiftKey === true || e.ctrlKey === true || e.altKey === true) ) {
             e.target.blur();
             actions.tasks.changeDescription({id: params.id, description: e.target.value});
           }
@@ -282,7 +313,7 @@ export default (state, actions, params) => {
           <div class="scrolling content">
             <div class="ui form">
               <h4 class="ui dividing header">{state.i18n[state.locale].date}</h4>
-              <div class="six wide field">
+              <div class="field">
                 <div class="two fields">
                   <div class="field">
                     <div class="ui calendar" value={params.startDate} actionName="changeStartDateFromCalendar" oncreate={bindCalendar} key={utils.random()}>
@@ -314,13 +345,15 @@ export default (state, actions, params) => {
               </div>
 
               <h4 class="ui dividing header">{state.i18n[state.locale].member}</h4>
-              <div class="six wide field">
-                <div class="two fields">
-                  <div class="field">
-                    <select class="ui search selection" multiple>
+
+              <div class="field">
+                <div class="fields">
+                  <div class="sixteen wide field">
+                    <select class="ui search selection" multiple key={utils.random()} onchange={onChangeMemberSelect}>
                       {assignedMember}
                     </select>
                   </div>
+                  {/* Right now this function is no required.
                   <div class="field">
                     <div class="ui left icon input">
                       <input type="text" placeholder={state.i18n[state.locale].addMember}
@@ -330,11 +363,12 @@ export default (state, actions, params) => {
                       <i class="user plus icon"></i>
                     </div>
                   </div>
+                  */}
                 </div>
               </div>
 
               <h4 class="ui dividing header">{state.i18n[state.locale].todo}</h4>
-              <div class="ui large vertical menu">
+              <div class="ui large vertical menu sixteen wide field">
                 {todo}
                 <div class="item">
                   <div class="ui icon input">

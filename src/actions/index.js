@@ -54,6 +54,7 @@ export default {
     const sharpenDataLS = JSON.parse(localStorage.getItem('sharpen_data'))
     defaultState.projectName = projectName
     defaultState.projectId   = projectId
+    defaultState.projectOwner= sharpenUserLS.memberId
     sharpenDataLS[projectId] = defaultState
     localStorage.setItem('sharpen_data', JSON.stringify(sharpenDataLS))
     // return default state updated project name, id
@@ -66,7 +67,7 @@ export default {
     sharpenUserLS.memberName = memberName
     localStorage.setItem('sharpen_user', JSON.stringify(sharpenUserLS))
     Object.assign(state.member, {[sharpenUserLS.memberId]: sharpenUserLS.memberName})
-    return {}
+    //return {}
   },
 
   changeProject: (projectId) => (state, actions) => {
@@ -90,7 +91,7 @@ export default {
     Object.assign(sharpenUserLS.projects[sharpenUserLS.currentProject], {name: projectName})
     localStorage.setItem('sharpen_user', JSON.stringify(sharpenUserLS))
     Object.assign(state, {projectName: projectName})
-    return {}
+    //return {}
   },
 
   ...table(),
@@ -115,9 +116,11 @@ export default {
     Object.assign(state.member, {[params.id]: params.value})
     return {}
   },
+
   deleteMasterMember: (id)=>(state)=>{
-    delete(state.member[id])
-    return {}
+    // Right now I am thinking do user need this function.
+    //delete(state.member[id])
+    //return {}
   },
 
   save: () => (state) => {
@@ -142,19 +145,18 @@ export default {
 
     // tasks
     changeTodo: (params)=>(state)=>{
-      globalUpdateId = params.id;
-      let updatedTodo = Object.assign(state[globalUpdateId].todo, {[params.value.id]: params.value})
+      let updatedTodo = Object.assign(state[params.id].todo, {[params.value.id]: params.value})
       // update progress
-      let total   = Object.keys(state[globalUpdateId].todo).length
+      let total   = Object.keys(state[params.id].todo).length
       let checked = 0
-      Object.keys(state[globalUpdateId].todo).forEach(
+      Object.keys(state[params.id].todo).forEach(
         function(index,val,arr) {
-          if (state[globalUpdateId].todo[index].done) {
+          if (state[params.id].todo[index].done) {
             checked++
           }
         }
       );
-      state[globalUpdateId].progress = parseInt((checked.toFixed(2) / total.toFixed(2)) * 100)
+      state[params.id].progress = parseInt((checked.toFixed(2) / total.toFixed(2)) * 100)
       return {}
     },
 
@@ -174,66 +176,59 @@ export default {
     },
 
     changeTodoTitle: (params)=>(state)=>{
-      globalUpdateId = params.id;
-      state[globalUpdateId].todo[params.value.id].title = params.value.title
+      state[params.id].todo[params.value.id].title = params.value.title
       return {}
     },
 
     changeTodoStatus: (params)=>(state)=>{
-      globalUpdateId = params.id;
-      state[globalUpdateId].todo[params.value.id].done = params.value.status
-      let total   = Object.keys(state[globalUpdateId].todo).length
+      state[params.id].todo[params.value.id].done = params.value.status
+      let total   = Object.keys(state[params.id].todo).length
       let checked = 0
-      Object.keys(state[globalUpdateId].todo).forEach(
+      Object.keys(state[params.id].todo).forEach(
         function(index,val,arr) {
-          if (state[globalUpdateId].todo[index].done) {
+          if (state[params.id].todo[index].done) {
             checked++
           }
         }
       );
-      state[globalUpdateId].progress = parseInt((checked.toFixed(2) / total.toFixed(2)) * 100)
+      state[params.id].progress = parseInt((checked.toFixed(2) / total.toFixed(2)) * 100)
       return {}
     },
 
     deleteTodo: (params)=>(state)=>{
-      globalUpdateId = params.id;
-      delete(state[globalUpdateId].todo[params.value])
-      let total   = Object.keys(state[globalUpdateId].todo).length
+      delete(state[params.id].todo[params.value])
+      let total   = Object.keys(state[params.id].todo).length
       let checked = 0
-      Object.keys(state[globalUpdateId].todo).forEach(
+      Object.keys(state[params.id].todo).forEach(
         function(index,val,arr) {
-          if (state[globalUpdateId].todo[index].done) {
+          if (state[params.id].todo[index].done) {
             checked++
           }
         }
       );
-      state[globalUpdateId].progress = parseInt((checked.toFixed(2) / total.toFixed(2)) * 100)
+      state[params.id].progress = parseInt((checked.toFixed(2) / total.toFixed(2)) * 100)
       return {}
     },
 
     // comment
     changeComment: (params)=>(state)=>{
-      globalUpdateId = params.id;
-      let updatedComment = Object.assign(state[globalUpdateId].comment, {[params.value.id]: params.value})
+      let updatedComment = Object.assign(state[params.id].comment, {[params.value.id]: params.value})
       return {}
     },
 
     deleteComment: (params)=>(state)=>{
-      globalUpdateId = params.id;
-      delete(state[globalUpdateId].comment[params.value])
+      delete(state[params.id].comment[params.value])
       return {}
     },
 
     changeMember: (params) => (state, actions) => {
       const [id, member] = params
-      globalUpdateId = id
-      state[globalUpdateId].member = member 
+      state[id].member = member 
       return {}
     },
 
     changeDescription: (params) => (state, actions) => {
-      globalUpdateId = params.id;
-      state[globalUpdateId].description = params.description
+      state[params.id].description = params.description
       return {}
     },
 
