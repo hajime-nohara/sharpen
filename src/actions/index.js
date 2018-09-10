@@ -55,7 +55,7 @@ export default {
     defaultState.projectName = projectName
     defaultState.projectId   = projectId
     defaultState.projectOwner= sharpenUserLS.memberId
-    Object.assign(defaultState, {[sharpenUserLS.memberId]: sharpenUserLS.memberName})
+    Object.assign(defaultState.member, {[sharpenUserLS.memberId]: sharpenUserLS.memberName})
     sharpenDataLS[projectId] = defaultState
     localStorage.setItem('sharpen_data', JSON.stringify(sharpenDataLS))
 
@@ -76,7 +76,7 @@ export default {
     // store to cloud data store
     // todo
 
-    //return {}
+    return {}
   },
 
   changeProject: (projectId) => (state, actions) => {
@@ -101,7 +101,7 @@ export default {
     Object.assign(sharpenUserLS.projects[sharpenUserLS.currentProjectId], {name: projectName})
     localStorage.setItem('sharpen_user', JSON.stringify(sharpenUserLS))
     Object.assign(state, {projectName: projectName})
-    //return {}
+    return {}
   },
 
   ...table(),

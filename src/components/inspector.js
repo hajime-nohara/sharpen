@@ -48,7 +48,7 @@ export default (state, actions) => {
         <div class="ui floating dropdown icon" tabindex="0" oncreate={(e)=>$(e).dropdown({onChange: changeProject})} key={utils.random()}>
           <input type="hidden" name={state.projectName} value={state.projectId}/>
           <span class="text"></span>
-          <div class="project menu transition hidden" tabindex="-1">
+          <div class="project menu transition hidden">
             <div class="ui icon search input">
               <i class="search icon"></i>
               <input type="text" placeholder="Search Project" onkeyup={projectSearchOnChange}/>

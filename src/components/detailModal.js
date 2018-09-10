@@ -51,7 +51,7 @@ export default (state, actions, params) => {
 
           const todoTitleOnKeydown = (e) => {
             if (e.keyCode === 13) {
-                e.target.blur();
+                e.target.blur()
                 actions.tasks.changeTodoTitle({id: params.id, value: {id: index, title: e.target.value}})
               }
           }

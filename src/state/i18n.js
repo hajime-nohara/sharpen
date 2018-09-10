@@ -3,6 +3,7 @@ import { Japanese }   from "flatpickr/dist/l10n/ja.js"
 export default {
   ja: {
     languageName: "日本語",
+    searchLanguage: "言語を検索",
     publish: '公開する',
     dayColorsHash: {0: '#732141', 6:  '#74A5CF'},
     save: '保存',
@@ -49,13 +50,14 @@ export default {
     sharpenDescription:'Sharpen はログイン不要の超軽量なタスク管理アプリです。しかもあなたのタスクを簡単にシェアできます。',
     nickname:        'ニックネーム',
     projectName:     'プロジェクト名',
-    getStarted:      '使ってみる',
+    getStarted:      'はじめる',
     newTask:         '新しいタスク',
     selectLanguage:  '言語を選択',
   }, 
 
   en: {
     languageName: "English",
+    searchLanguage: "Search language...",
     publish: 'publish',
     save: 'save',
     add:  'add',

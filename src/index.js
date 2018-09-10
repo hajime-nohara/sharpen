@@ -35,9 +35,14 @@ if (getPrams.id != undefined && getPrams.id.length > 0) {
   const sharpenUserLS = JSON.parse(localStorage.getItem('sharpen_user'))
   const sharpenDataLS = JSON.parse(localStorage.getItem('sharpen_data'))
   const currentProjectState = sharpenDataLS[sharpenUserLS.currentProjectId]
-  // updated by new source 
-  currentProjectState.i18n = i18n 
-  start(currentProjectState)
+  if (currentProjectState) {
+    // updated by new source 
+    currentProjectState.i18n = i18n 
+    start(currentProjectState)
+  } else {
+    localStorage.setItem('sharpen_data', "")
+    start(state)
+  }
 } else {
   start(state)
 }
