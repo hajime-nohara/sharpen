@@ -147,7 +147,10 @@ export default (state, actions, data) => {
   }
 
   /* progress-bar */
+
+  const sharpenUserLS = JSON.parse(localStorage.getItem('sharpen_user'))
   const progressBarStyle = {width: utils.parsePercent(data.progress)}
+  const badge = data.watched.includes(sharpenUserLS.memberId) ? null : <div class={styl.badge + " ui blue empty circular label"}></div>
 
   return (
     <div key={utils.random()}>
@@ -161,7 +164,6 @@ export default (state, actions, data) => {
         ondragenter={ondragover}>
         <div class={styl.progress + " ui indicating progress active"} 
             id={data.id}
-            onmouseup={onDragEnd}
             onmousedown={draggableOn}
             ontouchstart={draggableOn}
             onclick={openModal}
@@ -173,10 +175,13 @@ export default (state, actions, data) => {
           {/* resizer start */}
           <div class={styl.resizerStart} onmousedown={resizeOnStart} ontouchstart={resizeOnStart} />
           {/* resizer end */}
-          <div class={styl.resizerEnd} onmousedown={resizeOnEnd} ontouchstart={resizeOnEnd} />
+          <div class={styl.resizerEnd} onmousedown={resizeOnEnd} ontouchstart={resizeOnEnd}>
+            {badge}
+          </div>
           {/* progress-bar */}
           <div class={styl.progressBarStyle + " progress-bar bg-faded"} style={progressBarStyle}/>
           <div class={styl.title + " label"}>{data.title}</div>
+          
         </div>
       </div>
     </div>

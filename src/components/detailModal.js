@@ -296,11 +296,12 @@ export default (state, actions, params) => {
         setTimeout(deleteTask, 1000)
       }
 
+      const watched = () => actions.tasks.watched(params.id)
       return (
 
         <div class="ui longer modal transition scrolling" id={detailModalId}>
 
-          <div id={detailModalOpenId} onclick={()=>$('#'+detailModalId).modal({detachable: false, onDeny: deleteTaskWrap}).modal('show')}/>
+          <div id={detailModalOpenId} onclick={()=>$('#'+detailModalId).modal({detachable: false, onDeny: deleteTaskWrap, onVisible: watched}).modal('show')}/>
           <div class="header">
             <div class="header" contentEditable="true" key={utils.random()} 
               onfocusout={titleOnFocusout}

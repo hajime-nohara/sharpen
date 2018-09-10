@@ -1,8 +1,9 @@
-import { app } from 'hyperapp'
-import actions from './actions'
-import state   from './state'
+import { app }        from 'hyperapp'
+import actions        from './actions'
+import state          from './state'
 import view           from './components'
 import utils          from './classes/utils'
+import i18n           from './state/i18n'
 import { withLogger } from "@hyperapp/logger"
 import 'normalize.css'
 
@@ -34,6 +35,8 @@ if (getPrams.id != undefined && getPrams.id.length > 0) {
   const sharpenUserLS = JSON.parse(localStorage.getItem('sharpen_user'))
   const sharpenDataLS = JSON.parse(localStorage.getItem('sharpen_data'))
   const currentProjectState = sharpenDataLS[sharpenUserLS.currentProjectId]
+  // updated by new source 
+  currentProjectState.i18n = i18n 
   start(currentProjectState)
 } else {
   start(state)

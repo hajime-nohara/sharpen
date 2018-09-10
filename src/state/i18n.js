@@ -2,10 +2,12 @@ import { Japanese }   from "flatpickr/dist/l10n/ja.js"
 
 export default {
   ja: {
+    languageName: "日本語",
     publish: '公開する',
     dayColorsHash: {0: '#732141', 6:  '#74A5CF'},
     save: '保存',
     add:  '追加',
+    addTask:  'タスク追加',
     calendar: {
       text: {
         days: [ '日', '月', '火', '水', '木', '金', '土' ],
@@ -49,12 +51,15 @@ export default {
     projectName:     'プロジェクト名',
     getStarted:      '使ってみる',
     newTask:         '新しいタスク',
+    selectLanguage:  '言語を選択',
   }, 
 
   en: {
+    languageName: "English",
     publish: 'publish',
     save: 'save',
     add:  'add',
+    addTask:  'Add Task',
     calendar: {
       text: {
         days: [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ],
@@ -98,5 +103,6 @@ export default {
     projectName:    'Project name',
     getStarted:     'Get started',
     newTask:        'New Task',
+    selectLanguage: 'Select Language',
   }
 }

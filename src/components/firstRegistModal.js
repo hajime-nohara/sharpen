@@ -5,10 +5,13 @@ import styl       from './styles/firstRegistModal.styl'
 // input view
 export default (state, actions) => {
 
+  const reRender = () => {
+    setTimeout(actions.reRender, 300)
+  }
   const show = (e) => {
     const sharpenUserLS = JSON.parse(localStorage.getItem('sharpen_user'))
     if (!sharpenUserLS.memberName) {
-      $(e).modal({detachable: false}).modal('show')
+      $(e).modal({detachable: false, onHide: reRender}).modal('show')
     }
   }
 
@@ -20,8 +23,22 @@ export default (state, actions) => {
     actions.changeProjectName(e.target.value)
   }
 
+  const changeLanguage = (val1, val2, el) => {
+    actions.changeLanguage(el[0].id)
+  }
+
   return (
-    <div class="ui basic modal" oncreate={show} key={utils.random()}>
+    <div class="ui basic modal" oncreate={show}>
+
+      <div class="ui floating dropdown labeled search icon button" oncreate={(e)=>$(e).dropdown({onChange: changeLanguage})}>
+        <i class="world icon"></i>
+        <input class="search" autocomplete="off" tabindex="0"/><span class="text">{state.i18n[state.locale].languageName}</span>
+        <div class="menu">
+          <div class="item" id="en">{state.i18n[state.locale].english}</div>
+          <div class="item" id="ja">{state.i18n[state.locale].japanese}</div>
+        </div>
+      </div>
+
       <div class={styl.firstDialogHeader + " ui icon header"}>
         <img class={styl.firstDialogHeaderLogo} src="assets/images/logo.svg"/><br/><br/>
         {state.i18n[state.locale].welcomToSharpen}
@@ -48,7 +65,7 @@ export default (state, actions) => {
             </div>
             <div class="field">
               <div class="actions">
-                <div class="ui right floated green ok inverted button" onclick={actions.reRender}>
+                <div class="ui right floated green ok inverted button">
                   <i class="checkmark icon"></i>
                   {state.i18n[state.locale].getStarted}
                 </div>

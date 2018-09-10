@@ -55,8 +55,13 @@ export default {
     defaultState.projectName = projectName
     defaultState.projectId   = projectId
     defaultState.projectOwner= sharpenUserLS.memberId
+    Object.assign(defaultState, {[sharpenUserLS.memberId]: sharpenUserLS.memberName})
     sharpenDataLS[projectId] = defaultState
     localStorage.setItem('sharpen_data', JSON.stringify(sharpenDataLS))
+
+    // store to cloud data store
+    // todo
+
     // return default state updated project name, id
     return defaultState
   },
@@ -67,6 +72,10 @@ export default {
     sharpenUserLS.memberName = memberName
     localStorage.setItem('sharpen_user', JSON.stringify(sharpenUserLS))
     Object.assign(state.member, {[sharpenUserLS.memberId]: sharpenUserLS.memberName})
+
+    // store to cloud data store
+    // todo
+
     //return {}
   },
 
@@ -75,6 +84,7 @@ export default {
     const sharpenUserLS = JSON.parse(localStorage.getItem('sharpen_user'))
     sharpenUserLS.currentProjectId = projectId
     localStorage.setItem('sharpen_user', JSON.stringify(sharpenUserLS))
+
     const sharpenDataLS = JSON.parse(localStorage.getItem('sharpen_data'))
     if (!sharpenDataLS[projectId]) {
       // get data by api
@@ -144,8 +154,22 @@ export default {
 
   tasks: { 
 
+    clearWatched: (id) => (state, actions) => {
+      const sharpenUserLS = JSON.parse(localStorage.getItem('sharpen_user'))
+      state[id].watched = [sharpenUserLS.memberId]
+    },
+
+    watched: (id) => (state, actions) => {
+      const sharpenUserLS = JSON.parse(localStorage.getItem('sharpen_user'))
+      if (!state[id].watched.includes(sharpenUserLS.memberId)) {
+        state[id].watched.push(sharpenUserLS.memberId)
+      }
+      return {}
+    },
+
     // tasks
-    changeTodo: (params)=>(state)=>{
+    changeTodo: (params)=>(state, actions)=>{
+      actions.clearWatched(params.id)
       let updatedTodo = Object.assign(state[params.id].todo, {[params.value.id]: params.value})
       // update progress
       let total   = Object.keys(state[params.id].todo).length
@@ -161,27 +185,31 @@ export default {
       return {}
     },
 
-    changeStartDateFromCalendar: (params) => (state) => {
+    changeStartDateFromCalendar: (params) => (state, actions) => {
       const [id, startDate, globalState] = params
+      actions.clearWatched(id)
       state[id].startDate     = startDate
       state[id].startPosition = utils.getWidthOfStartPoint(globalState.tableStartDate, startDate, globalState.globalCellWidth)
       state[id].width         = utils.getWidthFromTerm(startDate, state[id].endDate, globalState.globalCellWidth)
       return {}
     },
 
-    changeEndDateFromCalendar: (params) => (state) => {
+    changeEndDateFromCalendar: (params) => (state, actions) => {
       const [id, endDate, globalState] = params
+      actions.clearWatched(id)
       state[id].endDate = endDate
       state[id].width   = utils.getWidthFromTerm(state[id].startDate, endDate, globalState.globalCellWidth)
       return {}
     },
 
-    changeTodoTitle: (params)=>(state)=>{
+    changeTodoTitle: (params)=>(state, actions)=>{
+      actions.clearWatched(params.id)
       state[params.id].todo[params.value.id].title = params.value.title
       return {}
     },
 
-    changeTodoStatus: (params)=>(state)=>{
+    changeTodoStatus: (params)=>(state, actions)=>{
+      actions.clearWatched(params.id)
       state[params.id].todo[params.value.id].done = params.value.status
       let total   = Object.keys(state[params.id].todo).length
       let checked = 0
@@ -196,7 +224,8 @@ export default {
       return {}
     },
 
-    deleteTodo: (params)=>(state)=>{
+    deleteTodo: (params)=>(state, actions)=>{
+      actions.clearWatched(params.id)
       delete(state[params.id].todo[params.value])
       let total   = Object.keys(state[params.id].todo).length
       let checked = 0
@@ -212,28 +241,33 @@ export default {
     },
 
     // comment
-    changeComment: (params)=>(state)=>{
+    changeComment: (params)=>(state, actions)=>{
+      actions.clearWatched(params.id)
       let updatedComment = Object.assign(state[params.id].comment, {[params.value.id]: params.value})
       return {}
     },
 
-    deleteComment: (params)=>(state)=>{
+    deleteComment: (params)=>(state, actions)=>{
+      actions.clearWatched(params.id)
       delete(state[params.id].comment[params.value])
       return {}
     },
 
     changeMember: (params) => (state, actions) => {
       const [id, member] = params
+      actions.clearWatched(id)
       state[id].member = member 
       return {}
     },
 
     changeDescription: (params) => (state, actions) => {
+      actions.clearWatched(params.id)
       state[params.id].description = params.description
       return {}
     },
 
     changeTitle: (params) => (state, actions) => {
+      actions.clearWatched(params.id)
       state[params.id].title = params.title
       return {}
     },
@@ -248,6 +282,8 @@ export default {
       let start        = Math.abs(utils.getTermFromDate(utils.getDateStr(tempDate), globalState.tableStartDate)) + 1
       let addStartDate = startDate.getDate()
 
+      const sharpenUserLS = JSON.parse(localStorage.getItem('sharpen_user'))
+
       state[id] = 
       { 
           id:             id,
@@ -257,6 +293,8 @@ export default {
           member:         [],
           todo:           {},
           comment:        {},
+          watched:        [sharpenUserLS.memberId],
+          progress:       0,
           progress:       0,
           startPosition:  start * globalState.globalCellWidth,
           endPosition:    (start * globalState.globalCellWidth) + (2*globalState.globalCellWidth),

@@ -42,6 +42,7 @@ export default {
           member:         [],
           todo:           {},
           comment:        {1: {comment: 'We are developing implement now.'}, 2: {comment: 'It will connect server and you will can share your data for many people.'} },
+          watched:        [],
           progress:       0,
           startPosition:  globalCellWidth*2,
           endPosition:    (globalCellWidth*2) + (4*globalCellWidth),
