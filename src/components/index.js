@@ -8,7 +8,7 @@ import detailModal      from './detailModal'
 import firstRegistModal from './firstRegistModal'
 
 export default (state, actions) => {
-
+console.log(state)
   const tasksComponents       = []
   const detailModalComponents = []
   Object.keys(state.tasks).sort((a,b)=>{

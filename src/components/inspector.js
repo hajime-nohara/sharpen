@@ -60,7 +60,7 @@ export default (state, actions) => {
         </div>
       </div>
 
-      {/*<a class="item" onclick={()=>actions.publish()}>{state.i18n[state.locale].publish}</a>*/}
+      <a class="item" onclick={()=>actions.publish()}>{state.i18n[state.locale].publish}</a>
       <a class="item" onclick={()=>actions.tasks.add(state)}>{state.i18n[state.locale].addTask}</a>
 
       <div class="item">

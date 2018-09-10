@@ -144,12 +144,11 @@ export default {
     formData.append("state",    JSON.stringify(state))
     formData.append("memberId", sharpenUserLS.memberId)
     const request = new XMLHttpRequest();
-    request.open(actoin, state.apiEndPoint + (state.published ? "" : state.projectId), true);
+    request.open(actoin, state.apiEndPoint + (state.published ? state.projectId : ''), true);
     request.onload = function () {
       alert("sucess!")
     }
     request.send(formData);
-    localStorage.setItem('state', JSON.stringify(state))
   },
 
   tasks: { 
