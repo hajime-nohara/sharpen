@@ -23,7 +23,7 @@ export default (state, actions) => {
   return (
     <div class="ui basic modal" oncreate={show} key={utils.random()}>
       <div class={styl.firstDialogHeader + " ui icon header"}>
-        <i class="archive icon"></i>
+        <img class={styl.firstDialogHeaderLogo} src="assets/images/logo.svg"/><br/><br/>
         {state.i18n[state.locale].welcomToSharpen}
       </div>
       <div class="content">

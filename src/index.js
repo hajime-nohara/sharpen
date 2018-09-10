@@ -33,7 +33,7 @@ if (getPrams.id != undefined && getPrams.id.length > 0) {
 } else if (localStorage.getItem('sharpen_data') && localStorage.getItem('sharpen_user')) {
   const sharpenUserLS = JSON.parse(localStorage.getItem('sharpen_user'))
   const sharpenDataLS = JSON.parse(localStorage.getItem('sharpen_data'))
-  const currentProjectState = sharpenDataLS[sharpenUserLS.currentProject]
+  const currentProjectState = sharpenDataLS[sharpenUserLS.currentProjectId]
   start(currentProjectState)
 } else {
   start(state)
