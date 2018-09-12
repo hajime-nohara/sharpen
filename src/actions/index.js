@@ -67,6 +67,7 @@ export default {
   },
 
   changeMemberName: (memberName) => (state, actions) => {
+
     let sharpenUserLS        = localStorage.getItem('sharpen_user')
     sharpenUserLS            = JSON.parse(sharpenUserLS)
     sharpenUserLS.memberName = memberName
@@ -74,8 +75,22 @@ export default {
     Object.assign(state.member, {[sharpenUserLS.memberId]: sharpenUserLS.memberName})
 
     // store to cloud data store
-    // todo
-
+    const formData = new FormData();
+    const actoin   = "POST"
+    formData.append("id",   sharpenUserLS.memberId)
+    formData.append("data", localStorage.getItem('sharpen_user'))
+    formData.append("timestamp", Date.now())
+    const request = new XMLHttpRequest();
+    request.open(actoin, state.apiEndPointMember, true);
+    request.onload = function () {
+      if (request.readyState === 4) {
+        if (request.status === 200) {
+        } else {
+          console.error(request.statusText);
+        }
+      }
+    }
+    request.send(formData);
     return {}
   },
 
@@ -144,9 +159,15 @@ export default {
     formData.append("state",    JSON.stringify(state))
     formData.append("memberId", sharpenUserLS.memberId)
     const request = new XMLHttpRequest();
-    request.open(actoin, state.apiEndPoint + (state.published ? state.projectId : ''), true);
+    request.open(actoin, state.apiEndPointState + (state.published ? state.projectId : ''), true);
     request.onload = function () {
-      alert("sucess!")
+      if (request.readyState === 4) {
+        if (request.status === 200) {
+          state.published = true
+        } else {
+          console.error(request.statusText);
+        }
+      }
     }
     request.send(formData);
   },

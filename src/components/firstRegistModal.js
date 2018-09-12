@@ -36,6 +36,12 @@ export default (state, actions) => {
     }
   }
 
+  const checkPublised = () => {
+    if (state.published) {
+      e.classList.add("disabled");
+    }
+  }
+
   const blur = (e) => {
     if (e.keyCode === 13) {
       e.target.blur()
@@ -83,7 +89,9 @@ export default (state, actions) => {
               </div>
               <div class="field">
                 {state.i18n[state.locale].projectName}
-                <input placeholder={state.i18n[state.locale].projectName} type="text" onfocusout={onFocusoutProjectName} onkeydown={blur}/>
+                <input placeholder={state.i18n[state.locale].projectName} type="text" onfocusout={onFocusoutProjectName} onkeydown={blur}
+                  oncreate={checkPublised}
+                />
               </div>
             </div>
             <div class="field">

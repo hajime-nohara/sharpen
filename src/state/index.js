@@ -12,7 +12,8 @@ endDate.setDate(startDate.getDate() - 1)
 
 export default {
   // common state value for api
-  apiEndPoint:          "http://localhost:3000/sharpens/",
+  apiEndPointState:     "http://localhost:3000/states/",
+  apiEndPointMember:    "http://localhost:3000/members/",
   projectId:            null,  
   projectOwner:         null,  
   published:            false,
