@@ -1,0 +1,99 @@
+diff --git a/src/actions/index.js b/src/actions/index.js
+index 4f23da7..bf20057 100644
+--- a/src/actions/index.js
++++ b/src/actions/index.js
+@@ -75,6 +75,18 @@ export default {
+ 
+     // store to cloud data store
+     // todo
++    const formData = new FormData();
++    const actoin   = "POST"
++    formData.append("id",   sharpenUserLS.memberId)
++    formData.append("data", localStorage.getItem('sharpen_user'))
++    const request = new XMLHttpRequest();
++    request.open(actoin, state.apiEndPointMember, true);
++    request.onload = function () {
++      alert("sucess!")
++    }
++    request.send(formData);
++
++
+ 
+     return {}
+   },
+@@ -144,7 +156,7 @@ export default {
+     formData.append("state",    JSON.stringify(state))
+     formData.append("memberId", sharpenUserLS.memberId)
+     const request = new XMLHttpRequest();
+-    request.open(actoin, state.apiEndPoint + (state.published ? state.projectId : ''), true);
++    request.open(actoin, state.apiEndPointState + (state.published ? state.projectId : ''), true);
+     request.onload = function () {
+       alert("sucess!")
+     }
+diff --git a/src/components/firstRegistModal.js b/src/components/firstRegistModal.js
+index e8a6b36..fb559ea 100644
+--- a/src/components/firstRegistModal.js
++++ b/src/components/firstRegistModal.js
+@@ -36,6 +36,12 @@ export default (state, actions) => {
+     }
+   }
+ 
++  const checkPublished = (e) => {
++    if (state.published) {
++      e.classList.add("disabled");
++    }
++  }
++
+   const blur = (e) => {
+     if (e.keyCode === 13) {
+       e.target.blur()
+@@ -83,7 +89,11 @@ export default (state, actions) => {
+               </div>
+               <div class="field">
+                 {state.i18n[state.locale].projectName}
+-                <input placeholder={state.i18n[state.locale].projectName} type="text" onfocusout={onFocusoutProjectName} onkeydown={blur}/>
++                <input placeholder={state.i18n[state.locale].projectName} type="text" 
++                  onfocusout={onFocusoutProjectName} onkeydown={blur}
++                  oncreate={checkPublished}
++                  value={state.projectName}
++                />
+               </div>
+             </div>
+             <div class="field">
+diff --git a/src/index.js b/src/index.js
+index 10378ff..9859d14 100644
+--- a/src/index.js
++++ b/src/index.js
+@@ -11,10 +11,17 @@ const getPrams = utils.getUrlVars()
+ 
+ const start = (state) => withLogger(app)(state, actions, view, document.getElementById('sharpen'))
+ 
++// patters when fist loading with params
++// 1. registed nothing pure first.
++// 2. registed only user info 
++// 3. registed user info and project data
++// 4. registed user info and other project data and data that passed params 
+ if (getPrams.id != undefined && getPrams.id.length > 0) {
++
+   // when there is project id, load data.
+   const request = new XMLHttpRequest()
+-  request.open("GET", state.apiEndPoint + "/" + getPrams.id)
++  request.open("GET", state.apiEndPointState + "/" + getPrams.id)
++
+   request.onload = () => {
+ 
+     const loadedState = JSON.parse(JSON.parse(request.response).state)
+diff --git a/src/state/index.js b/src/state/index.js
+index b6c21bf..ec6aff4 100644
+--- a/src/state/index.js
++++ b/src/state/index.js
+@@ -12,7 +12,8 @@ endDate.setDate(startDate.getDate() - 1)
+ 
+ export default {
+   // common state value for api
+-  apiEndPoint:          "http://localhost:3000/sharpens/",
++  apiEndPointState:          "http://localhost:3000/state/",
++  apiEndPointMember:         "http://localhost:3000/member/",
+   projectId:            null,  
+   projectOwner:         null,  
+   published:            false,

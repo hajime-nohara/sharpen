@@ -163,6 +163,7 @@ export default {
     request.onload = function () {
       if (request.readyState === 4) {
         if (request.status === 200) {
+          console.log(JSON.parse(request.response))
           state.published = true
         } else {
           console.error(request.statusText);
