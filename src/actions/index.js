@@ -60,7 +60,26 @@ export default {
     localStorage.setItem('sharpen_data', JSON.stringify(sharpenDataLS))
 
     // store to cloud data store
-    // todo
+    const formData = new FormData();
+    const actoin   = "PUT"
+    formData.append("data", localStorage.getItem('sharpen_user'))
+    formData.append("timestamp", Date.now())
+    const request = new XMLHttpRequest();
+    request.open(actoin, state.apiEndPointMember + sharpenUserLS.memberId, true);
+    request.onerror = function() {
+      state.published = false
+    }
+    request.onload = function () {
+      if (request.readyState === 4) {
+        if ([200, 201].includes(request.status)) {
+        } else {
+          console.error(request.statusText);
+        }
+      }
+    }
+    request.send(formData);
+    return {}
+
 
     // return default state updated project name, id
     return defaultState
@@ -82,9 +101,12 @@ export default {
     formData.append("timestamp", Date.now())
     const request = new XMLHttpRequest();
     request.open(actoin, state.apiEndPointMember, true);
+    request.onerror = function() {
+      state.published = false
+    }
     request.onload = function () {
       if (request.readyState === 4) {
-        if (request.status === 200) {
+        if ([200, 201].includes(request.status)) {
         } else {
           console.error(request.statusText);
         }
@@ -154,18 +176,21 @@ export default {
     const sharpenDataLS = JSON.parse(localStorage.getItem('sharpen_data'))
 
     const formData = new FormData();
-    const actoin   = state.published ? "POST" : "POST"
+    const actoin   = state.published ? "PUT" : "POST"
+    const url      = state.apiEndPointState + (state.published ? state.projectId : '')
     formData.append("id",       state.projectId)
     formData.append("data",    JSON.stringify(state))
     formData.append("memberId", sharpenUserLS.memberId)
+    formData.append("timestamp", Date.now())
     const request = new XMLHttpRequest();
-    request.open(actoin, state.apiEndPointState + (state.published ? state.projectId : ''), true);
+    request.open(actoin, url, true);
     request.onload = function () {
       if (request.readyState === 4) {
-        if (request.status === 200) {
-          console.log(request.response)
-//          console.log(JSON.parse(request.response))
-//          state.published = true
+        if ([200, 201].includes(request.status)) {
+          if (!state.published) {
+            state.published = true
+            document.getElementById('sharedUrlModalTrigger').click()
+          }
         } else {
           console.error(request.statusText);
         }

@@ -14,10 +14,21 @@ const start = (state) => withLogger(app)(state, actions, view, document.getEleme
 if (getPrams.id != undefined && getPrams.id.length > 0) {
   // when there is project id, load data.
   const request = new XMLHttpRequest()
-  request.open("GET", state.apiEndPoint + "/" + getPrams.id)
+  request.open("GET", state.apiEndPointState + getPrams.id)
+  request.onerror = function() {
+  }
   request.onload = () => {
 
-    const loadedState = JSON.parse(JSON.parse(request.response).state)
+    // no data
+    if (!(JSON.parse(request.response) && JSON.parse(request.response).data)) {
+      const defaultState      = utils.getCurrentProjectState(state)
+      defaultState.statusCode = 404
+      start(defaultState)
+      return
+    }
+
+    const loadedState = JSON.parse(JSON.parse(request.response).data)
+    loadedState.statusCode = 200   
 
     const sharpenUserLS = localStorage.getItem('sharpen_user') ? JSON.parse(localStorage.getItem('sharpen_user')) : {}
     sharpenUserLS['currentProjectId'] = getPrams.id
@@ -41,19 +52,27 @@ if (getPrams.id != undefined && getPrams.id.length > 0) {
 
   }
   request.send()
-
-} else if (localStorage.getItem('sharpen_data') && localStorage.getItem('sharpen_user')) {
-  const sharpenUserLS = JSON.parse(localStorage.getItem('sharpen_user'))
-  const sharpenDataLS = JSON.parse(localStorage.getItem('sharpen_data'))
-  const currentProjectState = sharpenDataLS[sharpenUserLS.currentProjectId]
-  if (currentProjectState) {
-    // updated by new source 
-    currentProjectState.i18n = i18n 
-    start(currentProjectState)
-  } else {
-    localStorage.setItem('sharpen_data', "")
-    start(state)
-  }
 } else {
-  start(state)
+  const defaultState = utils.getCurrentProjectState(state)
+  if (defaultState.published) {
+
+    const request = new XMLHttpRequest()
+    request.open("GET", state.apiEndPointState + getPrams.id)
+    request.onerror = function() {
+    }
+    request.onload = () => {
+      // no data
+      if (!(JSON.parse(request.response) && JSON.parse(request.response).data)) {
+        start(defaultState)
+        return
+      }
+      const loadedState = JSON.parse(JSON.parse(request.response).data)
+      loadedState.statusCode = 200   
+      start(loadedState)
+    }
+
+  } else {
+    defaultState.statusCode = null
+    start(defaultState)
+  }
 }

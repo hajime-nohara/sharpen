@@ -42,6 +42,7 @@ export default (state, actions) => {
   const changeProject = (val1, val2, el) => {
     actions.changeProject(el[0].id)
   }
+  const sharedProjectMenuItem = state.published ? <div class="item" onclick={()=>document.getElementById('sharedUrlModalTrigger').click()}>{state.i18n[state.locale].projectUrl}</div> : null
   return (
     <div class="ui secondary menu">
       <div class="item">
@@ -68,6 +69,7 @@ export default (state, actions) => {
           <i class="wrench icon"></i>
           <i class="dropdown icon"></i>
           <div class="menu"> 
+            {sharedProjectMenuItem}
             <div class="item">
               <i class="dropdown icon"></i>
               <span class="text">{state.i18n[state.locale].language}</span>

@@ -12,9 +12,8 @@ export default (state, actions) => {
   }
 
   const show = (e) => {
-    if (!sharpenUserLS.memberName || !state.projectName) {
+    if (state.statusCode != 404 && !(sharpenUserLS.memberName && state.projectName)) {
       $(e).modal({detachable: false, onHide: reRender}).modal('setting', 'closable', false).modal('show')
-
     }
   }
 
@@ -31,7 +30,7 @@ export default (state, actions) => {
   }
 
   const checkAbled = (e) => {
-    if (sharpenUserLS.memberName && state.projectName) {
+    if (sharpenUserLS.memberName && (state.projectName || state.published)) {
       e.classList.remove("disabled");
     }
   }
@@ -87,10 +86,10 @@ export default (state, actions) => {
                 {state.i18n[state.locale].nickname}
                 <input placeholder={state.i18n[state.locale].nickname} type="text" onfocusout={onFocusoutMemberName}/>
               </div>
-              <div class="field">
+              <div class="field" oncreate={checkPublised}>
                 {state.i18n[state.locale].projectName}
                 <input placeholder={state.i18n[state.locale].projectName} type="text" onfocusout={onFocusoutProjectName} onkeydown={blur}
-                  oncreate={checkPublised}
+                  value={state.projectName}
                 />
               </div>
             </div>

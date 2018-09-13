@@ -6,6 +6,8 @@ import utils            from '../classes/utils'
 import inspector        from './inspector';
 import detailModal      from './detailModal'
 import firstRegistModal from './firstRegistModal'
+import messageModal     from './messageModal'
+import sharedModal      from './sharedModal'
 
 export default (state, actions) => {
 console.log(state)
@@ -42,22 +44,21 @@ console.log(state)
       <div class="ui fixed inverted menu">
         <div class="ui container">
           <a href="http://www.sharpen.tokyo" class={styl.headerLogo + " header item borderless"}>
-            <img class="logo" src="assets/images/logo.png"/>
+            <img class="logo" src="assets/images/logo.svg"/>
             Sharpen
           </a>
         </div>
       </div>
-
+      {sharedModal}
+      {messageModal}
       {detailModalComponents}
-
       {firstRegistModal}
-
       <div class={styl.card + " ui card"}>
         <div class={styl.cardHeader + " content"}>
           {inspector(state, actions)}
         </div>
 
-        <div class={styl.cardMainContent + " ui card"} style={{ overflow: "scroll", width: "100%"}} >
+        <div class={styl.cardMainContent + " ui card noXScroll"}>
         <div oncreate={(e)=>e.style.backgroundSize=state.globalCellWidth+"px"} onupdate={(e)=>e.style.backgroundSize=state.globalCellWidth+"px"} style={{backgroundImage: "url(/assets/images/division.jpg)", width: dateCount * state.globalCellWidth + "px", height: "100%"}}>
         {dates(state, actions)}
         {tasksComponents}

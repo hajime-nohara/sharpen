@@ -1,6 +1,24 @@
 import dateformat from 'dateformat'
+import i18n       from '../state/i18n'
+
 
 export default new class {
+
+  getCurrentProjectState (defaultState) {
+    if (localStorage.getItem('sharpen_data') && localStorage.getItem('sharpen_user')) {
+      const sharpenUserLS = JSON.parse(localStorage.getItem('sharpen_user'))
+      const sharpenDataLS = JSON.parse(localStorage.getItem('sharpen_data'))
+      const currentProjectState = sharpenDataLS[sharpenUserLS.currentProjectId]
+      if (currentProjectState) {
+        // updated by new source 
+        currentProjectState.i18n = i18n 
+        return currentProjectState
+      } else {
+        localStorage.setItem('sharpen_data', "")
+      }
+    }
+    return defaultState
+  }
 
   isMobile () {
     return (typeof window.orientation !== 'undefined')

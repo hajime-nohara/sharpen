@@ -12,11 +12,16 @@ endDate.setDate(startDate.getDate() - 1)
 
 export default {
   // common state value for api
+  // https://sharpen-213302.appspot.com/
   apiEndPointState:     "http://localhost:3000/states/",
   apiEndPointMember:    "http://localhost:3000/members/",
+  //apiEndPointState:     "https://sharpen-213302.appspot.com/states/",
+  //apiEndPointMember:    "https://sharpen-213302.appspot.com/members/",
+
   projectId:            null,  
   projectOwner:         null,  
   published:            false,
+  statusCode:           null,
 
   // common state value for table
   projectName:          null,  

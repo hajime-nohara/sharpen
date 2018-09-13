@@ -1,4 +1,4 @@
-body ::-webkit-scrollbar {
+.noXScroll ::-webkit-scrollbar {
   width: 0px;
 }
 body {

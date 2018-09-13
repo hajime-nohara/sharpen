@@ -53,6 +53,12 @@ export default {
     getStarted:      'はじめる',
     newTask:         '新しいタスク',
     selectLanguage:  '言語を選択',
+    notFound:  'この共有プロジェクトは存在しません。',
+    contactYourMember:  'このリンクをシェアしたメンバーに確認してください。',
+    sharedUrlDescription: 'プロジェクトを公開しました。このリンクを知っていれば誰でもあなたのトガッタプロジェクトに触れる事ができます。このリンクが無関係な人に知られないように気をつけて下さい。',
+    sharedUrlCopy: 'URLをコピー',
+    copy: 'コピー',
+    projectUrl: 'プロジェクトのURL',
   }, 
 
   en: {
@@ -106,5 +112,11 @@ export default {
     getStarted:     'Get started',
     newTask:        'New Task',
     selectLanguage: 'Select Language',
+    notFound:  'I\'m sorry. Not Found.',
+    contactYourMember:  'Please ask person who shared you the link.',
+    sharedUrlDescription: 'You\'ve shared your project. Everyone who knows the link can see your sharpen data. Be careful to keep the link urlsafety.',
+    sharedUrlCopy: 'Copy into clipboard',
+    copy: 'Copy',
+    projectUrl: 'Project URL',
   }
 }
