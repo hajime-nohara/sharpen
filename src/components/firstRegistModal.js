@@ -36,7 +36,7 @@ export default (state, actions) => {
     }
   }
 
-  const checkPublised = () => {
+  const checkPublised = (e) => {
     if (state.published) {
       e.classList.add("disabled");
     }

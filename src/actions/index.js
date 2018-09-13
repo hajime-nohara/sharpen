@@ -154,17 +154,18 @@ export default {
     const sharpenDataLS = JSON.parse(localStorage.getItem('sharpen_data'))
 
     const formData = new FormData();
-    const actoin   = state.published ? "PUT" : "POST"
+    const actoin   = state.published ? "POST" : "POST"
     formData.append("id",       state.projectId)
-    formData.append("state",    JSON.stringify(state))
+    formData.append("data",    JSON.stringify(state))
     formData.append("memberId", sharpenUserLS.memberId)
     const request = new XMLHttpRequest();
     request.open(actoin, state.apiEndPointState + (state.published ? state.projectId : ''), true);
     request.onload = function () {
       if (request.readyState === 4) {
         if (request.status === 200) {
-          console.log(JSON.parse(request.response))
-          state.published = true
+          console.log(request.response)
+//          console.log(JSON.parse(request.response))
+//          state.published = true
         } else {
           console.error(request.statusText);
         }
