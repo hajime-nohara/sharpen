@@ -53,11 +53,14 @@ if (getPrams.id != undefined && getPrams.id.length > 0) {
   }
   request.send()
 } else {
+
   const defaultState = utils.getCurrentProjectState(state)
+
+  // load latest data if project was published.
   if (defaultState.published) {
 
     const request = new XMLHttpRequest()
-    request.open("GET", state.apiEndPointState + getPrams.id)
+    request.open("GET", state.apiEndPointState + defaultState.projectId)
     request.onerror = function() {
     }
     request.onload = () => {
@@ -70,7 +73,7 @@ if (getPrams.id != undefined && getPrams.id.length > 0) {
       loadedState.statusCode = 200   
       start(loadedState)
     }
-
+    request.send()
   } else {
     defaultState.statusCode = null
     start(defaultState)

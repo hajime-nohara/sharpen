@@ -18,16 +18,16 @@ export default (state, actions) => {
     <div class="ui basic modal" id="sharedUrlModal">
       <div id="sharedUrlModalTrigger" onclick={()=>$('#sharedUrlModal').modal({detachable: false, onHide: reRender}).modal('show')}/>
 
-      <div class="ui header grid center aligned page">
+      <div class="ui grid center aligned page">
         <div class={styl.input + " ui action input"}>
-          <input type="text" id="sharedUrlStr" value={location.href + "?id=" + state.projectId}/>
+          <input type="text" id="sharedUrlStr" value={location.href.split('?')[0] + "?id=" + state.projectId}/>
           <button class="ui teal right labeled icon button clipboard" data-clipboard-target="#sharedUrlStr" oncreate={copyShaaredUrl}>
           <i class="copy icon"></i> {state.i18n[state.locale].copy} </button>
         </div>
 
       </div>
 
-      <div class="ui header grid center aligned page">
+      <div class="ui grid center aligned page">
 
         <div class="ui center aligned page grid">
           <div class={styl.description}>

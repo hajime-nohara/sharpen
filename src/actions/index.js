@@ -45,6 +45,8 @@ export default {
   },
 
   addProject: (projectName) => (state, actions) => {
+    // reset address bar
+    history.replaceState('','','gantt.html');
     // store to sharpen_user, sharpen_data (local storage)
     const sharpenUserLS = JSON.parse(localStorage.getItem('sharpen_user'))
     const projectId     = utils.random()
@@ -62,6 +64,7 @@ export default {
     // store to cloud data store
     const formData = new FormData();
     const actoin   = "PUT"
+    formData.append("id",   sharpenUserLS.memberId)
     formData.append("data", localStorage.getItem('sharpen_user'))
     formData.append("timestamp", Date.now())
     const request = new XMLHttpRequest();
@@ -78,9 +81,6 @@ export default {
       }
     }
     request.send(formData);
-    return {}
-
-
     // return default state updated project name, id
     return defaultState
   },
@@ -117,6 +117,9 @@ export default {
   },
 
   changeProject: (projectId) => (state, actions) => {
+    // reset address bar
+    history.replaceState('','','gantt.html');
+
     // store to sharpen_user, sharpen_data (local storage)
     const sharpenUserLS = JSON.parse(localStorage.getItem('sharpen_user'))
     sharpenUserLS.currentProjectId = projectId
