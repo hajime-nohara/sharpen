@@ -62,7 +62,7 @@ export default (state, actions, params) => {
 
           todo.push(
             <div class="item">
-              <div class="ui checkbox" 
+              <div class={styl.todoCheckbox + " ui checkbox"}
                 oncreate={(e)=>$(e).checkbox()}
                 >
                 <input type="checkbox" id={todoId} checked={params.todo[index].done} onchange={todoOnclick}/>
@@ -302,7 +302,7 @@ export default (state, actions, params) => {
         <div class="ui longer modal transition scrolling" id={detailModalId}>
 
           <div id={detailModalOpenId} onclick={()=>$('#'+detailModalId).modal({detachable: false, onDeny: deleteTaskWrap, onVisible: watched}).modal('show')}/>
-          <div class="header">
+          <div class={styl.header + " header"}>
             <div class="header" contentEditable="true" key={utils.random()} 
               onfocusout={titleOnFocusout}
               onkeydown={titleOnKeydown}
