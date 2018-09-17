@@ -3,13 +3,12 @@ import actions        from './actions'
 import state          from './state'
 import view           from './components'
 import utils          from './classes/utils'
-import i18n           from './state/i18n'
 import { withLogger } from "@hyperapp/logger"
 import 'normalize.css'
 
 const getPrams = utils.getUrlVars()
 
-const start = (state) => withLogger(app)(state, actions, view, document.getElementById('sharpen'))
+const start = (currentState) => withLogger(app)(utils.stateVersionUp(state, currentState), actions, view, document.getElementById('sharpen'))
 
 if (getPrams.id != undefined && getPrams.id.length > 0) {
   // when there is project id, load data.
@@ -58,7 +57,6 @@ if (getPrams.id != undefined && getPrams.id.length > 0) {
 
   // load latest data if project was published.
   if (defaultState.published) {
-
     const request = new XMLHttpRequest()
     request.open("GET", state.apiEndPointState + defaultState.projectId)
     request.onerror = function() {
@@ -76,6 +74,8 @@ if (getPrams.id != undefined && getPrams.id.length > 0) {
     request.send()
   } else {
     defaultState.statusCode = null
+    // defaultState.tasks['format'] is default data for format. So delete it.
+    delete(defaultState.tasks['format'])
     start(defaultState)
   }
 }

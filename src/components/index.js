@@ -10,7 +10,7 @@ import messageModal     from './messageModal'
 import sharedModal      from './sharedModal'
 
 export default (state, actions) => {
-console.log(state)
+
   const tasksComponents       = []
   const detailModalComponents = []
   Object.keys(state.tasks).sort((a,b)=>{

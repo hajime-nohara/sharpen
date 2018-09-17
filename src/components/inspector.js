@@ -61,7 +61,9 @@ export default (state, actions) => {
         </div>
       </div>
 
-      <a class="item" onclick={()=>actions.publish()}>{state.i18n[state.locale].publish}</a>
+      <a class="item" id="publish" onclick={()=>actions.publish()} data-content={state.published ? state.i18n[state.locale].updated : state.i18n[state.locale].published} data-variation="basic">
+        {state.published ? state.i18n[state.locale].update : state.i18n[state.locale].publish}
+      </a>
       <a class="item" onclick={()=>actions.tasks.add(state)}>{state.i18n[state.locale].addTask}</a>
 
       <div class="item">

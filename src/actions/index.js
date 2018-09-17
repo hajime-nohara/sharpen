@@ -193,6 +193,9 @@ export default {
           if (!state.published) {
             state.published = true
             document.getElementById('sharedUrlModalTrigger').click()
+          } else {
+            $(document.getElementById('publish')).popup('show', null, null)
+            setTimeout(()=>$(document.getElementById('publish')).popup('destroy', null, null), 1000)
           }
         } else {
           console.error(request.statusText);

@@ -9,6 +9,7 @@ export default (state, actions) => {
   const dates             = Array()
   const numberOfDays      = utils.getTermFromDate(state.tableStartDate, state.tableEndDate)
   const globalCellWidthPx = utils.parsePx(state.globalCellWidth)
+  const today             = new Date
 
   utils.range(numberOfDays).forEach(
     function(key) {
@@ -17,7 +18,8 @@ export default (state, actions) => {
       const isFirstOrLastDay = key == 0 || dateObj.getDate() == 1 || key == numberOfDays-1
       const isStartOrEnd     = key == 0 || key == numberOfDays-1
       const dayId            = "day_" + key
-      const attributes = {class: styl.statistic + " ui statistic", id: dayId, key: utils.random()}
+      const isToday          = (dateObj.getFullYear() === today.getFullYear() && dateObj.getMonth() === today.getMonth() && dateObj.getDate() === today.getDate())
+      const attributes = {class: (isToday ? styl.today : styl.statistic) + " ui statistic", id: dayId, key: utils.random()}
       if (isStartOrEnd) {
         const actionName = key == 0 ? "changeStartDate" : "changeEndDate"
         const bindCalendar = () => {
