@@ -62,6 +62,11 @@ export default {
     sharedUrlCopy: 'URLをコピー',
     copy: 'コピー',
     projectUrl: 'プロジェクトのURL',
+    urlForChangeDevice: '他のブラウザで表示する',
+    urlForChangeDeviceDescription: 'ユーザ情報を他のブラウザへ引き継ぐためのURLです。他人に知られない様にご注意ください。',
+    errorMessages: {
+      noMemberId: 'メンバーIDが見つかりません。ページをリロードしてメンバー情報を登録してくだい。'
+    },
   }, 
 
   en: {
@@ -124,5 +129,10 @@ export default {
     sharedUrlCopy: 'Copy into clipboard',
     copy: 'Copy',
     projectUrl: 'Project URL',
+    urlForChangeDevice: 'URL for other browser',
+    urlForChangeDeviceDescription: 'It\'s your secret url for other browser. Please be careful.',
+    errorMessages: {
+      noMemberId: 'Not exist member id. Please reload page and regist member name.'
+    },
   }
 }

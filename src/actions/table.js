@@ -32,6 +32,12 @@ export default () => {
 
       const [date, globalState] = params
 
+      const startDate = new Date(date)
+      const endDate   = new Date(globalState.tableEndDate)
+      if (startDate > endDate) {
+        return
+      }
+
       state.tableStartDate = utils.getDateStr(new Date(date))
 
       Object.keys(state.tasks).forEach(
@@ -48,6 +54,12 @@ export default () => {
     changeEndDate: (params)=>(state, actions)=>{
 
       const [date, globalState] = params
+
+      const endDate = new Date(date)
+      const startDate   = new Date(globalState.tableStartDate)
+      if (startDate > endDate) {
+        return
+      }
 
       globalState.tableEndDate = utils.getDateStr(new Date(date))
       Object.assign(state, {tableEndDate: date})

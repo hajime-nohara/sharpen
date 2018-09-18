@@ -5,8 +5,9 @@ export default new class {
   stateVersionUp (originalState, currentState) {
 
     if (originalState.version !== currentState.version) {
-      const newVersionState = this.clone(originalState, currentState)
 
+      const newVersionState = this.clone(originalState, currentState)
+  
       const versionUpTasks = (newVersion, id) => {
         newVersion[id] = {}
         for (var i in originalState.tasks['format']) { 
@@ -21,16 +22,24 @@ export default new class {
       }
       const newVersionTasks = Object.keys(newVersionState.tasks || {}).reduce(versionUpTasks, {})
       newVersionState.tasks = newVersionTasks
-      return newVersionState
-    } else {
-      return currentState
+      currentState = newVersionState
     }
+    // defaultState.tasks['format'] is default data for format. So delete it.
+    delete(currentState.tasks['format'])
+    return currentState
   }
 
   clone (original, current) {
     var out = {}
     for (var i in original) out[i] = original[i]
     for (var i in current) out[i]  = current[i]
+
+    // new basic data
+    out.version           = original.version
+    out.apiEndPointState  = original.apiEndPointState
+    out.apiEndPointMember = original.apiEndPointMember
+    out.i18n              = original.i18n
+
     return out
   }
 

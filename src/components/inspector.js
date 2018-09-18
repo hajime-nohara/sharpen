@@ -43,6 +43,7 @@ export default (state, actions) => {
     actions.changeProject(el[0].id)
   }
   const sharedProjectMenuItem = state.published ? <div class="item" onclick={()=>document.getElementById('sharedUrlModalTrigger').click()}>{state.i18n[state.locale].projectUrl}</div> : null
+  const urlForChangeDeviceMenuItem = <div class="item" onclick={()=>document.getElementById('urlForChangeDeviceModalTrigger').click()}>{state.i18n[state.locale].urlForChangeDevice}</div>
   return (
     <div class="ui secondary menu">
       <div class="item">
@@ -95,6 +96,7 @@ export default (state, actions) => {
                 <div class="item" onclick={()=>actions.changeTalbeCellWidth([100, state])}>6</div>
               </div>
             </div>
+            {urlForChangeDeviceMenuItem}
           </div>
         </div>
       </div>

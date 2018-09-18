@@ -8,6 +8,7 @@ import detailModal      from './detailModal'
 import firstRegistModal from './firstRegistModal'
 import messageModal     from './messageModal'
 import sharedModal      from './sharedModal'
+import urlForChangeDeviceModal      from './urlForChangeDeviceModal'
 
 export default (state, actions) => {
 
@@ -50,6 +51,7 @@ export default (state, actions) => {
         </div>
       </div>
       {sharedModal}
+      {urlForChangeDeviceModal}
       {messageModal}
       {detailModalComponents}
       {firstRegistModal}

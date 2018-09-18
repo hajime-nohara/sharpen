@@ -10,7 +10,44 @@ const getPrams = utils.getUrlVars()
 
 const start = (currentState) => withLogger(app)(utils.stateVersionUp(state, currentState), actions, view, document.getElementById('sharpen'))
 
-if (getPrams.id != undefined && getPrams.id.length > 0) {
+if (getPrams.memberId != undefined && getPrams.memberId.length > 0) {
+  const request = new XMLHttpRequest()
+  request.open("GET", state.apiEndPointMember + getPrams.memberId)
+  request.onerror = function() {
+  }
+  request.onload = () => {
+    if (JSON.parse(request.response) && JSON.parse(request.response).data) {
+      localStorage.setItem('sharpen_user', JSON.parse(request.response).data)
+      const defaultState = utils.getCurrentProjectState(state)
+      defaultState.projectId   = JSON.parse(JSON.parse(request.response).data).currentProjectId
+      defaultState.projectName = JSON.parse(JSON.parse(request.response).data).projects[defaultState.projectId].name
+      defaultState.published   = true
+      // load latest data if project was published.
+      if (defaultState.published) {
+        const request = new XMLHttpRequest()
+        request.open("GET", state.apiEndPointState + defaultState.projectId)
+        request.onerror = function() {
+        }
+        request.onload = () => {
+          // no data
+          if (!(JSON.parse(request.response) && JSON.parse(request.response).data)) {
+            defaultState.published = false
+            start(defaultState)
+            return
+          }
+          const loadedState = JSON.parse(JSON.parse(request.response).data)
+          loadedState.statusCode = 200   
+          start(loadedState)
+        }
+        request.send()
+      } else {
+        defaultState.statusCode = null
+        start(defaultState)
+      }
+    }
+  }
+  request.send()
+} else if (getPrams.id != undefined && getPrams.id.length > 0) {
   // when there is project id, load data.
   const request = new XMLHttpRequest()
   request.open("GET", state.apiEndPointState + getPrams.id)
@@ -51,6 +88,7 @@ if (getPrams.id != undefined && getPrams.id.length > 0) {
 
   }
   request.send()
+
 } else {
 
   const defaultState = utils.getCurrentProjectState(state)
@@ -64,6 +102,7 @@ if (getPrams.id != undefined && getPrams.id.length > 0) {
     request.onload = () => {
       // no data
       if (!(JSON.parse(request.response) && JSON.parse(request.response).data)) {
+        defaultState.published = false
         start(defaultState)
         return
       }
@@ -74,8 +113,6 @@ if (getPrams.id != undefined && getPrams.id.length > 0) {
     request.send()
   } else {
     defaultState.statusCode = null
-    // defaultState.tasks['format'] is default data for format. So delete it.
-    delete(defaultState.tasks['format'])
     start(defaultState)
   }
 }
