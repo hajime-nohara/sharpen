@@ -8,9 +8,10 @@ import detailModal      from './detailModal'
 import firstRegistModal from './firstRegistModal'
 import messageModal     from './messageModal'
 import sharedModal      from './sharedModal'
+import urlForChangeDeviceModal      from './urlForChangeDeviceModal'
 
 export default (state, actions) => {
-console.log(state)
+
   const tasksComponents       = []
   const detailModalComponents = []
   Object.keys(state.tasks).sort((a,b)=>{
@@ -50,6 +51,7 @@ console.log(state)
         </div>
       </div>
       {sharedModal}
+      {urlForChangeDeviceModal}
       {messageModal}
       {detailModalComponents}
       {firstRegistModal}

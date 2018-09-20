@@ -85,14 +85,7 @@ export default (state, actions, data) => {
     }
   }
   const onDragEnd = (e) => {
-    // when sourceId is Zero it's mobile device. 
-    if (sourceId === 0) {
-      sourceId = e.target.id
-      pageX    = e.pageX
-    } 
-    if (sourceId == data.id) {
-      actions.tasks.dragEnd([pageX, state, data.id, pageXStartPoint])
-    }
+    e.target.style.opacity = '1'
   }
 
   const onDragStart = (e) => {
@@ -101,7 +94,6 @@ export default (state, actions, data) => {
     }
     pageXStartPoint              = e.pageX
     e.target.style.opacity       = '0.3'
-    e.target.style.border        = "dashed 0.5px"
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData("text/plain", e.target.id)
   }
@@ -168,8 +160,9 @@ export default (state, actions, data) => {
             ontouchstart={draggableOn}
             onclick={openModal}
             ondragstart={onDragStart}
+            ondragend={onDragEnd}
             style={progressStyle}>
-          <div class="bar" style={progressBarStyle}>
+          <div class={styl.bar + " bar"} style={progressBarStyle}>
             <div class="progress">{utils.parsePercent(data.progress)}</div>
           </div>
           {/* resizer start */}

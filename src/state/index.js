@@ -11,12 +11,13 @@ endDate.setMonth(endDate.getMonth() + 1)
 endDate.setDate(startDate.getDate() - 1)
 
 export default {
+  // common value
+  version: 3,
   // common state value for api
-  // https://sharpen-213302.appspot.com/
-  apiEndPointState:     "http://localhost:3000/states/",
-  apiEndPointMember:    "http://localhost:3000/members/",
-  //apiEndPointState:     "https://sharpen-213302.appspot.com/states/",
-  //apiEndPointMember:    "https://sharpen-213302.appspot.com/members/",
+  //apiEndPointState:     "http://localhost:3000/states/",
+  //apiEndPointMember:    "http://localhost:3000/members/",
+  apiEndPointState:     "https://sharpen-213302.appspot.com/states/",
+  apiEndPointMember:    "https://sharpen-213302.appspot.com/members/",
 
   projectId:            null,  
   projectOwner:         null,  
@@ -40,8 +41,7 @@ export default {
   // task data sample
   tasks: 
     {
-      /*
-      1: { 
+      format: { 
           id:             1,
           title:          "This is first task of 'sharpen'. Please check detail.",
           description:    "This site is made by just only html and javascript as sample tool.",
@@ -50,12 +50,11 @@ export default {
           comment:        {1: {comment: 'We are developing implement now.'}, 2: {comment: 'It will connect server and you will can share your data for many people.'} },
           watched:        [],
           progress:       0,
-          startPosition:  globalCellWidth*2,
-          endPosition:    (globalCellWidth*2) + (4*globalCellWidth),
-          width:          4 * globalCellWidth-1,
-          startDate:      utils.get_date(globalCellWidth*2, globalCellWidth, startDate),
-          endDate:        utils.get_date((globalCellWidth*2)+(4 * globalCellWidth-1), globalCellWidth, startDate),
+          startPosition:  0,
+          endPosition:    0,
+          width:          0,
+          startDate:      '1980-01-01',
+          endDate:        '1980-01-01'
          },
-      */
     },
 }

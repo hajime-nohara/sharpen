@@ -5,8 +5,11 @@ export default {
     languageName: "日本語",
     searchLanguage: "言語を検索",
     publish: '公開する',
+    published: '公開しました',
     dayColorsHash: {0: '#732141', 6:  '#74A5CF'},
     save: '保存',
+    update: '更新',
+    updated: '更新しました',
     add:  '追加',
     addTask:  'タスク追加',
     calendar: {
@@ -55,17 +58,25 @@ export default {
     selectLanguage:  '言語を選択',
     notFound:  'この共有プロジェクトは存在しません。',
     contactYourMember:  'このリンクをシェアしたメンバーに確認してください。',
-    sharedUrlDescription: 'プロジェクトを公開しました。このリンクを知っていれば誰でもあなたのトガッタプロジェクトに触れる事ができます。このリンクが無関係な人に知られないように気をつけて下さい。',
+    sharedUrlDescription: 'プロジェクトを公開しました。このリンクを知っていれば誰でもあなたのプロジェクトを更新できます。このリンクが無関係な人に知られないように気をつけて下さい。',
     sharedUrlCopy: 'URLをコピー',
     copy: 'コピー',
     projectUrl: 'プロジェクトのURL',
+    urlForChangeDevice: '他のブラウザで表示する',
+    urlForChangeDeviceDescription: 'ユーザ情報を他のブラウザへ引き継ぐためのURLです。他人に知られない様にご注意ください。',
+    errorMessages: {
+      noMemberId: 'メンバーIDが見つかりません。ページをリロードしてメンバー情報を登録してくだい。'
+    },
   }, 
 
   en: {
     languageName: "English",
     searchLanguage: "Search language...",
     publish: 'publish',
+    published: 'published',
     save: 'save',
+    update: 'update',
+    updated: 'updated',
     add:  'add',
     addTask:  'Add Task',
     calendar: {
@@ -114,9 +125,14 @@ export default {
     selectLanguage: 'Select Language',
     notFound:  'I\'m sorry. Not Found.',
     contactYourMember:  'Please ask person who shared you the link.',
-    sharedUrlDescription: 'You\'ve shared your project. Everyone who knows the link can see your sharpen data. Be careful to keep the link urlsafety.',
+    sharedUrlDescription: 'You\'ve shared your project. Everyone who knows the link can see your sharpen data. Be careful to keep the link url safety.',
     sharedUrlCopy: 'Copy into clipboard',
     copy: 'Copy',
     projectUrl: 'Project URL',
+    urlForChangeDevice: 'URL for other browser',
+    urlForChangeDeviceDescription: 'It\'s your secret url for other browser. Please be careful.',
+    errorMessages: {
+      noMemberId: 'Not exist member id. Please reload page and regist member name.'
+    },
   }
 }

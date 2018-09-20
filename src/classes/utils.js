@@ -1,8 +1,47 @@
 import dateformat from 'dateformat'
-import i18n       from '../state/i18n'
-
 
 export default new class {
+
+  stateVersionUp (originalState, currentState) {
+
+    if (originalState.version !== currentState.version) {
+
+      const newVersionState = this.clone(originalState, currentState)
+  
+      const versionUpTasks = (newVersion, id) => {
+        newVersion[id] = {}
+        for (var i in originalState.tasks['format']) { 
+          newVersion[id][i] = originalState.tasks['format'][i]
+        }
+        for (var i in newVersionState.tasks[id]) { 
+          if (originalState.tasks['format'][i] !== undefined && originalState.tasks['format'][i] !== null) {
+            newVersion[id][i] = newVersionState.tasks[id][i]
+          }
+        }
+        return newVersion 
+      }
+      const newVersionTasks = Object.keys(newVersionState.tasks || {}).reduce(versionUpTasks, {})
+      newVersionState.tasks = newVersionTasks
+      currentState = newVersionState
+    }
+    // defaultState.tasks['format'] is default data for format. So delete it.
+    delete(currentState.tasks['format'])
+    return currentState
+  }
+
+  clone (original, current) {
+    var out = {}
+    for (var i in original) out[i] = original[i]
+    for (var i in current) out[i]  = current[i]
+
+    // new basic data
+    out.version           = original.version
+    out.apiEndPointState  = original.apiEndPointState
+    out.apiEndPointMember = original.apiEndPointMember
+    out.i18n              = original.i18n
+
+    return out
+  }
 
   getCurrentProjectState (defaultState) {
     if (localStorage.getItem('sharpen_data') && localStorage.getItem('sharpen_user')) {
@@ -11,8 +50,7 @@ export default new class {
       const currentProjectState = sharpenDataLS[sharpenUserLS.currentProjectId]
       if (currentProjectState) {
         // updated by new source 
-        currentProjectState.i18n = i18n 
-        return currentProjectState
+        defaultState = currentProjectState
       } else {
         localStorage.setItem('sharpen_data', "")
       }

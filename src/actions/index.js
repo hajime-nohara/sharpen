@@ -25,18 +25,21 @@ export default {
       sharpenDataLS[state.projectId] = state
       localStorage.setItem('sharpen_data', JSON.stringify(sharpenDataLS))
     } else {
+
       // first regist
       if (!state.projectId) {
         state.projectId = utils.random()
       }
-      const sharpenUserLS = {}
-      const memberId            = utils.random()
-      sharpenUserLS["currentProjectId"]            = state.projectId
-      sharpenUserLS["memberId"]                  = memberId
-      sharpenUserLS["memberName"]                = null
-      sharpenUserLS["projects"]                  = {}
-      sharpenUserLS["projects"][state.projectId] = {id: state.projectId, name: state.projectId}
-      localStorage.setItem('sharpen_user', JSON.stringify(sharpenUserLS))
+      const sharpenUserLS = localStorage.getItem('sharpen_user') || {}
+      if (Object.keys(sharpenUserLS).length == 0) {
+        const memberId            = utils.random()
+        sharpenUserLS["currentProjectId"]          = state.projectId
+        sharpenUserLS["memberId"]                  = memberId
+        sharpenUserLS["memberName"]                = null
+        sharpenUserLS["projects"]                  = {}
+        sharpenUserLS["projects"][state.projectId] = {id: state.projectId, name: state.projectId}
+        localStorage.setItem('sharpen_user', JSON.stringify(sharpenUserLS))
+      }
 
       const sharpenDataLS = {}
       sharpenDataLS[state.projectId] = JSON.parse(JSON.stringify(state))
@@ -45,6 +48,8 @@ export default {
   },
 
   addProject: (projectName) => (state, actions) => {
+    // reset address bar
+    history.replaceState('','','gantt.html');
     // store to sharpen_user, sharpen_data (local storage)
     const sharpenUserLS = JSON.parse(localStorage.getItem('sharpen_user'))
     const projectId     = utils.random()
@@ -62,8 +67,9 @@ export default {
     // store to cloud data store
     const formData = new FormData();
     const actoin   = "PUT"
+    formData.append("id",   sharpenUserLS.memberId)
     formData.append("data", localStorage.getItem('sharpen_user'))
-    formData.append("timestamp", Date.now())
+    formData.append("last_updated", Date())
     const request = new XMLHttpRequest();
     request.open(actoin, state.apiEndPointMember + sharpenUserLS.memberId, true);
     request.onerror = function() {
@@ -78,10 +84,9 @@ export default {
       }
     }
     request.send(formData);
-    return {}
-
-
     // return default state updated project name, id
+    // defaultState.tasks['format'] is default data for format. So delete it.
+    delete(defaultState.tasks['format'])
     return defaultState
   },
 
@@ -98,7 +103,7 @@ export default {
     const actoin   = "POST"
     formData.append("id",   sharpenUserLS.memberId)
     formData.append("data", localStorage.getItem('sharpen_user'))
-    formData.append("timestamp", Date.now())
+    formData.append("last_updated", Date())
     const request = new XMLHttpRequest();
     request.open(actoin, state.apiEndPointMember, true);
     request.onerror = function() {
@@ -117,6 +122,9 @@ export default {
   },
 
   changeProject: (projectId) => (state, actions) => {
+    // reset address bar
+    history.replaceState('','','gantt.html');
+
     // store to sharpen_user, sharpen_data (local storage)
     const sharpenUserLS = JSON.parse(localStorage.getItem('sharpen_user'))
     sharpenUserLS.currentProjectId = projectId
@@ -125,7 +133,23 @@ export default {
     const sharpenDataLS = JSON.parse(localStorage.getItem('sharpen_data'))
     if (!sharpenDataLS[projectId]) {
       // get data by api
-      localStorage.setItem('sharpen_data', JSON.stringify(sharpenDataLS))
+      const request = new XMLHttpRequest()
+      request.open("GET", state.apiEndPointState + projectId)
+      request.onerror = function() {
+      }
+      request.onload = () => {
+        // no data
+        if (!(JSON.parse(request.response) && JSON.parse(request.response).data)) {
+          state.statusCode = 404
+          return {}
+        }
+        const loadedState = JSON.parse(JSON.parse(request.response).data)
+        loadedState.statusCode = 200   
+        sharpenDataLS[projectId] = loadedState
+        localStorage.setItem('sharpen_data', JSON.stringify(sharpenDataLS))
+        return loadedState
+      }
+      request.send();
     } else {
       // return default state updated project name, id
       return sharpenDataLS[projectId]
@@ -181,7 +205,7 @@ export default {
     formData.append("id",       state.projectId)
     formData.append("data",    JSON.stringify(state))
     formData.append("memberId", sharpenUserLS.memberId)
-    formData.append("timestamp", Date.now())
+    formData.append("last_updated", Date())
     const request = new XMLHttpRequest();
     request.open(actoin, url, true);
     request.onload = function () {
@@ -190,9 +214,24 @@ export default {
           if (!state.published) {
             state.published = true
             document.getElementById('sharedUrlModalTrigger').click()
+          } else {
+            $(document.getElementById('publish')).popup('show', null, null)
+            setTimeout(()=>$(document.getElementById('publish')).popup('destroy', null, null), 1000)
           }
         } else {
-          console.error(request.statusText);
+          if (request.status == 401) {
+            // if not exist memberId, reset member data.
+            alert(state.i18n[state.locale].errorMessages.noMemberId)
+            const memberId      = utils.random()
+            const sharpenUserLS = JSON.parse(localStorage.getItem('sharpen_user'))
+            sharpenUserLS["currentProjectId"]          = state.projectId
+            sharpenUserLS["memberId"]                  = memberId
+            sharpenUserLS["memberName"]                = null
+            sharpenUserLS["projects"]                  = {}
+            sharpenUserLS["projects"][state.projectId] = {id: state.projectId, name: state.projectName}
+            localStorage.setItem('sharpen_user', JSON.stringify(sharpenUserLS))
+          }
+          console.error(request.statusText)
         }
       }
     }
@@ -234,6 +273,15 @@ export default {
 
     changeStartDateFromCalendar: (params) => (state, actions) => {
       const [id, startDate, globalState] = params
+
+      const tableStartDate = new Date(globalState.tableStartDate)
+      const _startDate     = new Date(startDate) 
+      const endDate        = new Date(state[id].endDate)
+
+      if (_startDate < tableStartDate || _startDate > endDate) {
+        return
+      }
+
       actions.clearWatched(id)
       state[id].startDate     = startDate
       state[id].startPosition = utils.getWidthOfStartPoint(globalState.tableStartDate, startDate, globalState.globalCellWidth)
@@ -243,6 +291,15 @@ export default {
 
     changeEndDateFromCalendar: (params) => (state, actions) => {
       const [id, endDate, globalState] = params
+
+      const tableEndDate = new Date(globalState.tableEndDate)
+      const startDate    = new Date(state[id].startDate)
+      const _endDate     = new Date(endDate)
+
+      if (_endDate > tableEndDate || startDate > _endDate) {
+        return
+      }
+
       actions.clearWatched(id)
       state[id].endDate = endDate
       state[id].width   = utils.getWidthFromTerm(state[id].startDate, endDate, globalState.globalCellWidth)
@@ -382,6 +439,12 @@ export default {
       } else {
         startPosition = state[globalUpdateId].startPosition - utils.widthResized((pageXPoint - pageX), globalState.globalCellWidth)
       }
+
+      const startDate = new Date(utils.get_date(startPosition, globalState.globalCellWidth, tableStartDate))
+      if (startDate < tableStartDate) {
+        return
+      }
+
       state[globalUpdateId].startPosition = startPosition
       state[globalUpdateId].endPosition   = startPosition + state[globalUpdateId].width
       state[globalUpdateId].startDate     = utils.get_date(startPosition, globalState.globalCellWidth, tableStartDate)
@@ -413,11 +476,15 @@ export default {
         }
 
         const tableStartDate = new Date(globalState.tableStartDate)
-
-        state[globalUpdateId].startPosition = startPosition
-        state[globalUpdateId].startDate     = utils.get_date(startPosition, globalState.globalCellWidth, tableStartDate)
-        state[globalUpdateId].endDate       = utils.get_date(startPosition + width -1, globalState.globalCellWidth, tableStartDate)
-        state[globalUpdateId].width         = width -1
+        const endDate        = new Date(state[globalUpdateId].endDate) 
+        const startDateStr   = utils.get_date(startPosition, globalState.globalCellWidth, tableStartDate)
+        const startDate      = new Date(startDateStr)
+        if (!(startDate > endDate || startDate < tableStartDate)) {
+          state[globalUpdateId].startPosition = startPosition
+          state[globalUpdateId].startDate     = utils.get_date(startPosition, globalState.globalCellWidth, tableStartDate)
+          state[globalUpdateId].endDate       = utils.get_date(startPosition + width -1, globalState.globalCellWidth, tableStartDate)
+          state[globalUpdateId].width         = width -1
+        }
         return {}
 
     },
@@ -444,10 +511,15 @@ export default {
         }
 
         const tableStartDate = new Date(globalState.tableStartDate)
-
-        state[globalUpdateId].width       = width
-        state[globalUpdateId].endPosition = state[globalUpdateId]["startPosition"] + width
-        state[globalUpdateId].endDate     = utils.get_date(state[globalUpdateId]["startPosition"] + width -1, globalState.globalCellWidth, tableStartDate)
+        const tableEndDate   = new Date(globalState.tableEndDate)
+        const startDate      = new Date(state[globalUpdateId].startDate) 
+        const endDateStr     = utils.get_date(state[globalUpdateId]["startPosition"] + width -1, globalState.globalCellWidth, tableStartDate)
+        const endDate        = new Date(endDateStr)
+        if (!(startDate > endDate || endDate > tableEndDate)) {
+          state[globalUpdateId].width       = width
+          state[globalUpdateId].endPosition = state[globalUpdateId]["startPosition"] + width
+          state[globalUpdateId].endDate     = endDateStr
+        }
         return {}
 
     }

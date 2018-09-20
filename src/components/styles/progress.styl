@@ -1,8 +1,12 @@
+noDrag()
+  pointer-events: none
+
 .title
  white-space: nowrap
  text-align: left!important
  font-size: 0.9em!important
  font-weight: 1!important
+ noDrag()
 
 .row 
   background-image: url(/assets/images/division.jpg)
@@ -14,7 +18,7 @@
 resizer()
   position: absolute
   height:   100%
-  width:    30px
+  width:    0.5em
   cursor:   col-resize
   top: 0
 
@@ -31,3 +35,7 @@ resizer()
   right: -0.5em !important
   top: -0.5em !important
   z-index: 1
+  noDrag()
+
+.bar
+  noDrag()

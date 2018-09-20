@@ -3,15 +3,51 @@ import actions        from './actions'
 import state          from './state'
 import view           from './components'
 import utils          from './classes/utils'
-import i18n           from './state/i18n'
 import { withLogger } from "@hyperapp/logger"
 import 'normalize.css'
 
 const getPrams = utils.getUrlVars()
 
-const start = (state) => withLogger(app)(state, actions, view, document.getElementById('sharpen'))
+const start = (currentState) => withLogger(app)(utils.stateVersionUp(state, currentState), actions, view, document.getElementById('sharpen'))
 
-if (getPrams.id != undefined && getPrams.id.length > 0) {
+if (getPrams.memberId != undefined && getPrams.memberId.length > 0) {
+  const request = new XMLHttpRequest()
+  request.open("GET", state.apiEndPointMember + getPrams.memberId)
+  request.onerror = function() {
+  }
+  request.onload = () => {
+    if (JSON.parse(request.response) && JSON.parse(request.response).data) {
+      localStorage.setItem('sharpen_user', JSON.parse(request.response).data)
+      const defaultState = utils.getCurrentProjectState(state)
+      defaultState.projectId   = JSON.parse(JSON.parse(request.response).data).currentProjectId
+      defaultState.projectName = JSON.parse(JSON.parse(request.response).data).projects[defaultState.projectId].name
+      defaultState.published   = true
+      // load latest data if project was published.
+      if (defaultState.published) {
+        const request = new XMLHttpRequest()
+        request.open("GET", state.apiEndPointState + defaultState.projectId)
+        request.onerror = function() {
+        }
+        request.onload = () => {
+          // no data
+          if (!(JSON.parse(request.response) && JSON.parse(request.response).data)) {
+            defaultState.published = false
+            start(defaultState)
+            return
+          }
+          const loadedState = JSON.parse(JSON.parse(request.response).data)
+          loadedState.statusCode = 200   
+          start(loadedState)
+        }
+        request.send()
+      } else {
+        defaultState.statusCode = null
+        start(defaultState)
+      }
+    }
+  }
+  request.send()
+} else if (getPrams.id != undefined && getPrams.id.length > 0) {
   // when there is project id, load data.
   const request = new XMLHttpRequest()
   request.open("GET", state.apiEndPointState + getPrams.id)
@@ -52,17 +88,21 @@ if (getPrams.id != undefined && getPrams.id.length > 0) {
 
   }
   request.send()
-} else {
-  const defaultState = utils.getCurrentProjectState(state)
-  if (defaultState.published) {
 
+} else {
+
+  const defaultState = utils.getCurrentProjectState(state)
+
+  // load latest data if project was published.
+  if (defaultState.published) {
     const request = new XMLHttpRequest()
-    request.open("GET", state.apiEndPointState + getPrams.id)
+    request.open("GET", state.apiEndPointState + defaultState.projectId)
     request.onerror = function() {
     }
     request.onload = () => {
       // no data
       if (!(JSON.parse(request.response) && JSON.parse(request.response).data)) {
+        defaultState.published = false
         start(defaultState)
         return
       }
