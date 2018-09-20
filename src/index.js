@@ -70,7 +70,7 @@ if (getPrams.id != undefined && getPrams.id.length > 0) {
       loadedState.statusCode = 200   
       start(loadedState)
     }
-
+    request.send()
   } else {
     defaultState.statusCode = null
     start(defaultState)
