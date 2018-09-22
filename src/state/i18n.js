@@ -2,6 +2,7 @@ import { Japanese }   from "flatpickr/dist/l10n/ja.js"
 
 export default {
   ja: {
+    ad: "Sharpen 広告",
     languageName: "日本語",
     searchLanguage: "言語を検索",
     publish: '公開する',
@@ -70,6 +71,7 @@ export default {
   }, 
 
   en: {
+    ad: "Sharpen Ad",
     languageName: "English",
     searchLanguage: "Search language...",
     publish: 'publish',

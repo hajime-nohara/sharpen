@@ -19,11 +19,15 @@ console.log('sharpenUserLS =', sharpenUserLS)
   }
 
   const onFocusoutMemberName = (e) => {
-    actions.changeMemberName(e.target.value)
+    if (e.target.value.length > 0) {
+      actions.changeMemberName(e.target.value)
+    }
   }
 
   const onFocusoutProjectName = (e) => {
-    actions.changeProjectName(e.target.value)
+    if (e.target.value.length > 0) {
+      actions.changeProjectName(e.target.value)
+    }
   }
 
   const changeLanguage = (val1, val2, el) => {

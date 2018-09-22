@@ -1,8 +1,6 @@
+import { h } from "hyperapp"
 import utils from '../classes/utils'
 import i18n  from './i18n'
-
-// default data
-const globalCellWidth = 70;
 
 // default endDate is 1 month later for table
 const startDate = new Date 
@@ -12,7 +10,7 @@ endDate.setDate(startDate.getDate() - 1)
 
 export default {
   // common value
-  version: 3,
+  version: 4,
   // common state value for api
   //apiEndPointState:     "http://localhost:3000/states/",
   //apiEndPointMember:    "http://localhost:3000/members/",
@@ -27,7 +25,7 @@ export default {
   // common state value for table
   projectName:          null,  
   pageXStartPoint:      0,
-  globalCellWidth:      globalCellWidth,
+  globalCellWidth:      70,
   tableStartDate:       utils.getDateStr(startDate),
   tableEndDate:         utils.getDateStr(endDate),
 
@@ -47,7 +45,14 @@ export default {
           description:    "This site is made by just only html and javascript as sample tool.",
           member:         [],
           todo:           {},
-          comment:        {1: {comment: 'We are developing implement now.'}, 2: {comment: 'It will connect server and you will can share your data for many people.'} },
+          comment:        {1: 
+                              {
+                                comment: 'We are developing implement now.',
+                                timestamp:  '1980-01-01 00:00:00',
+                                memberId:   'sharpen',
+                                memberName: 'sharpen',
+                              }
+          },
           watched:        [],
           progress:       0,
           startPosition:  0,

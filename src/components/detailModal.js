@@ -3,9 +3,19 @@ import utils      from '../classes/utils'
 import flatpickr  from "flatpickr";
 import dateformat from 'dateformat'
 import styl       from './styles/edit.styl'
+import ad         from '../ad'
 
 // input view
 export default (state, actions, params) => {
+
+      const numberOfAsp    = ad.asp.length
+      const aspIndex       = Math.floor(Math.random()*(numberOfAsp-0)+0)
+      const allSizeBanners = ad.asp[aspIndex].banners
+      const sizeArr        = Object.keys(allSizeBanners)
+      const size           = Math.floor(Math.random()*(sizeArr.length-0)+0)
+      const banners        = allSizeBanners[sizeArr[size]][state.locale]
+      const bannerIndex    = Math.floor(Math.random()*(banners.length-0)+0)
+      const banner         = banners[bannerIndex]
 
       /* member */
       const onChangeMemberSelect = (e) => {
@@ -257,7 +267,6 @@ export default (state, actions, params) => {
           }
       }
 
-
       const todoRegistOnfocusout = (e) => {
         let id = 1
         if (Object.keys(params.todo).length > 0) {
@@ -309,7 +318,11 @@ export default (state, actions, params) => {
               onupdate={(e)=>e.innerHTML=params.title}
               oncreate={(e)=>e.innerHTML=params.title}
             />
+            <i class={styl.close + " close icon"} onclick={(e)=>$('#'+detailModalId).modal('hide', null, null)}></i>
           </div>
+
+
+
 
           <div class="scrolling content">
             <div class="ui form">
@@ -377,7 +390,7 @@ export default (state, actions, params) => {
                       onfocusout={todoRegistOnfocusout}
                       onkeydown={todoRegistOnKeydown}
                     />
-                    <i class="plus circle icon"></i>
+                    <i class="plus circle link icon"></i>
                   </div>
                 </div>
               </div>
@@ -394,18 +407,40 @@ export default (state, actions, params) => {
                     onkeydown={commentOnKeydown}
                   ></div>
                 </div>
+
               </form>
+
+              <h4 class="ui dividing header"></h4>
+              <div class="actions">
+                <div class={styl.deleteButton + " ui black deny button"}>
+                  {state.i18n[state.locale].del}
+                </div>
+                <div class="ui positive icon button right floated">
+                  {state.i18n[state.locale].close}
+                </div>
+              </div>
+
+
             </div>
 
           </div>
 
-          <div class="actions">
-            <div class="ui black deny button">
-              {state.i18n[state.locale].del}
+          <div class={styl.actions + " actions"}>
+
+            <div class={styl.adFrame}>
+            {/* Ad From*/}
+            <div class={styl.adCard + " ui card"}>
+              {banner}
+              <div class={styl.adMeta}>
+                <div class="meta">
+                  {state.i18n[state.locale].ad}
+                </div>
+              </div>
             </div>
-            <div class="ui positive icon button">
-              {state.i18n[state.locale].close}
             </div>
+            {/* Ad To*/}
+
+
           </div>
 
         </div>
