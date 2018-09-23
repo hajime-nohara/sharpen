@@ -1,0 +1,9 @@
+// if you want show add, do blow command and write into add data.
+// cp src/ad/ad.js.default src/ad/production/ad.js
+
+import ad from "./production/ad"
+
+export default {
+  asp: []         // add off
+  //asp: [ad]     // add on
+}

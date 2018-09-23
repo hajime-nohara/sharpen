@@ -9,14 +9,55 @@ import i18n       from '../i18n'
 // input view
 export default (state, actions, params) => {
 
-      const numberOfAsp    = ad.asp.length
-      const aspIndex       = Math.floor(Math.random()*(numberOfAsp-0)+0)
-      const allSizeBanners = ad.asp[aspIndex].banners
-      const sizeArr        = Object.keys(allSizeBanners)
-      const size           = Math.floor(Math.random()*(sizeArr.length-0)+0)
-      const banners        = allSizeBanners[sizeArr[size]][state.locale]
-      const bannerIndex    = Math.floor(Math.random()*(banners.length-0)+0)
-      const banner         = banners[bannerIndex]
+      let actionAd         = null
+      let actionButtons    = null
+      let actionButtonsDiv = null
+
+      const numberOfAsp = ad.asp.length
+      if (numberOfAsp > 0) {
+        const aspIndex       = Math.floor(Math.random()*(numberOfAsp-0)+0)
+        const allSizeBanners = ad.asp[aspIndex].banners
+        const sizeArr        = Object.keys(allSizeBanners)
+        const size           = Math.floor(Math.random()*(sizeArr.length-0)+0)
+        const banners        = allSizeBanners[sizeArr[size]][state.locale]
+        const bannerIndex    = Math.floor(Math.random()*(banners.length-0)+0)
+        const banner         = banners[bannerIndex]
+
+        actionAd             =  <div class={styl.actions + " actions"}>
+                                  <div class={styl.adFrame}>
+                                    <div class={styl.adCard + " ui card"}>
+                                      {banner}
+                                      <div class={styl.adMeta}>
+                                        <div class="meta">
+                                          {i18n[state.locale].ad}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+        actionButtons        = <div class="actions">
+                                 <div class={styl.deleteButton + " ui black deny button"}>
+                                   {i18n[state.locale].del}
+                                 </div>
+                                 <div class="ui positive icon button right floated">
+                                   {i18n[state.locale].close}
+                                 </div>
+                               </div>
+
+        actionButtonsDiv     = <h4 class="ui dividing header"></h4>
+
+
+      } else {
+        actionAd = <div class="actions">
+                     <div class={styl.deleteButton + " ui black deny button"}>
+                       {i18n[state.locale].del}
+                     </div>
+                     <div class="ui positive icon button right floated">
+                       {i18n[state.locale].close}
+                     </div>
+                   </div>
+      }
 
       /* member */
       const onChangeMemberSelect = (e) => {
@@ -411,38 +452,14 @@ export default (state, actions, params) => {
 
               </form>
 
-              <h4 class="ui dividing header"></h4>
-              <div class="actions">
-                <div class={styl.deleteButton + " ui black deny button"}>
-                  {i18n[state.locale].del}
-                </div>
-                <div class="ui positive icon button right floated">
-                  {i18n[state.locale].close}
-                </div>
-              </div>
-
+              {actionButtonsDiv}
+              {actionButtons}
 
             </div>
 
           </div>
 
-          <div class={styl.actions + " actions"}>
-
-            <div class={styl.adFrame}>
-            {/* Ad From*/}
-            <div class={styl.adCard + " ui card"}>
-              {banner}
-              <div class={styl.adMeta}>
-                <div class="meta">
-                  {i18n[state.locale].ad}
-                </div>
-              </div>
-            </div>
-            </div>
-            {/* Ad To*/}
-
-
-          </div>
+          {actionAd}
 
         </div>
       )

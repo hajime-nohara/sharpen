@@ -10,6 +10,7 @@ You can start standalone sharpen gantt chart application quickly.
 git clone https://github.com/hajime-nohara/sharpen.git
 cd sharpen
 cp config/index.js.default config/index.js
+cp src/ad/index.js.default src/ad/index.js
 npm install
 npm install -g gulp (ref: https://semantic-ui.com/introduction/getting-started.html) 
 cd semantic
