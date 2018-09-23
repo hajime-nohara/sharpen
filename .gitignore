@@ -8,4 +8,5 @@ dist
 *swo
 *swp
 semantic*
+config/index.js
 .DS_Store

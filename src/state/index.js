@@ -1,41 +1,28 @@
 import { h } from "hyperapp"
 import utils from '../classes/utils'
-import i18n  from './i18n'
-
-// default endDate is 1 month later for table
-const startDate = new Date 
-const endDate   = new Date
-endDate.setMonth(endDate.getMonth() + 1)
-endDate.setDate(startDate.getDate() - 1)
 
 export default {
-  // common value
-  version: Date(),
-  // common state value for api
-  //apiEndPointState:     "http://localhost:3000/states/",
-  //apiEndPointMember:    "http://localhost:3000/members/",
-  apiEndPointState:     "https://sharpen-213302.appspot.com/states/",
-  apiEndPointMember:    "https://sharpen-213302.appspot.com/members/",
 
+  version:              (new Date()).getTime(),
+
+  // common state value for project
   projectId:            null,  
+  projectName:          null,  
   projectOwner:         null,  
   published:            false,
   statusCode:           null,
+  locale:               "en",
 
   // common state value for table
-  projectName:          null,  
   pageXStartPoint:      0,
   globalCellWidth:      70,
-  tableStartDate:       utils.getDateStr(startDate),
-  tableEndDate:         utils.getDateStr(endDate),
-
-  // common state value for locale
-  locale:               "en",
+  tableStartDate:       utils.getDateStr(new Date()),
+  tableEndDate:         utils.getDateStr(new Date((new Date()).setMonth((new Date()).getMonth()+1))),
 
   // common state value for task
   member:               {},
 
-  // task data sample
+  // task data format
   tasks: 
     {
       format: { 

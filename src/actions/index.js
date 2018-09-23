@@ -1,6 +1,8 @@
 import utils        from '../classes/utils'
 import table        from './table'
 import defaultState from '../state'
+import i18n         from '../i18n'
+import config       from '../../config'
 
 export default {
 
@@ -71,7 +73,7 @@ export default {
     formData.append("data", localStorage.getItem('sharpen_user'))
     formData.append("last_updated", Date())
     const request = new XMLHttpRequest();
-    request.open(actoin, state.apiEndPointMember + sharpenUserLS.memberId, true);
+    request.open(actoin, config.apiEndPointMember + sharpenUserLS.memberId, true);
     request.onerror = function() {
       state.published = false
     }
@@ -105,7 +107,7 @@ export default {
     formData.append("data", localStorage.getItem('sharpen_user'))
     formData.append("last_updated", Date())
     const request = new XMLHttpRequest();
-    request.open(actoin, state.apiEndPointMember, true);
+    request.open(actoin, config.apiEndPointMember, true);
     request.onerror = function() {
       state.published = false
     }
@@ -134,7 +136,7 @@ export default {
     if (!sharpenDataLS[projectId]) {
       // get data by api
       const request = new XMLHttpRequest()
-      request.open("GET", state.apiEndPointState + projectId)
+      request.open("GET", config.apiEndPointState + projectId)
       request.onerror = function() {
       }
       request.onload = () => {
@@ -201,7 +203,7 @@ export default {
 
     const formData = new FormData();
     const actoin   = state.published ? "PUT" : "POST"
-    const url      = state.apiEndPointState + (state.published ? state.projectId : '')
+    const url      = config.apiEndPointState + (state.published ? state.projectId : '')
     formData.append("id",       state.projectId)
     formData.append("data",    JSON.stringify(state))
     formData.append("memberId", sharpenUserLS.memberId)
@@ -392,8 +394,8 @@ export default {
       { 
           id:             id,
           display:        "",
-          title:          globalState.i18n[globalState.locale].newTask,
-          description:    globalState.i18n[globalState.locale].newTask,
+          title:          i18n[globalState.locale].newTask,
+          description:    i18n[globalState.locale].newTask,
           member:         [],
           todo:           {},
           comment:        {},

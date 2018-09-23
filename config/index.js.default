@@ -1,0 +1,4 @@
+export default {
+  apiEndPointState:     "http://localhost:3000/states/",
+  apiEndPointMember:    "http://localhost:3000/members/",
+}
