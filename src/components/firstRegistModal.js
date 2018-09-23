@@ -8,7 +8,6 @@ export default (state, actions) => {
 
   const sharpenUserLS = JSON.parse(localStorage.getItem('sharpen_user'))
 
-console.log('sharpenUserLS =', sharpenUserLS)
   const reRender = () => {
     setTimeout(actions.reRender, 300)
   }
