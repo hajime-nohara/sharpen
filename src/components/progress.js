@@ -2,6 +2,7 @@ import { h }       from "hyperapp"
 import utils       from '../classes/utils'
 import detailModal from './detailModal'
 import styl        from './styles/progress.styl'
+import i18n        from '../i18n'
 // for mobile D&D
 import {polyfill}  from "mobile-drag-drop";
 import {scrollBehaviourDragImageTranslateOverride} from "mobile-drag-drop/scroll-behaviour"
@@ -11,10 +12,10 @@ polyfill({
 
 export default (state, actions, data) => {
 
-  let isResizing      = false
-  let pageX           = 0
-  let pageXStartPoint = 0
-  let sourceId        = 0
+  let isResizing         = false
+  let pageX              = 0
+  let pageXStartPoint    = 0
+  let sourceId           = 0
 
   /* row */
   const numberOfDays = utils.getTermFromDate(state.tableStartDate, state.tableEndDate)
@@ -22,7 +23,9 @@ export default (state, actions, data) => {
   const ondragover = (e) => {
     e.preventDefault()
   }
+
   const ondrop = (e) => {
+
     pageX    = e.pageX
     sourceId = parseInt(e.dataTransfer.getData("text/plain"))
     if (e.stopPropagation) {
@@ -31,7 +34,19 @@ export default (state, actions, data) => {
     e.preventDefault();
     if (sourceId != data.id) {
       actions.tasks.changePosition([data.id, sourceId])
+    } else {
+
+      // when sourceId is Zero it's mobile device. 
+      if (sourceId === 0) {
+        sourceId = e.target.id
+        pageX    = e.pageX
+      } 
+      if (sourceId == data.id) {
+        actions.tasks.dragEnd([pageX, state, data.id, pageXStartPoint])
+      }
+
     }
+
   }
   const setBackgroundSize = (e) => {
     e.style.backgroundSize=utils.parsePx(state.globalCellWidth)
@@ -71,14 +86,7 @@ export default (state, actions, data) => {
     }
   }
   const onDragEnd = (e) => {
-    // when sourceId is Zero it's mobile device. 
-    if (sourceId === 0) {
-      sourceId = e.target.id
-      pageX    = e.pageX
-    } 
-    if (sourceId == data.id) {
-      actions.tasks.dragEnd([pageX, state, data.id, pageXStartPoint])
-    }
+    e.target.style.opacity = '1'
   }
 
   const onDragStart = (e) => {
@@ -87,7 +95,6 @@ export default (state, actions, data) => {
     }
     pageXStartPoint              = e.pageX
     e.target.style.opacity       = '0.3'
-    e.target.style.border        = "dashed 0.5px"
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData("text/plain", e.target.id)
   }
@@ -133,23 +140,42 @@ export default (state, actions, data) => {
   }
 
   /* progress-bar */
+
+  const sharpenUserLS = JSON.parse(localStorage.getItem('sharpen_user'))
   const progressBarStyle = {width: utils.parsePercent(data.progress)}
+  const badge = data.watched.includes(sharpenUserLS.memberId) ? null : <div class={styl.badge + " ui blue empty circular label"}></div>
 
   return (
-    <div>
+    <div key={utils.random()}>
       {/* row */}
-      <div class={styl.row} key={utils.random()} oncreate={setBackgroundSize} onupdate={setBackgroundSize} ondrop={ondrop} style={rowStyle} ondragover={ondragover} ondragenter={ondragover}>
-        <div class={styl.progress + " ui indicating progress active"} onmouseup={draggableOff} onmousedown={draggableOn} ontouchstart={draggableOn} id={data.id} onclick={openModal} ondragstart={onDragStart} ondragend={onDragEnd} style={progressStyle}>
-          <div class="bar" style={progressBarStyle}>
+      <div class={styl.row} 
+        style={rowStyle} 
+        oncreate={setBackgroundSize}
+        onupdate={setBackgroundSize}
+        ondrop={ondrop}
+        ondragover={ondragover}
+        ondragenter={ondragover}>
+        <div class={styl.progress + " ui indicating progress active"} 
+            id={data.id}
+            onmousedown={draggableOn}
+            ontouchstart={draggableOn}
+            onclick={openModal}
+            ondragstart={onDragStart}
+            ondragend={onDragEnd}
+            style={progressStyle}>
+          <div class={styl.bar + " bar"} style={progressBarStyle}>
             <div class="progress">{utils.parsePercent(data.progress)}</div>
           </div>
           {/* resizer start */}
           <div class={styl.resizerStart} onmousedown={resizeOnStart} ontouchstart={resizeOnStart} />
           {/* resizer end */}
-          <div class={styl.resizerEnd} onmousedown={resizeOnEnd} ontouchstart={resizeOnEnd} />
+          <div class={styl.resizerEnd} onmousedown={resizeOnEnd} ontouchstart={resizeOnEnd}>
+            {badge}
+          </div>
           {/* progress-bar */}
           <div class={styl.progressBarStyle + " progress-bar bg-faded"} style={progressBarStyle}/>
           <div class={styl.title + " label"}>{data.title}</div>
+          
         </div>
       </div>
     </div>

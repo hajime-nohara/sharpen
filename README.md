@@ -9,6 +9,8 @@ You can start standalone sharpen gantt chart application quickly.
 ```
 git clone https://github.com/hajime-nohara/sharpen.git
 cd sharpen
+cp config/index.js.default config/index.js
+cp src/ad/index.js.default src/ad/index.js
 npm install
 npm install -g gulp (ref: https://semantic-ui.com/introduction/getting-started.html) 
 cd semantic
@@ -18,13 +20,13 @@ npm run start
 run webpack-dev-server on localhost:8080.
 
 # Production site
-You can use shapen gantt chart right now as personal standalone tool.  
+You can use shapen gantt chart right now.  
 http://www.sharpen.tokyo/
 
 # Attention
-Shapen is still α version.  
-I can not guarantee that always to keep correctly your gantt chart data.  
-I will do my best for user of Sharpen.  
+This project is implemented just only front end javascript.
+You can run as standalone application but api action is not work.
+For working "publish", "Project URL", "URL for other browser", actions, you have to implement API.
 
 # License
 Sharpen is MIT licensed.

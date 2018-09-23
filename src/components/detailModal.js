@@ -3,17 +3,69 @@ import utils      from '../classes/utils'
 import flatpickr  from "flatpickr";
 import dateformat from 'dateformat'
 import styl       from './styles/edit.styl'
+import ad         from '../ad'
+import i18n       from '../i18n'
 
 // input view
 export default (state, actions, params) => {
 
+      let actionAd         = null
+      let actionButtons    = null
+      let actionButtonsDiv = null
+
+      const numberOfAsp = ad.asp.length
+      if (numberOfAsp > 0) {
+        const aspIndex       = Math.floor(Math.random()*(numberOfAsp-0)+0)
+        const allSizeBanners = ad.asp[aspIndex].banners
+        const sizeArr        = Object.keys(allSizeBanners)
+        const size           = Math.floor(Math.random()*(sizeArr.length-0)+0)
+        const banners        = allSizeBanners[sizeArr[size]][state.locale]
+        const bannerIndex    = Math.floor(Math.random()*(banners.length-0)+0)
+        const banner         = banners[bannerIndex]
+
+        actionAd             =  <div class={styl.actions + " actions"}>
+                                  <div class={styl.adFrame}>
+                                    <div class={styl.adCard + " ui card"}>
+                                      {banner}
+                                      <div class={styl.adMeta}>
+                                        <div class="meta">
+                                          {i18n[state.locale].ad}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+        actionButtons        = <div class="actions">
+                                 <div class={styl.deleteButton + " ui black deny button"}>
+                                   {i18n[state.locale].del}
+                                 </div>
+                                 <div class="ui positive icon button right floated">
+                                   {i18n[state.locale].close}
+                                 </div>
+                               </div>
+
+        actionButtonsDiv     = <h4 class="ui dividing header"></h4>
+
+
+      } else {
+        actionAd = <div class="actions">
+                     <div class={styl.deleteButton + " ui black deny button"}>
+                       {i18n[state.locale].del}
+                     </div>
+                     <div class="ui positive icon button right floated">
+                       {i18n[state.locale].close}
+                     </div>
+                   </div>
+      }
+
       /* member */
-      const optionOnclick = (e) => {
+      const onChangeMemberSelect = (e) => {
         const selectedValue = []
-        const select = e.target.parentElement
+        const select = e.target
         for (let i = 0; i < select.childNodes.length; i++) {
           if (select.childNodes[i].selected) {
-            selectedValue.push(Number(select.childNodes[i].value))
+            selectedValue.push(select.childNodes[i].value)
           }
         }
         actions.tasks.changeMember([params.id, selectedValue])
@@ -22,13 +74,12 @@ export default (state, actions, params) => {
       const assignedMember = []
       Object.keys(state.member).forEach(
         function(index,val,arr) {
-          const isSelected = ((params.member || params.member != undefined) && params.member.includes(Number(index)))
+          const isSelected = ((params.member || params.member != undefined) && params.member.includes(index))
           assignedMember.push(<option 
                                     key={utils.random()} 
                                     value={index}
                                     oncreate={(e)=>e.selected=isSelected}
                                     onupdate={(e)=>e.selected=isSelected}
-                                    onclick={optionOnclick}
                                     ondblclick={()=>actions.deleteMasterMember(index)}
                               >@{state.member[index]}</option>
           )
@@ -52,7 +103,7 @@ export default (state, actions, params) => {
 
           const todoTitleOnKeydown = (e) => {
             if (e.keyCode === 13) {
-                e.target.blur();
+                e.target.blur()
                 actions.tasks.changeTodoTitle({id: params.id, value: {id: index, title: e.target.value}})
               }
           }
@@ -63,7 +114,7 @@ export default (state, actions, params) => {
 
           todo.push(
             <div class="item">
-              <div class="ui checkbox" 
+              <div class={styl.todoCheckbox + " ui checkbox"}
                 oncreate={(e)=>$(e).checkbox()}
                 >
                 <input type="checkbox" id={todoId} checked={params.todo[index].done} onchange={todoOnclick}/>
@@ -81,75 +132,107 @@ export default (state, actions, params) => {
         params.comment = {}
       }
 
-
+      const sharpenUserLS = JSON.parse(localStorage.getItem('sharpen_user'))
+    
       Object.keys(params.comment).forEach(
         function(index,val,arr) {
-
-          const commentEditOnFocusout = (e)=>actions.tasks.changeComment({id: params.id, value: {id: index, comment: e.target.innerHTML, timestamp: params.comment[index].timestamp}})
-
-          const commentEditOnKeydown = (e)=>{
-            if( e.keyCode === 13 && !(e.shiftKey === true || e.ctrlKey === true || e.altKey === true) ) {
-                e.target.blur();
-                actions.tasks.changeComment({id: params.id, value: {id: index, comment: e.target.innerHTML, timestamp: params.comment[index].timestamp}})
+          const commentEditOnFocusout = (e)=>{
+            actions.tasks.changeComment({
+              id: params.id,
+              value: {
+                id: index,
+                comment: e.target.innerHTML,
+                timestamp: params.comment[index].timestamp,
+                memberId:   sharpenUserLS.memberId,
+                memberName: sharpenUserLS.memberName
               }
+            })
           }
 
-
+          const commentEditOnKeydown = (e)=>{
+            if( (e.keyCode === 13 && !utils.isMobile()) && !(e.shiftKey === true || e.ctrlKey === true || e.altKey === true) ) {
+              e.target.blur();
+              actions.tasks.changeComment({
+                id: params.id,
+                value: {
+                  id: index,
+                  comment: e.target.innerHTML,
+                  timestamp: params.comment[index].timestamp,
+                  memberId:   sharpenUserLS.memberId,
+                  memberName: sharpenUserLS.memberName
+                }
+              })
+            }
+          }
+          
+          const isMember     = params.comment[index].memberId == sharpenUserLS.memberId 
+          const deleteButton = isMember ?
+            <i class={styl.iconClick + " trash icon"} onclick={(e)=>actions.tasks.deleteComment({id: params.id, value: index})}></i> : null
+  
           comment.push(
-
-
-                    <div class="comment">
-                      <a class="avatar">
-                        <i class={styl.avatarIcon + " user circle icon"}></i>
-                      </a>
-                      <div class="content">
-                        <a class="author">You</a>
-                        <div class="metadata">
-                          <span class="date">{params.comment[index].timestamp}</span>
-                        </div>
-                        <div class="text" contentEditable="true" key={utils.random()} 
-                          onfocusout={commentEditOnFocusout}
-                          onkeydown={commentEditOnKeydown}
-                          onupdate={(e)=>e.innerHTML=params.comment[index].comment}
-                          oncreate={(e)=>e.innerHTML=params.comment[index].comment}
-                        >
-                        </div>
-                        <div class="actions">
-                          <a class="reply">Reply</a>
-                          <i class={styl.iconClick + " trash icon"} onclick={(e)=>actions.tasks.deleteComment({id: params.id, value: index})}></i>
-                        </div>
-                      </div>
-                    </div>
-
-
-
+            <div class="comment">
+              <a class="avatar">
+                <i class={styl.avatarIcon + " user circle icon"}></i>
+              </a>
+              <div class="content">
+                <a class="author">{params.comment[index].memberName}</a>
+                <div class="metadata">
+                  <span class="date">{params.comment[index].timestamp}</span>
+                </div>
+                <div class={styl.comment + " text"} contentEditable={isMember ? "true" : "false"} key={utils.random()} 
+                  onfocusout={commentEditOnFocusout}
+                  onkeydown={commentEditOnKeydown}
+                  onupdate={(e)=>e.innerHTML=params.comment[index].comment}
+                  oncreate={(e)=>e.innerHTML=params.comment[index].comment}
+                >
+                </div>
+                <div class="actions">
+                  {/*<a class="reply">Reply</a>*/}
+                  {deleteButton}
+                </div>
+              </div>
+            </div>
           )
         }
       )
 
       const commentOnFocusout = (e)=>{
-        let id = 1
-          if (Object.keys(params.comment).length > 0) {
-            id = Number(Object.keys(params.comment)[Object.keys(params.comment).length -1]) + 1
-          }
         if (e.target.innerHTML.length > 0) {
-          actions.tasks.changeComment({id: params.id, value: {id: id, comment: e.target.innerHTML, timestamp: dateformat(new Date, 'yyyy-mm-dd hh:mm:ss')}})
+
+          const id = (Object.keys(params.comment).length > 0) ? Number(Object.keys(params.comment)[Object.keys(params.comment).length -1]) + 1 : 1
+
+          actions.tasks.changeComment({
+            id: params.id,
+            value: {
+              id:         id,
+              comment:    e.target.innerHTML,
+              timestamp:  dateformat(new Date, 'yyyy-mm-dd hh:mm:ss'),
+              memberId:   sharpenUserLS.memberId,
+              memberName: sharpenUserLS.memberName
+            }
+          })
         }
         e.target.innerHTML = ''
       }
 
       const commentOnKeydown = (e)=>{
-        if( e.keyCode === 13 && !(e.shiftKey === true || e.ctrlKey === true || e.altKey === true) ) {
+        if( (e.keyCode === 13 && !utils.isMobile()) && !(e.shiftKey === true || e.ctrlKey === true || e.altKey === true) ) {
           
             e.target.blur();
-            let id = 1
-              if (Object.keys(params.comment).length > 0) {
-                id = Number(Object.keys(params.comment)[Object.keys(params.comment).length-1]) + 1
-              }
 
-            e.target.blur();
             if (e.target.innerHTML.length > 0) {
-              actions.tasks.changeComment({id: params.id, value: {id: id, comment: e.target.innerHTML, timestamp: dateformat(new Date, 'yyyy-mm-dd hh:mm:ss')}})
+
+              const id = (Object.keys(params.comment).length > 0) ? Number(Object.keys(params.comment)[Object.keys(params.comment).length -1]) + 1 : 1
+              actions.tasks.changeComment({
+                id: params.id,
+                value: {
+                  id: id,
+                  comment: e.target.innerHTML,
+                  timestamp: dateformat(new Date, 'yyyy-mm-dd hh:mm:ss'),
+                  memberId:   sharpenUserLS.memberId,
+                  memberName: sharpenUserLS.memberName
+                }
+              })
             }
             e.target.innerHTML = ''
           }
@@ -181,7 +264,7 @@ export default (state, actions, params) => {
         const options = {
                           disableMobile: true,
                           defaultDate: e.getAttribute("value"),
-                          locale: state.i18n[state.locale].flatpickr,
+                          locale: i18n[state.locale].flatpickr,
                           onChange: function (date) {
                             actions.tasks[e.getAttribute("actionName")]([params.id, dateformat(date, 'yyyy-mm-dd'), state])
                           }
@@ -196,7 +279,7 @@ export default (state, actions, params) => {
       }
 
       const descriptionOnKeydown = (e)=> {
-        if( e.keyCode === 13 && !(e.shiftKey === true || e.ctrlKey === true || e.altKey === true) ) {
+        if( (e.keyCode === 13 && !utils.isMobile()) && !(e.shiftKey === true || e.ctrlKey === true || e.altKey === true) ) {
             e.target.blur();
             actions.tasks.changeDescription({id: params.id, description: e.target.value});
           }
@@ -226,7 +309,6 @@ export default (state, actions, params) => {
           }
       }
 
-
       const todoRegistOnfocusout = (e) => {
         let id = 1
         if (Object.keys(params.todo).length > 0) {
@@ -255,24 +337,39 @@ export default (state, actions, params) => {
 
 
 
+      const deleteTask = () => {
+         actions.tasks.del(params.id)
+      }      
+
+      const deleteTaskWrap = () => {
+        // when semantic moda close it's will actioin with animation so we need  update state after finish amimation perfectly.
+        document.getElementById(params.id).style.display = "none"
+        setTimeout(deleteTask, 1000)
+      }
+
+      const watched = () => actions.tasks.watched(params.id)
       return (
 
         <div class="ui longer modal transition scrolling" id={detailModalId}>
 
-          <div id={detailModalOpenId} onclick={()=>$('#'+detailModalId).modal({detachable: false}).modal('show')}/>
-          <div class="header">
+          <div id={detailModalOpenId} onclick={()=>$('#'+detailModalId).modal({detachable: false, onDeny: deleteTaskWrap, onVisible: watched}).modal('show')}/>
+          <div class={styl.header + " header"}>
             <div class="header" contentEditable="true" key={utils.random()} 
               onfocusout={titleOnFocusout}
               onkeydown={titleOnKeydown}
               onupdate={(e)=>e.innerHTML=params.title}
               oncreate={(e)=>e.innerHTML=params.title}
             />
+            <i class={styl.close + " close icon"} onclick={(e)=>$('#'+detailModalId).modal('hide', null, null)}></i>
           </div>
+
+
+
 
           <div class="scrolling content">
             <div class="ui form">
-              <h4 class="ui dividing header">{state.i18n[state.locale].date}</h4>
-              <div class="six wide field">
+              <h4 class="ui dividing header">{i18n[state.locale].date}</h4>
+              <div class="field">
                 <div class="two fields">
                   <div class="field">
                     <div class="ui calendar" value={params.startDate} actionName="changeStartDateFromCalendar" oncreate={bindCalendar} key={utils.random()}>
@@ -293,7 +390,7 @@ export default (state, actions, params) => {
                 </div>
               </div>
 
-              <h4 class="ui dividing header">{state.i18n[state.locale].description}</h4>
+              <h4 class="ui dividing header">{i18n[state.locale].description}</h4>
               <div class="field">
                 <textarea contentEditable="true" key={utils.random()} 
                   onfocusout={descriptionOnFocusout}
@@ -303,28 +400,31 @@ export default (state, actions, params) => {
                 />
               </div>
 
-              <h4 class="ui dividing header">{state.i18n[state.locale].member}</h4>
-              <div class="six wide field">
-                <div class="two fields">
-                  <div class="field">
-                    <select class="ui search selection" multiple>
+              <h4 class="ui dividing header">{i18n[state.locale].member}</h4>
+
+              <div class="field">
+                <div class="fields">
+                  <div class="sixteen wide field">
+                    <select class="ui search selection" multiple key={utils.random()} onchange={onChangeMemberSelect}>
                       {assignedMember}
                     </select>
                   </div>
+                  {/* Right now this function is no required.
                   <div class="field">
                     <div class="ui left icon input">
-                      <input type="text" placeholder={state.i18n[state.locale].addMember}
+                      <input type="text" placeholder={i18n[state.locale].addMember}
                         onfocusout={addMemberOnfocusout}
                         onkeydown={addMemberOnKeydown}
                       />
                       <i class="user plus icon"></i>
                     </div>
                   </div>
+                  */}
                 </div>
               </div>
 
-              <h4 class="ui dividing header">{state.i18n[state.locale].todo}</h4>
-              <div class="ui large vertical menu">
+              <h4 class="ui dividing header">{i18n[state.locale].todo}</h4>
+              <div class="ui large vertical menu sixteen wide field">
                 {todo}
                 <div class="item">
                   <div class="ui icon input">
@@ -332,35 +432,34 @@ export default (state, actions, params) => {
                       onfocusout={todoRegistOnfocusout}
                       onkeydown={todoRegistOnKeydown}
                     />
-                    <i class="plus circle icon"></i>
+                    <i class="plus circle link icon"></i>
                   </div>
                 </div>
               </div>
 
-              <h4 class="ui dividing header">{state.i18n[state.locale].comment}</h4>
+              <h4 class="ui dividing header">{i18n[state.locale].comment}</h4>
               <div class="ui comments">
                     {comment}
-                    <form class="ui reply form">
-                      <div class="field">
-                        <div class="ui segment" contentEditable="true" key={utils.random()} 
-                          onfocusout={commentOnFocusout}
-                          onkeydown={commentOnKeydown}
-                        ></div>
-                      </div>
-                    </form>
               </div>
+
+              <form class="ui reply form">
+                <div class="field">
+                  <div class="ui segment" contentEditable="true" key={utils.random()} 
+                    onfocusout={commentOnFocusout}
+                    onkeydown={commentOnKeydown}
+                  ></div>
+                </div>
+
+              </form>
+
+              {actionButtonsDiv}
+              {actionButtons}
+
             </div>
 
           </div>
 
-          <div class="actions">
-            <div class="ui black deny button" onclick={()=>actions.tasks.del(params.id)}>
-              {state.i18n[state.locale].del}
-            </div>
-            <div class="ui positive icon button">
-              {state.i18n[state.locale].close}
-            </div>
-          </div>
+          {actionAd}
 
         </div>
       )
