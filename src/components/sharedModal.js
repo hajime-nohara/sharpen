@@ -2,6 +2,7 @@ import { h, app } from "hyperapp"
 import utils      from '../classes/utils'
 import styl       from './styles/sharedModal.styl'
 import Clipboard  from 'clipboard'
+import i18n       from '../i18n'
 
 // input view
 export default (state, actions) => {
@@ -22,7 +23,7 @@ export default (state, actions) => {
         <div class={styl.input + " ui action input"}>
           <input type="text" id="sharedUrlStr" value={location.href.split('?')[0] + "?id=" + state.projectId}/>
           <button class="ui teal right labeled icon button clipboard" data-clipboard-target="#sharedUrlStr" oncreate={copyShaaredUrl}>
-          <i class="copy icon"></i> {state.i18n[state.locale].copy} </button>
+          <i class="copy icon"></i> {i18n[state.locale].copy} </button>
         </div>
 
       </div>
@@ -31,7 +32,7 @@ export default (state, actions) => {
 
         <div class="ui center aligned page grid">
           <div class={styl.description}>
-            {state.i18n[state.locale].sharedUrlDescription}
+            {i18n[state.locale].sharedUrlDescription}
           </div>
         </div>
 

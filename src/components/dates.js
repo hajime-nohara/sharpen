@@ -3,6 +3,7 @@ import utils      from '../classes/utils'
 import styl       from './styles/dates.styl'
 import dateformat from 'dateformat'
 import flatpickr  from "flatpickr";
+import i18n       from '../i18n'
 
 export default (state, actions) => {
 
@@ -27,7 +28,7 @@ export default (state, actions) => {
 
                             disableMobile: true,
                             defaultDate: dateformat(dateObj, 'yyyy-mm-dd'),
-                            locale: state.i18n[state.locale].flatpickr,
+                            locale: i18n[state.locale].flatpickr,
                             onChange: function (date, text, mode) {
                               actions[actionName]([dateformat(date, 'yyyy-mm-dd'), state])
                             }
@@ -42,8 +43,8 @@ export default (state, actions) => {
           <div style={{width: globalCellWidthPx}} class={styl.value}>
             {isFirstOrLastDay ? dateformat(dateObj, 'm/d') : dateformat(dateObj, 'd')}
           </div>,
-          <div style={{color: state.i18n[state.locale].calendar.dayColorsHash[dateObj.getDay()] || ""}} class={styl.label + " label"}>
-            {state.i18n[state.locale].calendar.text.days[dateObj.getDay()]}
+          <div style={{color: i18n[state.locale].calendar.dayColorsHash[dateObj.getDay()] || ""}} class={styl.label + " label"}>
+            {i18n[state.locale].calendar.text.days[dateObj.getDay()]}
           </div>
       ])
       dates.push(day)

@@ -10,7 +10,7 @@ endDate.setDate(startDate.getDate() - 1)
 
 export default {
   // common value
-  version: 4,
+  version: Date(),
   // common state value for api
   //apiEndPointState:     "http://localhost:3000/states/",
   //apiEndPointMember:    "http://localhost:3000/members/",
@@ -31,7 +31,6 @@ export default {
 
   // common state value for locale
   locale:               "en",
-  i18n:                 i18n,
 
   // common state value for task
   member:               {},

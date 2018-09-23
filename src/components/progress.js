@@ -2,6 +2,7 @@ import { h }       from "hyperapp"
 import utils       from '../classes/utils'
 import detailModal from './detailModal'
 import styl        from './styles/progress.styl'
+import i18n        from '../i18n'
 // for mobile D&D
 import {polyfill}  from "mobile-drag-drop";
 import {scrollBehaviourDragImageTranslateOverride} from "mobile-drag-drop/scroll-behaviour"

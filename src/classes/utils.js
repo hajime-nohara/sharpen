@@ -148,9 +148,9 @@ export default new class {
   }
 
   random (){
-    var l = 16;
+    var l = 64;
     // 生成する文字列に含める文字セット
-    var c = "abcdefghijklmnopqrstuvwxyz";
+    var c = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVZ";
     var cl = c.length;
     var r = "";
     for(var i=0; i<l; i++){

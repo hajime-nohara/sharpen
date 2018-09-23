@@ -12,3 +12,7 @@ body {
 .ui.card>div>img {
   position: absolute !important;
 }
+.ui.vertical.menu .item>i.icon {
+  float: left !important;
+  margin: 0 0.5em 0 0 !important;
+}

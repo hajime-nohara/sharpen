@@ -4,6 +4,7 @@ import flatpickr  from "flatpickr";
 import dateformat from 'dateformat'
 import styl       from './styles/edit.styl'
 import ad         from '../ad'
+import i18n       from '../i18n'
 
 // input view
 export default (state, actions, params) => {
@@ -222,7 +223,7 @@ export default (state, actions, params) => {
         const options = {
                           disableMobile: true,
                           defaultDate: e.getAttribute("value"),
-                          locale: state.i18n[state.locale].flatpickr,
+                          locale: i18n[state.locale].flatpickr,
                           onChange: function (date) {
                             actions.tasks[e.getAttribute("actionName")]([params.id, dateformat(date, 'yyyy-mm-dd'), state])
                           }
@@ -326,7 +327,7 @@ export default (state, actions, params) => {
 
           <div class="scrolling content">
             <div class="ui form">
-              <h4 class="ui dividing header">{state.i18n[state.locale].date}</h4>
+              <h4 class="ui dividing header">{i18n[state.locale].date}</h4>
               <div class="field">
                 <div class="two fields">
                   <div class="field">
@@ -348,7 +349,7 @@ export default (state, actions, params) => {
                 </div>
               </div>
 
-              <h4 class="ui dividing header">{state.i18n[state.locale].description}</h4>
+              <h4 class="ui dividing header">{i18n[state.locale].description}</h4>
               <div class="field">
                 <textarea contentEditable="true" key={utils.random()} 
                   onfocusout={descriptionOnFocusout}
@@ -358,7 +359,7 @@ export default (state, actions, params) => {
                 />
               </div>
 
-              <h4 class="ui dividing header">{state.i18n[state.locale].member}</h4>
+              <h4 class="ui dividing header">{i18n[state.locale].member}</h4>
 
               <div class="field">
                 <div class="fields">
@@ -370,7 +371,7 @@ export default (state, actions, params) => {
                   {/* Right now this function is no required.
                   <div class="field">
                     <div class="ui left icon input">
-                      <input type="text" placeholder={state.i18n[state.locale].addMember}
+                      <input type="text" placeholder={i18n[state.locale].addMember}
                         onfocusout={addMemberOnfocusout}
                         onkeydown={addMemberOnKeydown}
                       />
@@ -381,7 +382,7 @@ export default (state, actions, params) => {
                 </div>
               </div>
 
-              <h4 class="ui dividing header">{state.i18n[state.locale].todo}</h4>
+              <h4 class="ui dividing header">{i18n[state.locale].todo}</h4>
               <div class="ui large vertical menu sixteen wide field">
                 {todo}
                 <div class="item">
@@ -395,7 +396,7 @@ export default (state, actions, params) => {
                 </div>
               </div>
 
-              <h4 class="ui dividing header">{state.i18n[state.locale].comment}</h4>
+              <h4 class="ui dividing header">{i18n[state.locale].comment}</h4>
               <div class="ui comments">
                     {comment}
               </div>
@@ -413,10 +414,10 @@ export default (state, actions, params) => {
               <h4 class="ui dividing header"></h4>
               <div class="actions">
                 <div class={styl.deleteButton + " ui black deny button"}>
-                  {state.i18n[state.locale].del}
+                  {i18n[state.locale].del}
                 </div>
                 <div class="ui positive icon button right floated">
-                  {state.i18n[state.locale].close}
+                  {i18n[state.locale].close}
                 </div>
               </div>
 
@@ -433,7 +434,7 @@ export default (state, actions, params) => {
               {banner}
               <div class={styl.adMeta}>
                 <div class="meta">
-                  {state.i18n[state.locale].ad}
+                  {i18n[state.locale].ad}
                 </div>
               </div>
             </div>
