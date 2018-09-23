@@ -20,13 +20,16 @@ npm run start
 run webpack-dev-server on localhost:8080.
 
 # Production site
-You can use shapen gantt chart right now.  
-http://www.sharpen.tokyo/
+You can use shapen right now without signing in.  
+https://www.sharpen.tokyo/
 
 # Attention
-This project is implemented just only front end javascript.
-You can run as standalone application but api action is not work.
-For working "publish", "Project URL", "URL for other browser", actions, you have to implement API.
+This project is implemented just only front end javascript.  
+You can run as standalone application on your local but api action is not work.  
+For working ```publish``` action,  
+sharing ```Project URL```,  
+sharing ```URL for other browser```,   
+you have to implement API.  
 
 # License
 Sharpen is MIT licensed.
