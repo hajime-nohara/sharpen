@@ -1,7 +1,7 @@
 import { app }        from 'hyperapp'
 import actions        from './actions'
 import state          from './state'
-import view           from './components'
+import view           from './views'
 import utils          from './classes/utils'
 import config         from '../config'
 import { withLogger } from "@hyperapp/logger"
