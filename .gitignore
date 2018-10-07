@@ -12,3 +12,4 @@ config/index.js
 src/ad/production
 src/ad/index.js
 .DS_Store
+assets/styles/common.css

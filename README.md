@@ -11,6 +11,7 @@ git clone https://github.com/hajime-nohara/sharpen.git
 cd sharpen
 cp config/index.js.default config/index.js
 cp src/ad/index.js.default src/ad/index.js
+cp src/ad/ad.js.default src/ad/ad.js
 npm install
 npm install -g gulp (ref: https://semantic-ui.com/introduction/getting-started.html) 
 cd semantic
