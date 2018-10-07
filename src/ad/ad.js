@@ -1,4 +1,4 @@
-import { h } from "hyperapp"
+import { h } from 'hyperapp'
 
 export default {
 
@@ -17,13 +17,12 @@ export default {
     banner_320_50: {
       ja: [
         <div>
-            <a href="" target="_blank" rel="nofollow">
-            <img border="0" width="320" height="50" alt="" src=""/></a>
-            <img border="0" width="1" height="1" src="" alt=""/>
-          </div>,
+          <a href='' target='_blank' rel='nofollow'>
+            <img border='0' width='320' height='50' alt='' src='' /></a>
+          <img border='0' width='1' height='1' src='' alt='' />
+        </div>
       ],
-      en: [
-      ]
+      en: []
     },
 
     banner_234_60: {
@@ -38,8 +37,7 @@ export default {
 
     banner_468_60: {
       ja: [],
-      en: [
-      ]
+      en: []
     }
   }
 }

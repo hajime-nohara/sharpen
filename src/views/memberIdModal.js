@@ -8,7 +8,7 @@ export default (state, actions) => {
   const sharpenUserLS = JSON.parse(localStorage.getItem('sharpen_user'))
 
   const copyShaaredUrl = () => {
-    const h = Clipboard('.clipboard')
+    const h = new Clipboard('.clipboard')
   }
 
   const reRender = () => {

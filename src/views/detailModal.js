@@ -72,29 +72,33 @@ export default (state, actions, params) => {
   Object.keys(state.member).forEach(
     function (index) {
       const isSelected = ((params.member || params.member !== undefined) && params.member.includes(index))
+      const assignedMemberOptionOncreate = (e) => { e.selected = isSelected }
       assignedMember.push(<option
         key={utils.random()}
         value={index}
-        oncreate={(e) => e.selected = isSelected}
-        onupdate={(e) => e.selected = isSelected}
+        oncreate={assignedMemberOptionOncreate}
+        onupdate={assignedMemberOptionOncreate}
         ondblclick={() => actions.deleteMasterMember(index)}
-        >@{state.member[index]}</option>
+      >@{state.member[index]}</option>
       )
     }
   )
+
   /* todo */
-  let todo = []
+  const todo = []
   if (!params.todo || params.todo === undefined) {
     params.todo = {}
   }
 
   Object.keys(params.todo).forEach(
-    function(index,val,arr) {
+    function (index) {
       const todoId = params.id + '_' + index
-      const todoOnclick = (e) => {
+      const todoOnclick = () => {
         actions.tasks.changeTodoStatus({id: params.id, value: {id: index, status: document.getElementById(todoId).checked}})
       }
 
+      // This code is not used now. But mybe we will need this code.
+      /*
       const todoTitleOnFocusout = (e) => actions.tasks.changeTodoTitle({id: params.id, value: {id: index, title: e.target.value}})
 
       const todoTitleOnKeydown = (e) => {
@@ -104,26 +108,27 @@ export default (state, actions, params) => {
           }
       }
 
-      const todoDeleteOnClick   = (e) => {
+      const todoDeleteOnClick = () => {
         actions.tasks.deleteTodo({id: params.id, value: index})
       }
+      */
 
       todo.push(
         <div class='item'>
           <div class={styl.todoCheckbox + ' ui checkbox'}
             oncreate={(e) => $(e).checkbox()}
-            >
-            <input type='checkbox' id={todoId} checked={params.todo[index].done} onchange={todoOnclick}/>
+          >
+            <input type='checkbox' id={todoId} checked={params.todo[index].done} onchange={todoOnclick} />
             <label>{params.todo[index].title}</label>
           </div>
-          <i class={styl.iconClick + ' trash icon'} onclick={(e) => actions.tasks.deleteTodo({id: params.id, value: index})}></i>
+          <i class={styl.iconClick + ' trash icon'} onclick={() => actions.tasks.deleteTodo({id: params.id, value: index})} />
         </div>
       )
     }
   )
 
   // comment data
-  let comment = []
+  const comment = []
   if (!params.comment || params.comment === undefined) {
     params.comment = {}
   }
@@ -131,7 +136,7 @@ export default (state, actions, params) => {
   const sharpenUserLS = JSON.parse(localStorage.getItem('sharpen_user'))
 
   Object.keys(params.comment).forEach(
-    function(index,val,arr) {
+    function (index) {
       const commentEditOnFocusout = (e) => {
         actions.tasks.changeComment({
           id: params.id,
@@ -139,14 +144,14 @@ export default (state, actions, params) => {
             id: index,
             comment: e.target.innerHTML,
             timestamp: params.comment[index].timestamp,
-            memberId:   sharpenUserLS.memberId,
+            memberId: sharpenUserLS.memberId,
             memberName: sharpenUserLS.memberName
           }
         })
       }
 
       const commentEditOnKeydown = (e) => {
-        if( (e.keyCode === 13 && !utils.isMobile()) && !(e.shiftKey === true || e.ctrlKey === true || e.altKey === true) ) {
+        if ((e.keyCode === 13 && !utils.isMobile()) && !(e.shiftKey === true || e.ctrlKey === true || e.altKey === true)) {
           e.target.blur()
           actions.tasks.changeComment({
             id: params.id,
@@ -154,21 +159,23 @@ export default (state, actions, params) => {
               id: index,
               comment: e.target.innerHTML,
               timestamp: params.comment[index].timestamp,
-              memberId:   sharpenUserLS.memberId,
+              memberId: sharpenUserLS.memberId,
               memberName: sharpenUserLS.memberName
             }
           })
         }
       }
-     
-      const isMember     = params.comment[index].memberId === sharpenUserLS.memberId
-      const deleteButton = isMember ?
-        <i class={styl.iconClick + ' trash icon'} onclick={(e) => actions.tasks.deleteComment({id: params.id, value: index})}></i> : null
+
+      const isMember = params.comment[index].memberId === sharpenUserLS.memberId
+      const deleteButton = isMember
+        ? <i class={styl.iconClick + ' trash icon'} onclick={() => actions.tasks.deleteComment({id: params.id, value: index})} /> : null
+
+      const commentOnupdate = (e) => { e.innerHTML = params.comment[index].comment }
 
       comment.push(
         <div class='comment'>
           <a class='avatar'>
-            <i class={styl.avatarIcon + ' user circle icon'}></i>
+            <i class={styl.avatarIcon + ' user circle icon'} />
           </a>
           <div class='content'>
             <a class='author'>{params.comment[index].memberName}</a>
@@ -178,12 +185,10 @@ export default (state, actions, params) => {
             <div class={styl.comment + ' text'} contentEditable={isMember ? 'true' : 'false'} key={utils.random()}
               onfocusout={commentEditOnFocusout}
               onkeydown={commentEditOnKeydown}
-              onupdate={(e) => e.innerHTML = params.comment[index].comment}
-              oncreate={(e) => e.innerHTML = params.comment[index].comment}
-            >
-            </div>
+              onupdate={commentOnupdate}
+              oncreate={commentOnupdate}
+            />
             <div class='actions'>
-              {/*<a class='reply'>Reply</a>*/}
               {deleteButton}
             </div>
           </div>
@@ -194,16 +199,15 @@ export default (state, actions, params) => {
 
   const commentOnFocusout = (e) => {
     if (e.target.innerHTML.length > 0) {
-
-      const id = (Object.keys(params.comment).length > 0) ? Number(Object.keys(params.comment)[Object.keys(params.comment).length -1]) + 1 : 1
+      const id = (Object.keys(params.comment).length > 0) ? Number(Object.keys(params.comment)[Object.keys(params.comment).length - 1]) + 1 : 1
 
       actions.tasks.changeComment({
         id: params.id,
         value: {
-          id:         id,
-          comment:    e.target.innerHTML,
-          timestamp:  dateformat(new Date, 'yyyy-mm-dd hh:mm:ss'),
-          memberId:   sharpenUserLS.memberId,
+          id: id,
+          comment: e.target.innerHTML,
+          timestamp: dateformat(new Date(), 'yyyy-mm-dd hh:mm:ss'),
+          memberId: sharpenUserLS.memberId,
           memberName: sharpenUserLS.memberName
         }
       })
@@ -212,35 +216,27 @@ export default (state, actions, params) => {
   }
 
   const commentOnKeydown = (e) => {
-    if( (e.keyCode === 13 && !utils.isMobile()) && !(e.shiftKey === true || e.ctrlKey === true || e.altKey === true) ) {
-     
-        e.target.blur()
-
-        if (e.target.innerHTML.length > 0) {
-
-          const id = (Object.keys(params.comment).length > 0) ? Number(Object.keys(params.comment)[Object.keys(params.comment).length -1]) + 1 : 1
-          actions.tasks.changeComment({
-            id: params.id,
-            value: {
-              id: id,
-              comment: e.target.innerHTML,
-              timestamp: dateformat(new Date, 'yyyy-mm-dd hh:mm:ss'),
-              memberId:   sharpenUserLS.memberId,
-              memberName: sharpenUserLS.memberName
-            }
-          })
-        }
-        e.target.innerHTML = ''
+    if ((e.keyCode === 13 && !utils.isMobile()) && !(e.shiftKey === true || e.ctrlKey === true || e.altKey === true)) {
+      e.target.blur()
+      if (e.target.innerHTML.length > 0) {
+        const id = (Object.keys(params.comment).length > 0) ? Number(Object.keys(params.comment)[Object.keys(params.comment).length - 1]) + 1 : 1
+        actions.tasks.changeComment({
+          id: params.id,
+          value: {
+            id: id,
+            comment: e.target.innerHTML,
+            timestamp: dateformat(new Date(), 'yyyy-mm-dd hh:mm:ss'),
+            memberId: sharpenUserLS.memberId,
+            memberName: sharpenUserLS.memberName
+          }
+        })
       }
+      e.target.innerHTML = ''
+    }
   }
 
-
-
-  const selectId = 'select_' + params.id
   const detailModalId = 'detailModal_' + params.id
   const detailModalOpenId = 'detailModalOpen_' + params.id
-
-
 
   /* title */
   const titleOnFocusout = (e) => {
@@ -258,34 +254,36 @@ export default (state, actions, params) => {
   /* date */
   const bindCalendar = (e) => {
     const options = {
-                      disableMobile: true,
-                      defaultDate: e.getAttribute('value'),
-                      locale: i18n[state.locale].flatpickr,
-                      onChange: function (date) {
-                        actions.tasks[e.getAttribute('actionName')]([params.id, dateformat(date, 'yyyy-mm-dd'), state])
-                      }
-                    }
+      disableMobile: true,
+      defaultDate: e.getAttribute('value'),
+      locale: i18n[state.locale].flatpickr,
+      onChange: function (date) {
+        actions.tasks[e.getAttribute('actionName')]([params.id, dateformat(date, 'yyyy-mm-dd'), state])
+      }
+    }
     flatpickr(e, options)
   }
-
 
   /* description */
   const descriptionOnFocusout = (e) => {
     actions.tasks.changeDescription({id: params.id, description: e.target.value})
   }
 
-  const descriptionOnKeydown = (e)=> {
-    if( (e.keyCode === 13 && !utils.isMobile()) && !(e.shiftKey === true || e.ctrlKey === true || e.altKey === true) ) {
-        e.target.blur()
-        actions.tasks.changeDescription({id: params.id, description: e.target.value})
-      }
+  const descriptionOnKeydown = (e) => {
+    if ((e.keyCode === 13 && !utils.isMobile()) && !(e.shiftKey === true || e.ctrlKey === true || e.altKey === true)) {
+      e.target.blur()
+      actions.tasks.changeDescription({id: params.id, description: e.target.value})
+    }
   }
+
   /* add member input */
+  // when semantic moda close it's will actioin with animation so we need  update state after finish amimation perfectly.
+  /*
   const addMemberOnfocusout = (e) => {
     let id = 1
-    if (Object.keys(state.member).length > 0) {
-      id = Number(Object.keys(state.member)[Object.keys(state.member).length -1]) + 1
-    }
+      if (Object.keys(state.member).length > 0) {
+        id = Number(Object.keys(state.member)[Object.keys(state.member).length - 1]) + 1
+      }
     if (e.target.value.length > 0) {
       actions.changeMasterMember({id: id, value: e.target.value})
     }
@@ -293,22 +291,22 @@ export default (state, actions, params) => {
   }
   const addMemberOnKeydown = (e) => {
     if (e.keyCode === 13) {
-        e.target.blur()
+      e.target.blur()
         let id = 1
-          if (Object.keys(state.member).length > 0) {
-            id = Number(Object.keys(state.member)[Object.keys(state.member).length-1]) + 1
-          }
-        if (e.target.value.length > 0) {
-          actions.changeMasterMember({id: id, value: e.target.value})
+        if (Object.keys(state.member).length > 0) {
+          id = Number(Object.keys(state.member)[Object.keys(state.member).length- 1]) + 1
         }
-        e.target.value = ''
+      if (e.target.value.length > 0) {
+        actions.changeMasterMember({id: id, value: e.target.value})
       }
+      e.target.value = ''
+    }
   }
-
+  */
   const todoRegistOnfocusout = (e) => {
     let id = 1
     if (Object.keys(params.todo).length > 0) {
-      id = Number(Object.keys(params.todo)[Object.keys(params.todo).length -1]) + 1
+      id = Number(Object.keys(params.todo)[Object.keys(params.todo).length - 1]) + 1
     }
     if (e.target.value.length > 0) {
       actions.tasks.changeTodo({id: params.id, value: {id: id, title: e.target.value, done: false}})
@@ -320,9 +318,9 @@ export default (state, actions, params) => {
     if (e.keyCode === 13) {
       e.target.blur()
       let id = 1
-        if (Object.keys(params.todo).length > 0) {
-          id = Number(Object.keys(params.todo)[Object.keys(params.todo).length-1]) + 1
-        }
+      if (Object.keys(params.todo).length > 0) {
+        id = Number(Object.keys(params.todo)[Object.keys(params.todo).length - 1]) + 1
+      }
       if (e.target.value.length > 0) {
         actions.tasks.changeTodo({id: params.id, value: {id: id, title: e.target.value, done: false}})
       }
@@ -330,12 +328,9 @@ export default (state, actions, params) => {
     }
   }
 
-
-
-
   const deleteTask = () => {
-     actions.tasks.del(params.id)
-  }     
+    actions.tasks.del(params.id)
+  }
 
   const deleteTaskWrap = () => {
     // when semantic moda close it's will actioin with animation so we need  update state after finish amimation perfectly.
@@ -344,23 +339,22 @@ export default (state, actions, params) => {
   }
 
   const watched = () => actions.tasks.watched(params.id)
+  const titleOnupdate = (e) => { e.innerHTML = params.title }
+  const descriptionOnupdate = (e) => { e.innerHTML = params.description }
   return (
 
     <div class='ui longer modal transition scrolling' id={detailModalId}>
 
-      <div id={detailModalOpenId} onclick={()=>$('#'+detailModalId).modal({detachable: false, onDeny: deleteTaskWrap, onVisible: watched}).modal('show')}/>
+      <div id={detailModalOpenId} onclick={() => $('#' + detailModalId).modal({detachable: false, onDeny: deleteTaskWrap, onVisible: watched}).modal('show')} />
       <div class={styl.header + ' header'}>
         <div class='header' contentEditable='true' key={utils.random()}
           onfocusout={titleOnFocusout}
           onkeydown={titleOnKeydown}
-          onupdate={(e)=>e.innerHTML = params.title}
-          oncreate={(e)=>e.innerHTML = params.title}
+          onupdate={titleOnupdate}
+          oncreate={titleOnupdate}
         />
-        <i class={styl.close + ' close icon'} onclick={(e)=>$('#'+detailModalId).modal('hide', null, null)}></i>
+        <i class={styl.close + ' close icon'} onclick={() => $('#' + detailModalId).modal('hide', null, null)} />
       </div>
-
-
-
 
       <div class='scrolling content'>
         <div class='ui form'>
@@ -370,16 +364,16 @@ export default (state, actions, params) => {
               <div class='field'>
                 <div class='ui calendar' value={params.startDate} actionName='changeStartDateFromCalendar' oncreate={bindCalendar} key={utils.random()}>
                   <div class='ui input left icon'>
-                    <i class='calendar icon'></i>
-                    <input type='text' placeholder='StartDate' value={params.startDate}/>
+                    <i class='calendar icon' />
+                    <input type='text' placeholder='StartDate' value={params.startDate} />
                   </div>
                 </div>
               </div>
               <div class='field'>
                 <div class='ui calendar' value={params.endDate} actionName='changeEndDateFromCalendar' oncreate={bindCalendar} key={utils.random()}>
                   <div class='ui input left icon'>
-                    <i class='calendar icon'></i>
-                    <input type='text' placeholder='EndDate' value={params.endDate}/>
+                    <i class='calendar icon' />
+                    <input type='text' placeholder='EndDate' value={params.endDate} />
                   </div>
                 </div>
               </div>
@@ -391,8 +385,8 @@ export default (state, actions, params) => {
             <textarea contentEditable='true' key={utils.random()}
               onfocusout={descriptionOnFocusout}
               onkeydown={descriptionOnKeydown}
-              onupdate={(e)=>e.innerHTML = params.description}
-              oncreate={(e)=>e.innerHTML = params.description}
+              onupdate={descriptionOnupdate}
+              oncreate={descriptionOnupdate}
             />
           </div>
 
@@ -412,7 +406,7 @@ export default (state, actions, params) => {
                     onfocusout={addMemberOnfocusout}
                     onkeydown={addMemberOnKeydown}
                   />
-                  <i class='user plus icon'></i>
+                  <i class='user plus icon' />
                 </div>
               </div>
               */}
@@ -428,14 +422,14 @@ export default (state, actions, params) => {
                   onfocusout={todoRegistOnfocusout}
                   onkeydown={todoRegistOnKeydown}
                 />
-                <i class='plus circle link icon'></i>
+                <i class='plus circle link icon' />
               </div>
             </div>
           </div>
 
           <h4 class='ui dividing header'>{i18n[state.locale].comment}</h4>
           <div class='ui comments'>
-                {comment}
+            {comment}
           </div>
 
           <form class='ui reply form'>
@@ -443,9 +437,8 @@ export default (state, actions, params) => {
               <div class='ui segment' contentEditable='true' key={utils.random()}
                 onfocusout={commentOnFocusout}
                 onkeydown={commentOnKeydown}
-              ></div>
+              />
             </div>
-
           </form>
 
           {actionButtonsDiv}

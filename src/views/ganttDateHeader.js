@@ -27,7 +27,7 @@ export default (state, actions) => {
             disableMobile: true,
             defaultDate: dateformat(dateObj, 'yyyy-mm-dd'),
             locale: i18n[state.locale].flatpickr,
-            onChange: function (date, text) {
+            onChange: function (date) {
               actions[actionName]([dateformat(date, 'yyyy-mm-dd'), state])
             }
           }
