@@ -122,7 +122,7 @@ export default (state, actions) => {
             <div
               oncreate={setBackgroundSize}
               onupdate={setBackgroundSize}
-              style={{backgroundImage: 'url(/assets/images/division.jpg)', width: dateCount * state.globalCellWidth + 'px', height: utils.parsePx(tasksComponents.size * 50)}}>
+              style={{backgroundImage: 'url(/assets/images/division.jpg)', width: dateCount * state.globalCellWidth + 'px', height: '100%'}}>
               {ganttDateHeader(state, actions)}
               {tasksComponents}
             </div>
