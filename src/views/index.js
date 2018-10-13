@@ -22,6 +22,9 @@ const messageModal = moize(_messageModal)
 const shareUrlModal = moize(_shareUrlModal)
 const memberIdModal = moize(_memberIdModal)
 
+const rowHeight = 51.5
+const dateHeaderHeight = 100
+
 export default (state, actions) => {
   const tasksComponents = []
   const detailModalComponents = []
@@ -120,9 +123,10 @@ export default (state, actions) => {
 
           <div class={styl.cardMainContent + ' ui card cardMainContent pushable'}>
             <div
+              class='innerRows'
               oncreate={setBackgroundSize}
               onupdate={setBackgroundSize}
-              style={{backgroundImage: 'url(/assets/images/division.jpg)', width: utils.parsePx(dateCount * state.globalCellWidth), height: utils.parsePx(tasksComponents.size * 51.5)}}>
+              style={{backgroundImage: 'url(/assets/images/division.jpg)', width: utils.parsePx(dateCount * state.globalCellWidth), height: '100%'}}>
               {ganttDateHeader(state, actions)}
               <div class={styl.innerContent}>
                 {tasksComponents}
