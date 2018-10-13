@@ -69,7 +69,7 @@ export default (state, actions) => {
       {messageModal}
       {detailModalComponents}
       {signUpModal}
-      <div class={styl.card + ' ui card sb'}>
+      <div class={styl.card + ' ui card sb pushable'}>
 
         <div class='ui sidebar left vertical inverted menu' oncreate={sidebarOncreate}>
           <a class='item' id='publish' onclick={() => actions.publish()} data-content={state.published ? i18n[state.locale].updated : i18n[state.locale].published} data-variation='basic'>
@@ -118,13 +118,15 @@ export default (state, actions) => {
             {inspector(state, actions)}
           </div>
 
-          <div class={styl.cardMainContent + ' ui card cardMainContent'}>
+          <div class={styl.cardMainContent + ' ui card cardMainContent pushable'}>
             <div
               oncreate={setBackgroundSize}
               onupdate={setBackgroundSize}
-              style={{backgroundImage: 'url(/assets/images/division.jpg)', width: dateCount * state.globalCellWidth + 'px', height: '100%'}}>
+              style={{backgroundImage: 'url(/assets/images/division.jpg)', width: utils.parsePx(dateCount * state.globalCellWidth), height: utils.parsePx(tasksComponents.size * 51.5)}}>
               {ganttDateHeader(state, actions)}
-              {tasksComponents}
+              <div class={styl.innerContent}>
+                {tasksComponents}
+              </div>
             </div>
           </div>
         </div>
