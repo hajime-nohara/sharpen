@@ -138,7 +138,7 @@ export default (state, actions, data) => {
   const badge = data.watched.includes(sharpenUserLS.memberId) ? null : <div class={styl.badge + ' ui blue empty circular label'} />
 
   return (
-    <div key={utils.random()}>
+    <div>
       {/* row */}
       <div class={styl.row}
         style={rowStyle}
@@ -147,7 +147,7 @@ export default (state, actions, data) => {
         ondrop={ondrop}
         ondragover={ondragover}
         ondragenter={ondragover}>
-        <div class={styl.progress + ' ui indicating progress active'}
+        <div class={styl.progress + ' ui indicating progress'}
           id={data.id}
           onmousedown={draggableOn}
           ontouchstart={draggableOn}
