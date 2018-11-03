@@ -1,0 +1,1007 @@
+html(lang="ja" style="")
+  head
+    // Standard Meta
+    meta(charset="utf-8")
+    meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
+    meta(name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1")
+    link(rel="image_src" type="image/jpeg" href="/images/logo.png")
+    // Site Properities
+    meta(name="generator" content="DocPad v6.79.4")
+    title Shape | Semantic UI
+    meta(name="description" content="A shape is a three dimensional object displayed on a two dimensional plane")
+    meta(name="keywords" content="html5, ui, library, framework, javascript\
+    ")
+    script#twitter-wjs(src="https://platform.twitter.com/widgets.js")
+    script(async="" src="//www.google-analytics.com/analytics.js")
+    script(src="https://semantic-ui.com/javascript/library/detect.min.js")
+    script(src="https://semantic-ui.com/javascript/library/jquery.min.js")
+    script(src="https://semantic-ui.com/javascript/library/clipboard.min.js")
+    script(src="https://semantic-ui.com/javascript/library/cookie.min.js")
+    script(src="https://semantic-ui.com/javascript/library/easing.min.js")
+    script(src="https://semantic-ui.com/javascript/library/highlight.min.js")
+    script(src="https://semantic-ui.com/javascript/library/history.min.js")
+    script(src="https://semantic-ui.com/javascript/library/state.js")
+    script(src="https://semantic-ui.com/javascript/library/tablesort.min.js")
+    script(src="https://semantic-ui.com/javascript/library/underscore.min.js")
+    script(src="https://semantic-ui.com/dist/semantic.min.js")
+    script(src="https://semantic-ui.com/javascript/docs.js")
+    link.ui(rel="stylesheet" type="text/css" href="https://semantic-ui.com/dist/semantic.min.css")
+    link(rel="stylesheet" type="text/css" href="https://semantic-ui.com/stylesheets/docs.css")
+    link(rel="stylesheet" type="text/css" href="https://semantic-ui.com/stylesheets/rtl.css")
+    script.
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-44039803-2', 'auto');
+      ga('send', 'pageview');
+    script(type="text/javascript").
+      window.liveSettings = {
+      api_key    : '9ede3015b9f84c1aabc81ab839c55d74',
+      parse_attr : [
+      'data-title',
+      'data-content'
+      ],
+      detectlang   : false,
+      autocollect  : true,
+      ignore_tags  : ['i', 'code', 'pre'],
+      parse_attr   : ['data-title', 'data-content', 'data-text'],
+      ignore_class : ['code', 'anchor']
+      };
+    script(type="text/javascript" src="//cdn.transifex.com/live.js")
+    style(type="text/css").
+      .txlive {display: none;}
+    script(type="text/javascript" src="https://cdn.transifex.com/9ede3015b9f84c1aabc81ab839c55d74/latest/manifest.jsonp")
+    script#_bsa_srv-CVAIKK7I_0(type="text/javascript" src="https://srv.buysellads.com/ads/CVAIKK7I.json?callback=_bsa_go&segment=placement:semanticuicom")
+    script#_carbonads_projs(type="text/javascript" src="//srv.carbonads.net/ads/CKYIKK7M.json?segment=placement:semanticuicom&callback=_carbonads_go")
+    script(type="text/javascript" charset="utf-8" async="" src="https://platform.twitter.com/js/button.3ebb4253c7cb2cc3c9eaac42044fc82c.js")
+    style.
+      .ui.visible.left.sidebar ~ .fixed, .ui.visible.left.sidebar ~ .pusher {   -webkit-transform: translate3d(260px, 0, 0);           transform: translate3d(260px, 0, 0); }
+  body#example.shape.pushable(ontouchstart="")
+    #toc.ui.vertical.inverted.sidebar.menu.left.overlay.visible(style="")
+      .item
+        a.ui.logo.icon.image(href="/")
+          img(src="/images/logo.png")
+        a(href="/")
+          b UIドキュメント
+      a.item(href="/introduction/getting-started.html")
+        b はじめに
+      a.item(href="/introduction/new.html")
+        b New in 2.4
+      .item
+        .header はじめに
+        .menu
+          a.item(href="/introduction/integrations.html") 連携 
+          a.item(href="/introduction/build-tools.html") ビルドツール 
+          a.item(href="/introduction/advanced-usage.html") レシピ 
+          a.item(href="/introduction/glossary.html") 用語集 
+      .item
+        .header 使用方法
+        .menu
+          a.item(href="/usage/theming.html") テーマ設定 
+          a.item(href="/usage/layout.html") レイアウト 
+      .item
+        .header グローバル
+        .menu
+          a.item(href="/globals/reset.html") リセット 
+          a.item(href="/globals/site.html") サイト 
+      .item
+        .header
+          | 属性
+        .menu
+          a.item(href="/elements/button.html") ボタン 
+          a.item(href="/elements/container.html") コンテナ 
+          a.item(href="/elements/divider.html") 区切り 
+          a.item(href="/elements/flag.html") フラグ 
+          a.item(href="/elements/header.html") 見出し 
+          a.item(href="/elements/icon.html") アイコン 
+          a.item(href="/elements/image.html") 画像 
+          a.item(href="/elements/input.html") 入力 
+          a.item(href="/elements/label.html") ラベル 
+          a.item(href="/elements/list.html") リスト 
+          a.item(href="/elements/loader.html") 読み込み表示 
+          a.item(href="/elements/placeholder.html") Placeholder 
+          a.item(href="/elements/rail.html") Rail 
+          a.item(href="/elements/reveal.html") 画像の開始効果 
+          a.item(href="/elements/segment.html") 分割 
+          a.item(href="/elements/step.html") ステップ 
+      .item
+        .header コレクション
+        .menu
+          a.item(href="/collections/breadcrumb.html") パンくず 
+          a.item(href="/collections/form.html") フォーム 
+          a.item(href="/collections/grid.html") グリッド 
+          a.item(href="/collections/menu.html") メニュー 
+          a.item(href="/collections/message.html") メッセージ 
+          a.item(href="/collections/table.html") 表 
+      .item
+        .header ビュー
+        .menu
+          a.item(href="/views/advertisement.html") 広告 
+          a.item(href="/views/card.html")
+            | カード
+          a.item(href="/views/comment.html") コメント 
+          a.item(href="/views/feed.html") フィード 
+          a.item(href="/views/item.html") 要素 
+          a.item(href="/views/statistic.html") 統計値 
+      .item
+        .active.header モジュール
+        .menu
+          a.item(href="/modules/accordion.html") アコーディオン 
+          a.item(href="/modules/checkbox.html") チェックボックス 
+          a.item(href="/modules/dimmer.html") ディマー 
+          a.item(href="/modules/dropdown.html") ドロップダウン 
+          a.item(href="/modules/embed.html") 埋め込み 
+          a.item(href="/modules/modal.html") モーダルウィンドウ 
+          a.item(href="/modules/popup.html") ポップアップ 
+          a.item(href="/modules/progress.html") 進捗 
+          a.item(href="/modules/rating.html") 評価 
+          a.item(href="/modules/search.html") 検索 
+          a.active.item(href="/modules/shape.html") シェイプ 
+          a.item(href="/modules/sidebar.html") サイドバー 
+          a.item(href="/modules/sticky.html") スティッキー 
+          a.item(href="/modules/tab.html") タブ 
+          a.item(href="/modules/transition.html") トランジション 
+      .item
+        .header ビヘイビア
+        .menu
+          a.item(href="/behaviors/api.html") API 
+          a.item(href="/behaviors/form.html") フォームの検証 
+          a.item(href="/behaviors/visibility.html") Visibility 
+    .ui.black.big.launch.right.attached.fixed.button
+      i.content.icon
+      span.text メニュー
+    .ui.fixed.inverted.main.menu
+      .ui.container
+        a.launch.icon.item
+          i.content.icon
+        .item シェイプ 
+        .right.menu
+          .vertically.fitted.borderless.item
+            iframe.github(src="//ghbtns.com/github-btn.html?user=semantic-org&repo=semantic-ui&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="100" height="20")
+          //
+            <div class="item">
+            <div class="ui hidden right aligned search input" id="search">
+            <div class="ui transparent icon input">
+            <input class="prompt" type="text" placeholder="Search...">
+            <i class="inverted search link icon" data-content="Search UI"></i>
+            </div>
+            <div class="results"></div>
+            </div>
+            </div>
+    .pusher.dimmed
+      .full.height
+        .toc
+          .ui.vertical.inverted.menu
+            .item
+              a.ui.logo.icon.image(href="/")
+                img(src="/images/logo.png")
+              a(href="/")
+                b UIドキュメント
+            a.item(href="/introduction/getting-started.html")
+              b はじめに
+            a.item(href="/introduction/new.html")
+              b New in 2.4
+            .item
+              .header はじめに
+              .menu
+                a.item(href="/introduction/integrations.html") 連携 
+                a.item(href="/introduction/build-tools.html") ビルドツール 
+                a.item(href="/introduction/advanced-usage.html") レシピ 
+                a.item(href="/introduction/glossary.html") 用語集 
+            .item
+              .header 使用方法
+              .menu
+                a.item(href="/usage/theming.html") テーマ設定 
+                a.item(href="/usage/layout.html") レイアウト 
+            .item
+              .header グローバル
+              .menu
+                a.item(href="/globals/reset.html") リセット 
+                a.item(href="/globals/site.html") サイト 
+            .item
+              .header
+                | 属性
+              .menu
+                a.item(href="/elements/button.html") ボタン 
+                a.item(href="/elements/container.html") コンテナ 
+                a.item(href="/elements/divider.html") 区切り 
+                a.item(href="/elements/flag.html") フラグ 
+                a.item(href="/elements/header.html") 見出し 
+                a.item(href="/elements/icon.html") アイコン 
+                a.item(href="/elements/image.html") 画像 
+                a.item(href="/elements/input.html") 入力 
+                a.item(href="/elements/label.html") ラベル 
+                a.item(href="/elements/list.html") リスト 
+                a.item(href="/elements/loader.html") 読み込み表示 
+                a.item(href="/elements/placeholder.html") Placeholder 
+                a.item(href="/elements/rail.html") Rail 
+                a.item(href="/elements/reveal.html") 画像の開始効果 
+                a.item(href="/elements/segment.html") 分割 
+                a.item(href="/elements/step.html") ステップ 
+            .item
+              .header コレクション
+              .menu
+                a.item(href="/collections/breadcrumb.html") パンくず 
+                a.item(href="/collections/form.html") フォーム 
+                a.item(href="/collections/grid.html") グリッド 
+                a.item(href="/collections/menu.html") メニュー 
+                a.item(href="/collections/message.html") メッセージ 
+                a.item(href="/collections/table.html") 表 
+            .item
+              .header ビュー
+              .menu
+                a.item(href="/views/advertisement.html") 広告 
+                a.item(href="/views/card.html")
+                  | カード
+                a.item(href="/views/comment.html") コメント 
+                a.item(href="/views/feed.html") フィード 
+                a.item(href="/views/item.html") 要素 
+                a.item(href="/views/statistic.html") 統計値 
+            .item
+              .active.header モジュール
+              .menu
+                a.item(href="/modules/accordion.html") アコーディオン 
+                a.item(href="/modules/checkbox.html") チェックボックス 
+                a.item(href="/modules/dimmer.html") ディマー 
+                a.item(href="/modules/dropdown.html") ドロップダウン 
+                a.item(href="/modules/embed.html") 埋め込み 
+                a.item(href="/modules/modal.html") モーダルウィンドウ 
+                a.item(href="/modules/popup.html") ポップアップ 
+                a.item(href="/modules/progress.html") 進捗 
+                a.item(href="/modules/rating.html") 評価 
+                a.item(href="/modules/search.html") 検索 
+                a.active.item(href="/modules/shape.html") シェイプ 
+                a.item(href="/modules/sidebar.html") サイドバー 
+                a.item(href="/modules/sticky.html") スティッキー 
+                a.item(href="/modules/tab.html") タブ 
+                a.item(href="/modules/transition.html") トランジション 
+            .item
+              .header ビヘイビア
+              .menu
+                a.item(href="/behaviors/api.html") API 
+                a.item(href="/behaviors/form.html") フォームの検証 
+                a.item(href="/behaviors/visibility.html") Visibility 
+        .article
+          link(rel="stylesheet/less" type="text/css" href="/src/definitions/modules/shape.less")
+          link.ui(rel="stylesheet" type="text/css" href="https://semantic-ui.com/stylesheets/shape.css")
+          script(src="https://semantic-ui.com/javascript/shape.js")
+          .ui.masthead.vertical.tab.segment
+            .ui.container
+              .introduction
+                h1.ui.header
+                  | シェイプ 
+                  .sub.header
+                    iframe#twitter-widget-0.twitter-share-button.twitter-share-button-rendered.twitter-tweet-button(scrolling="no" frameborder="0" allowtransparency="true" style="position: static; visibility: visible; width: 75px; height: 20px;" title="Twitter Tweet Button" src="https://platform.twitter.com/widgets/tweet_button.9a52e80b2027b7ab835b0e968a612a25.ja.html#dnt=false&id=twitter-widget-0&lang=ja&original_referer=https%3A%2F%2Fsemantic-ui.com%2Fmodules%2Fshape.html&size=m&text=Semantic%20UI%20is%20a%20next%20generation%20UI%20framework&time=1540030827101&type=share&url=http%3A%2F%2Fsemantic-ui.com&via=semanticui" data-url="http://semantic-ui.com")
+                    script(type="text/javascript").
+                      window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.getElementById(id)){return}js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);return window.twttr||(t={_e:[],ready:function(f){t._e.push(f)}})}(document,"script","twitter-wjs"));
+                    iframe.github(src="//ghbtns.com/github-btn.html?user=semantic-org&repo=semantic-ui&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="100" height="20")
+                    | A shape is a three dimensional object displayed on a two dimensional plane
+                .ui.hidden.divider
+                .ui.right.floated.main.menu
+                  a.bug.popup.icon.item(data-content="このページを編集する" href="https://github.com/Semantic-Org/Semantic-UI-Docs/edit/master/server/documents/modules/shape.html.eco")
+                    i.edit.icon
+                  a.bug.popup.icon.item(data-content="Submit Bug Report" href="https://github.com/Semantic-Org/Semantic-UI/issues/new?title=[Shape] - Your Bug Name&body=**Steps to Reproduce**%0A1. Do something%0A2. Do something else.%0A3. Do one last thing.%0A%0A**Expected**%0AThe Shape should do this%0A%0A**Result**%0AThe Shape does not do this%0A%0A**Testcase**%0A(fork this to get started)%0Ahttp://jsfiddle.net/rduvhn8u/1/")
+                    i.bug.icon
+                  a.github.popup.icon.item(data-content="GitHubプロジェクトを見る" href="https://github.com/Semantic-Org/Semantic-UI")
+                    i.alternate.github.icon
+                .ui.right.floated.main.menu
+                  a.music.popup.icon.item(data-content="音楽を再生")
+                    i.music.icon
+                  #languages.ui.language.dropdown.right.floating.icon.item(data-content="言語を選択")
+                    i.world.icon
+                    .menu
+                      .header 言語を選択
+                      .ui.icon.search.input
+                        i.search.icon
+                        input(type="text" placeholder="言語を検索する")
+                      .scrolling.menu
+                        .item(data-percent="100" data-value="en" data-english="English")
+                          span.description English
+                          |  English
+                        .item(data-percent="94" data-value="da" data-english="Danish")
+                          span.description dansk
+                          |  Danish
+                        .item(data-percent="94" data-value="es" data-english="Spanish")
+                          span.description Español
+                          |  Spanish
+                        .item(data-percent="34" data-value="zh" data-english="Chinese")
+                          span.description 简体中文
+                          |  Chinese
+                        .item(data-percent="54" data-value="zh_TW" data-english="Chinese (Taiwan)")
+                          span.description 中文 (臺灣)
+                          |  Chinese (Taiwan)
+                        .item(data-percent="79" data-value="fa" data-english="Persian")
+                          span.description پارسی
+                          |  Persian
+                        .item(data-percent="41" data-value="fr" data-english="French")
+                          span.description Français
+                          |  French
+                        .item(data-percent="37" data-value="el" data-english="Greek")
+                          span.description ελληνικά
+                          |  Greek
+                        .item(data-percent="37" data-value="ru" data-english="Russian")
+                          span.description Русский
+                          |  Russian
+                        .item(data-percent="36" data-value="de" data-english="German")
+                          span.description Deutsch
+                          |  German
+                        .item(data-percent="23" data-value="it" data-english="Italian")
+                          span.description Italiano
+                          |  Italian
+                        .item(data-percent="21" data-value="nl" data-english="Dutch")
+                          span.description Nederlands
+                          |  Dutch
+                        .item(data-percent="19" data-value="pt_BR" data-english="Portuguese")
+                          span.description Português(BR)
+                          |  Portuguese
+                        .item(data-percent="17" data-value="id" data-english="Indonesian")
+                          span.description Indonesian
+                          |  Indonesian
+                        .item(data-percent="12" data-value="lt" data-english="Lithuanian")
+                          span.description Lietuvių
+                          |  Lithuanian
+                        .item(data-percent="11" data-value="tr" data-english="Turkish")
+                          span.description Türkçe
+                          |  Turkish
+                        .item(data-percent="10" data-value="kr" data-english="Korean")
+                          span.description 한국어
+                          |  Korean
+                        .item(data-percent="7" data-value="ar" data-english="Arabic")
+                          span.description العربية
+                          |  Arabic
+                        .item(data-percent="6" data-value="hu" data-english="Hungarian")
+                          span.description Magyar
+                          |  Hungarian
+                        .item(data-percent="6" data-value="vi" data-english="Vietnamese")
+                          span.description tiếng Việt
+                          |  Vietnamese
+                        .item(data-percent="5" data-value="sv" data-english="Swedish")
+                          span.description svenska
+                          |  Swedish
+                        .item(data-precent="4" data-value="pl" data-english="Polish")
+                          span.description polski
+                          |  Polish
+                        .item(data-percent="6" data-value="ja" data-english="Japanese")
+                          span.description 日本語
+                          |  Japanese
+                        .item(data-percent="0" data-value="ro" data-english="Romanian")
+                          span.description românește
+                          |  Romanian
+                //
+                  <a href="/module.html" class="ui right floated basic right labeled icon button">
+                  Learn about Modules
+                  <i class="help icon" data-title="What are Modules?" data-content="Modules are UI elements that include behaviors as part of their definition. Modules require some knowledge of Javascript to use."></i>
+                  </a>
+                .ui.download.primary.button ダウンロード 
+                .ui.flowing.download.basic.popup
+                  .ui.divided.equal.width.relaxed.center.aligned.choice.grid
+                    .framework.column
+                      h4.ui.center.aligned.header UI Framework
+                      .ui.list
+                        .item
+                          i.green.check.icon
+                          |  Themable
+                        .item
+                          i.green.check.icon
+                          |  Build Tools
+                      .ui.primary.fluid.button 選ぶ
+                    .standalone.column
+                      h4.ui.center.aligned.header Standalone
+                      .ui.list
+                        .item デフォルトテーマ
+                        .item Precompiled
+                      .ui.fluid.button.basic 選ぶ
+                  .ui.divided.equal.height.relaxed.center.aligned.framework.grid
+                    .column
+                      .ui.header Semantic UI
+                      a.ui.primary.button(href="https://github.com/Semantic-Org/Semantic-UI/archive/master.zip") Download ZIP 
+                      a.ui.button(href="/introduction/getting-started.html") はじめに
+                      h4.ui.header Package Managers
+                      .ui.form
+                        .field
+                          label NPM
+                          .ui.fluid.input
+                            input(type="text" readonly="readonly" placeholder="Copy Link" value="npm install semantic-ui")
+                        .field
+                          label Git
+                          .ui.fluid.input
+                            input(type="text" readonly="readonly" placeholder="Copy Link" value="https://github.com/Semantic-Org/Semantic-UI.git")
+                  .ui.divided.equal.height.relaxed.center.aligned.standalone.grid
+                    .column
+                      .ui.header Standalone Shape
+                      a.ui.primary.button(href="https://github.com/Semantic-Org/UI-Shape/archive/master.zip") Download ZIP 
+                      a.ui.button(href="https://github.com/Semantic-Org/UI-Shape/") View GitHub 
+                      h4.ui.header Package Managers
+                      .ui.form
+                        .field
+                          label Bower
+                          .ui.fluid.input
+                            input(type="text" readonly="readonly" placeholder="Copy Link" value="bower install semantic-ui-shape")
+                        .field
+                          label NPM
+                          .ui.fluid.input
+                            input(type="text" readonly="readonly" placeholder="Copy Link" value="npm install semantic-ui-shape")
+                        .field
+                          label Git
+                          .ui.fluid.input
+                            input(type="text" readonly="readonly" placeholder="Copy Link" value="https://github.com/Semantic-Org/UI-Shape.git")
+              .advertisement
+                script#_carbonads_js(async="" type="text/javascript" src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=semanticuicom")
+                #carbonads
+                  span
+                    span.carbon-wrap
+                      a.carbon-img(href="//srv.carbonads.net/ads/click/x/GTND42QIF6AIL5QMCKALYKQMCEYDT27YCKBILZ3JCW7IL53MCVBIP27KC6BIVK3ECVAIKK3EHJNCLSIZ?segment=placement:semanticuicom;" target="_blank" rel="noopener")
+                        img(src="https://cdn4.buysellads.net/uu/1/4823/1532447428-1524760431-CircleCI.jpeg" alt="" border="0" height="100" width="130" style="max-width: 130px;")
+                      a.carbon-text(href="//srv.carbonads.net/ads/click/x/GTND42QIF6AIL5QMCKALYKQMCEYDT27YCKBILZ3JCW7IL53MCVBIP27KC6BIVK3ECVAIKK3EHJNCLSIZ?segment=placement:semanticuicom;" target="_blank" rel="noopener") Join over 300,000 developers using CircleCI's integration with GitHub.
+                    a.carbon-poweredby(href="http://carbonads.net/?utm_source=semanticuicom&utm_medium=ad_via_link&utm_campaign=in_unit&utm_term=carbon" target="_blank" rel="noopener") ads via Carbon
+              .ui.four.item.stackable.tabs.menu
+                a.item(data-tab="definition") Definition
+                a.item(data-tab="examples") サンプル
+                a.item.active(data-tab="usage") 使用方法
+                a.item(data-tab="settings") Settings
+          script(src="//m.servedby-buysellads.com/monetization.js" type="text/javascript")
+          .bsa-cpc
+          script.
+            (function(){
+            if(typeof _bsa !== 'undefined' && _bsa) {
+            _bsa.init('default', 'CVAIKK7I', 'placement:semanticuicom', {
+            target: '.bsa-cpc',
+            align: 'horizontal',
+            disable_css: 'true'
+            });
+            }
+            })();
+          .ui.vertical.beg.transition.hidden.segment
+            i.large.red.delete.link.icon
+            .ui.red.header
+              i.disabled.warning.sign.icon
+              .content
+                | Want to Support Open Source? Whitelist Your Ad-Blocker. 
+                .sub.header
+                  | We promise to not show more than one small ad per page. Dont worry, hiding this message will make sure you won't get nagged again.
+          .main.ui.container
+            .ui.tab(data-tab="definition" style="")
+              .ui.dividing.right.rail
+                .ui.sticky(style="left: 790px;")
+                  h4.ui.header シェイプ
+                  .ui.vertical.following.fluid.accordion.text.menu
+                    .item.active
+                      a.active.title
+                        i.dropdown.icon
+                        b Types
+                      .active.content.menu
+                        a.item.active(href="#") シェイプ
+                        a.item(href="#cube") Cube
+                        a.item(href="#text") Text
+              h2.ui.dividing.header Types
+              .example
+                h4.ui.header シェイプ
+                i.fitted.icon.code
+                a.anchor(id="")
+                p A shape is a three dimensional object including any flat content as a side.
+                .ui.people.shape
+                  .sides
+                    .active.side
+                      .ui.card
+                        .image
+                          img(src="/images/avatar/large/steve.jpg")
+                        .content
+                          .header Steve Jobes
+                          .meta
+                            a Acquaintances
+                          .description
+                            | Steve Jobes is a fictional character designed to resemble someone familiar to readers.
+                        .extra.content
+                          span.right.floated 2014年にジョイン 
+                          span
+                            i.user.icon
+                            |  151人の友達
+                    .side
+                      .ui.card
+                        .image
+                          img(src="/images/avatar/large/stevie.jpg")
+                        .content
+                          a.header Stevie Feliciano
+                          .meta
+                            span.date 2014年にジョイン
+                          .description
+                            | Stevie Feliciano is a library scientist living in New York City. She likes to spend her time reading, running, and writing.
+                        .extra.content
+                          a
+                            i.user.icon
+                            |  22 Friends
+                .ui.ignored.divider
+                .ui.ignored.icon.direction.buttons
+                  .ui.button(data-animation="flip" title="Flip Left" data-direction="left")
+                    i.left.long.arrow.icon
+                  .ui.button(data-animation="flip" title="Flip Up" data-direction="up")
+                    i.up.long.arrow.icon
+                  .ui.icon.button(data-animation="flip" title="Flip Down" data-direction="down")
+                    i.down.long.arrow.icon
+                  .ui.icon.button(data-animation="flip" title="Flip Right" data-direction="right")
+                    i.right.long.arrow.icon
+                .ui.ignored.icon.direction.buttons
+                  .ui.button(title="Flip Over" data-animation="flip" data-direction="over")
+                    i.retweet.icon
+                  .ui.button(title="Flip Back" data-animation="flip" data-direction="back")
+                    i.flipped.retweet.icon
+              .example
+                h4.ui.header Cube
+                i.fitted.icon.code
+                a#cube.anchor
+                p A cube shape is formatted so that each side is the face of a cube
+                .ui.cube.shape
+                  .sides
+                    .active.side
+                      .content
+                        .center
+                          | 1
+                    .side
+                      .content
+                        .center
+                          | 2
+                    .side
+                      .content
+                        .center
+                          | 3
+                    .side
+                      .content
+                        .center
+                          | 4
+                    .side
+                      .content
+                        .center
+                          | 5
+                    .side
+                      .content
+                        .center
+                          | 6
+                .ui.ignored.divider
+                .ui.ignored.icon.direction.buttons
+                  .ui.button(data-animation="flip" title="Flip Left" data-direction="left")
+                    i.left.long.arrow.icon
+                  .ui.button(data-animation="flip" title="Flip Up" data-direction="up")
+                    i.up.long.arrow.icon
+                  .ui.icon.button(data-animation="flip" title="Flip Down" data-direction="down")
+                    i.down.long.arrow.icon
+                  .ui.icon.button(data-animation="flip" title="Flip Right" data-direction="right")
+                    i.right.long.arrow.icon
+                .ui.ignored.icon.direction.buttons
+                  .ui.button(title="Flip Over" data-animation="flip" data-direction="over")
+                    i.retweet.icon
+                  .ui.button(title="Flip Back" data-animation="flip" data-direction="back")
+                    i.flipped.retweet.icon
+              .example
+                h4.ui.header Text
+                i.fitted.icon.code
+                a#text.anchor
+                p A text shape is formatted to allow for sides of text to be displayed
+                .ui.info.ignored.icon.message
+                  i.info.letter.icon
+                  .content
+                    .header Using Shapes
+                    ul.list
+                      li
+                        | A shape must have defined width and heights for each side or else text flow may change during animation
+                      li
+                        | The module uses 3D transformations which are currently only supported in modern versions of Chrome, Safari, and Firefox.
+                .ui.text.shape
+                  .sides
+                    .active.ui.header.side Did you know? This side starts visible.
+                    .ui.header.side Help, its another side!
+                    .ui.header.side This is the last side
+                .ui.ignored.divider
+                .ui.ignored.icon.direction.buttons
+                  .ui.button(data-animation="flip" title="Flip Left" data-direction="left")
+                    i.left.long.arrow.icon
+                  .ui.button(data-animation="flip" title="Flip Up" data-direction="up")
+                    i.up.long.arrow.icon
+                  .ui.icon.button(data-animation="flip" title="Flip Down" data-direction="down")
+                    i.down.long.arrow.icon
+                  .ui.icon.button(data-animation="flip" title="Flip Right" data-direction="right")
+                    i.right.long.arrow.icon
+                .ui.ignored.icon.direction.buttons
+                  .ui.button(title="Flip Over" data-animation="flip" data-direction="over")
+                    i.retweet.icon
+                  .ui.button(title="Flip Back" data-animation="flip" data-direction="back")
+                    i.flipped.retweet.icon
+            .ui.tab(data-tab="examples")
+              .ui.dividing.right.rail
+                .ui.sticky(style="left: 790px;")
+                  h4.ui.header シェイプ
+                  .ui.vertical.following.fluid.accordion.text.menu
+                    .item.active
+                      a.active.title
+                        i.dropdown.icon
+                        b サンプル
+                      .active.content.menu
+                        a.item.active(href="#shape-types") Shape Types
+              h2.ui.dividing.header
+                | サンプル
+                a.anchor(id="")
+              .no.example
+                h4.ui.header Shape Types
+                i.fitted.icon.code
+                a#shape-types.anchor
+                p
+                  | Shapes do not have to be regular or have its sides match up in length and width to animate correctly.
+                h3.ui.header シェイプ
+                .ui.type.buttons
+                  .active.ui.button(data-shape="auto") Auto
+                  .ui.button(data-shape="square") 正方形
+                  .ui.button(data-shape="irregular") Irregular
+                .ui.divider
+                .demo.auto.ui.shape
+                  .sides
+                    .active.first.side
+                      img.ui.medium.image(src="/images/leaves/1.png")
+                    .second.side
+                      img.ui.medium.image(src="/images/leaves/3.png")
+                    .third.side
+                      img.ui.medium.image(src="/images/leaves/5.png")
+                .ui.ignored.divider
+                .ui.ignored.icon.direction.buttons
+                  .ui.button(data-animation="flip" title="Flip Left" data-direction="left")
+                    i.left.long.arrow.icon
+                  .ui.button(data-animation="flip" title="Flip Up" data-direction="up")
+                    i.up.long.arrow.icon
+                  .ui.icon.button(data-animation="flip" title="Flip Down" data-direction="down")
+                    i.down.long.arrow.icon
+                  .ui.icon.button(data-animation="flip" title="Flip Right" data-direction="right")
+                    i.right.long.arrow.icon
+                .ui.ignored.icon.direction.buttons
+                  .ui.button(title="Flip Over" data-animation="flip" data-direction="over")
+                    i.retweet.icon
+                  .ui.button(title="Flip Back" data-animation="flip" data-direction="back")
+                    i.flipped.retweet.icon
+            .ui.tab.active(data-tab="usage")
+              .ui.dividing.right.rail
+                .ui.sticky(style="left: 790px;")
+                  h4.ui.header シェイプ
+                  .ui.vertical.following.fluid.accordion.text.menu
+                    .item.active
+                      a.active.title
+                        i.dropdown.icon
+                        b はじめに
+                      .active.content.menu
+                        a.item.active(href="#required-markup") Required Markup
+                        a.item(href="#javascript") JavaScriptによるアニメーション
+                    .item
+                      a.title.active
+                        i.dropdown.icon
+                        b Behavior
+                      .content.menu.active
+              h2.ui.dividing.header
+                | はじめに
+                a.anchor(id="")
+              .no.example
+                h4.ui.header Required Markup
+                i.fitted.icon.code
+                a#required-markup.anchor
+                p
+                  | Shapes can have any arbitrary content, just wrap each side in 
+                  code side
+                .ui.existing.segment
+                  pre.
+                    
+              .no.example
+                h4.ui.header JavaScriptによるアニメーション
+                i.fitted.icon.code
+                a#javascript.anchor
+                p Animations use CSS3 transitions and Javascript to set-up the correct conditions.
+                p Initializing a shape
+                .ui.existing.segment
+                  pre.
+                    
+                p
+                  | Transitions automatically assume next side is the next sibling (or first if last element)
+                .ui.existing.segment
+                  pre.
+                    
+                p To manually set the next side to appear use a selector or jQuery object
+                .ui.existing.segment
+                  pre.
+                    
+                p Any internal method can be invoked programmatically
+                .ui.existing.segment
+                  pre.
+                    
+              h2.ui.dividing.header Behavior
+              .no.example
+                p All the following behaviors can be called using the syntax:
+                i.fitted.icon.code
+                .ui.existing.segment
+                  pre.
+                    
+              table.ui.definition.sortable.celled.table.segment
+                thead
+                  tr
+                    th Behavior
+                    th Description
+                tbody
+                  tr
+                    td flip up
+                    td Flips the shape upward
+                  tr
+                    td flip down
+                    td Flips the shape downward
+                  tr
+                    td flip right
+                    td Flips the shape right
+                  tr
+                    td flip left
+                    td Flips the shape left
+                  tr
+                    td flip over
+                    td Flips the shape over clock-wise
+                  tr
+                    td flip back
+                    td Flips the shape over counter-clockwise
+                  tr
+                    td set next side(selector)
+                    td Set the next side to a specific selector
+                  tr
+                    td is animating
+                    td Returns whether shape is currently animating
+                  tr
+                    td リセット
+                    td Removes all inline styles
+                  tr
+                    td queue(animation)
+                    td Queues an animationtill after current animation
+                  tr
+                    td repaint
+                    td Forces a reflow on element
+                  tr
+                    td set default side
+                    td Set the next side to next sibling to active element
+                  tr
+                    td set stage size
+                    td Sets shape to the content size of the next side
+                  tr
+                    td リフレッシュ
+                    td Refreshes the selector cache for element sides
+                  tr
+                    td get transform down
+                    td Returns translation for next side staged below
+                  tr
+                    td get transform left
+                    td Returns translation for next side staged left
+                  tr
+                    td get transform right
+                    td Returns translation for next side staged right
+                  tr
+                    td get transform up
+                    td Returns translation for next side staged up
+                  tr
+                    td get transform down
+                    td Returns translation for next side staged down
+            .ui.tab(data-tab="settings")
+              .ui.dividing.right.rail
+                .ui.sticky(style="width: 238px !important; height: 150px !important; left: 790px;")
+                  h4.ui.header シェイプ
+                  .ui.vertical.following.fluid.accordion.text.menu
+              h3.ui.header
+                | Shape Settings 
+                .sub.header Shape settings modify the shape's behavior
+              table.ui.celled.sortable.definition.table.segment
+                thead
+                  tr
+                    th Setting
+                    th.four.wide Default
+                    th Description
+                tbody
+                  tr
+                    td duration
+                    td 700ミリ秒
+                    td Duration of side change animation
+                  tr
+                    td
+                      | width 
+                      .ui.horizontal.teal.label 2.2
+                    td initial
+                    td
+                      .ui.bulleted.list
+                        .item
+                          | When set to 
+                          code next
+                          |  will use the width of the next 
+                          code side
+                          |  during the shape's animation.
+                        .item
+                          | When set to 
+                          code initial
+                          |  it will use the width of the shape at initialization.
+                        .item When set to a specifix pixel height, will force the width to that height.
+                  tr
+                    td
+                      | height 
+                      .ui.horizontal.teal.label 2.2
+                    td initial
+                    td
+                      .ui.bulleted.list
+                        .item
+                          | When set to 
+                          code next
+                          |  will use the height of the next 
+                          code side
+                          |  during the shape's animation.
+                        .item
+                          | When set to 
+                          code initial
+                          |  it will use the height of the shape at initialization.
+                        .item When set to a specifix pixel height, will force the height to that height.
+              .ui.horizontal.section.divider
+                i.icon.setting
+              h3.ui.header
+                | Callbacks 
+                .sub.header Callbacks specify a function to occur after a specific behavior.
+              table.ui.celled.sortable.definition.table.segment
+                thead
+                  tr
+                    th.four.wide Setting
+                    th Context
+                    th Description
+                tbody
+                  tr
+                    td beforeChange
+                    td Next Side
+                    td Is called before side change
+                  tr
+                    td onChange
+                    td Active Side
+                    td Is called after visible side change
+              .ui.horizontal.section.divider
+                i.icon.setting
+              h3.ui.header
+                | DOM Settings 
+                .sub.header DOM settings specify how this module should interface with the DOM
+              table.ui.celled.sortable.definition.table.segment
+                thead
+                  tr
+                    th Setting
+                    th.four.wide Default
+                    th Description
+                tbody
+                  tr
+                    td namespace
+                    td shape
+                    td
+                      | Event namespace. Makes sure module teardown does not effect other events attached to an element.
+                  tr
+                    td selector
+                    td(colspan="2")
+                      .ui.existing.segment
+                        pre.
+                          
+                  tr
+                    td className
+                    td(colspan="2")
+                      .ui.existing.segment
+                        pre.
+                          
+              .ui.horizontal.section.divider
+                i.icon.setting
+              h3.ui.header
+                | Debug Settings 
+                .sub.header Debug settings controls debug output to the console
+              table.ui.celled.sortable.definition.table.segment
+                thead
+                  tr
+                    th Setting
+                    th.four.wide Default
+                    th Description
+                tbody
+                  tr
+                    td name
+                    td シェイプ
+                    td Name used in debug logs
+                  tr
+                    td silent
+                    td False
+                    td
+                      | Silences all console output including error messages, regardless of other debug settings.
+                  tr
+                    td debug
+                    td False
+                    td Provides standard debug output to console
+                  tr
+                    td performance
+                    td True
+                    td Provides standard debug output to console
+                  tr
+                    td verbose
+                    td True
+                    td Provides ancillary debug output to console
+                  tr
+                    td error
+                    td(colspan="2")
+                      .ui.existing.segment
+                        pre.
+                          
+          .ui.vertical.footer.segment
+            .ui.center.aligned.container
+              .ui.stackable.grid
+                .three.wide.column
+                  h4.ui.header コミュニティ
+                  .ui.link.list
+                    a.item(href="https://www.transifex.com/organization/semantic-org/" target="_blank") 翻訳を手伝う
+                    a.item(href="https://github.com/Semantic-Org/Semantic-UI/issues" target="_blank") 意見を送る
+                    a.item(href="https://gitter.im/Semantic-Org/Semantic-UI" target="_blank") チャットに参加
+                    a.item(href="/cla.html" target="_blank") CLA
+                .three.wide.column
+                  h4.ui.header ネットワーク
+                  .ui.link.list
+                    a.item(href="https://github.com/Semantic-Org/Semantic-UI" target="_blank") GitHub Repo
+                    a.item(href="http://forums.semantic-ui.com" target="_blank") フォーラム
+                    a.item(href="http://1.semantic-ui.com") 1.x Docs
+                    a.item(href="http://legacy.semantic-ui.com") 0.x Docs
+                .seven.wide.right.floated.column
+                  h4.ui.header このプロジェクトを助ける
+                  p  コミュニティに入って、Semantic UIの継続的な開発サポートをお願いします。
+                  form(action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top")
+                    input(type="hidden" name="cmd" value="_s-xclick")
+                    input(type="hidden" name="hosted_button_id" value="7ZAF2Q8DBZAQL")
+                    button.ui.large.teal.button(type="submit") 寄付する
+              .ui.section.divider
+              img.ui.centered.mini.image(src="/images/logo.png")
+              .ui.horizontal.small.divided.link.list
+                a.item(href="http://semantic-ui.mit-license.org/" target="_blank") Free & Open Source (MIT)
+    .ui.basic.language.modal
+      i.close.icon
+      .header
+        span.name
+        | の翻訳をしませんか？
+      .image.content
+        .middle.aligned.image
+          i.world.icon
+        .description
+          p
+            | 現在、翻訳作業は
+            b
+              span.complete
+              | %
+            |  完了しています!
+          .ui.inverted.indicating.progress
+            .bar
+          p あなたが使っている言語でSemanticのサイトを見ることができるようするために、あなたの助けが必要です。
+          p
+            | Our translation tools are easy to use and allow you to translate text without having to leave the site.
+      .actions
+        .ui.inverted.cancel.button 参加しない
+        a.ui.inverted.approve.teal.button(href="https://github.com/Semantic-Org/Semantic-UI/wiki/Translating-Semantic-UI-Docs" target="_blank")
+          i.mail.icon
+          |  Help Translate
+    .ui.basic.chinese.modal
+      i.close.icon
+      .header Would you like to visit the mirror site?
+      .image.content
+        .middle.aligned.image
+          i.question.icon
+        .description
+          p
+            | Semantic is available at 
+            a(href="http://www.semantic-ui.cn") semantic-ui.cn
+            |  a mirror site hosted inside China. This should make browsing much faster for those visiting from mainland China.
+      .actions
+        .ui.inverted.red.cancel.button 参加しない
+        a.ui.inverted.green.approve.button(href="http://www.semantic-ui.cn")
+          i.mail.icon
+          |  Yes, take me to the mirror
+    .ui.demo.page.dimmer
+      .content
+        .center
+          h2.ui.inverted.icon.header
+            i.mail.icon
+            |  Dimmer Message 
+            .sub.header Dimmer sub-header
+    script.
+      window.less = {
+      async        : true,
+      environment  : 'production',
+      fileAsync    : false,
+      onReady      : false,
+      useFileCache : true
+      };
+    script(src="https://semantic-ui.com/javascript/library/less.min.js")

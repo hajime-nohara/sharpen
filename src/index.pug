@@ -1,27 +1,61 @@
-html
+html(lang="ja" style="")
   head
-    title sharpen
+    // Standard Meta
     meta(charset="utf-8")
     meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
     meta(name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1")
-
+    link(rel="image_src" type="image/jpeg" href="/images/logo.png")
     // Site Properities
     meta(name="generator" content="DocPad v6.79.4")
-    meta(name="description" content="A simple gantt chart content")
-    meta(name="keywords" content="html5, ui, library, framework, javascript, gantt, chart")
-
-    script(src="//code.jquery.com/jquery-3.3.1.slim.min.js")
-
-    script(src="//use.fontawesome.com/releases/v5.0.8/js/all.js")
-    link(rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" media="all")
-
-    link(rel="stylesheet" href="//cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" media="all")
-
-    link(rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css")
-    script(src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous")
-    script(src="semantic/dist/semantic.min.js")
-
-    link(rel="stylesheet" href="/assets/styles/common.css")
-
-  body
+    title Shape | Semantic UI
+    meta(name="description" content="A shape is a three dimensional object displayed on a two dimensional plane")
+    meta(name="keywords" content="html5, ui, library, framework, javascript\
+    ")
+    script#twitter-wjs(src="https://platform.twitter.com/widgets.js")
+    script(async="" src="//www.google-analytics.com/analytics.js")
+    script(src="https://semantic-ui.com/javascript/library/detect.min.js")
+    script(src="https://semantic-ui.com/javascript/library/jquery.min.js")
+    script(src="https://semantic-ui.com/javascript/library/clipboard.min.js")
+    script(src="https://semantic-ui.com/javascript/library/cookie.min.js")
+    script(src="https://semantic-ui.com/javascript/library/easing.min.js")
+    script(src="https://semantic-ui.com/javascript/library/highlight.min.js")
+    script(src="https://semantic-ui.com/javascript/library/history.min.js")
+    script(src="https://semantic-ui.com/javascript/library/state.js")
+    script(src="https://semantic-ui.com/javascript/library/tablesort.min.js")
+    script(src="https://semantic-ui.com/javascript/library/underscore.min.js")
+    script(src="https://semantic-ui.com/dist/semantic.min.js")
+    script(src="https://semantic-ui.com/javascript/docs.js")
+    link.ui(rel="stylesheet" type="text/css" href="https://semantic-ui.com/dist/semantic.min.css")
+    link(rel="stylesheet" type="text/css" href="https://semantic-ui.com/stylesheets/docs.css")
+    link(rel="stylesheet" type="text/css" href="https://semantic-ui.com/stylesheets/rtl.css")
+    script.
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-44039803-2', 'auto');
+      ga('send', 'pageview');
+    script(type="text/javascript").
+      window.liveSettings = {
+      api_key    : '9ede3015b9f84c1aabc81ab839c55d74',
+      parse_attr : [
+      'data-title',
+      'data-content'
+      ],
+      detectlang   : false,
+      autocollect  : true,
+      ignore_tags  : ['i', 'code', 'pre'],
+      parse_attr   : ['data-title', 'data-content', 'data-text'],
+      ignore_class : ['code', 'anchor']
+      };
+    script(type="text/javascript" src="//cdn.transifex.com/live.js")
+    style(type="text/css").
+      .txlive {display: none;}
+    script(type="text/javascript" src="https://cdn.transifex.com/9ede3015b9f84c1aabc81ab839c55d74/latest/manifest.jsonp")
+    script#_bsa_srv-CVAIKK7I_0(type="text/javascript" src="https://srv.buysellads.com/ads/CVAIKK7I.json?callback=_bsa_go&segment=placement:semanticuicom")
+    script#_carbonads_projs(type="text/javascript" src="//srv.carbonads.net/ads/CKYIKK7M.json?segment=placement:semanticuicom&callback=_carbonads_go")
+    script(type="text/javascript" charset="utf-8" async="" src="https://platform.twitter.com/js/button.3ebb4253c7cb2cc3c9eaac42044fc82c.js")
+    style.
+      .ui.visible.left.sidebar ~ .fixed, .ui.visible.left.sidebar ~ .pusher {   -webkit-transform: translate3d(260px, 0, 0);           transform: translate3d(260px, 0, 0); }
+  body#example.shape.pushable(ontouchstart="")
     #sharpen.div
